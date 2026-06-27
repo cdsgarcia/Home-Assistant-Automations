@@ -1,0 +1,41 @@
+- id: '1780320275625'
+  alias: Roof Deck Light
+  triggers:
+  - id: sunset
+    trigger: sun
+    event: sunset
+    offset: 00:20:00
+  - id: sunrise
+    trigger: sun
+    event: sunrise
+    offset: -00:20:00
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id: sunset
+    then:
+    - condition: not
+      conditions:
+      - condition: device
+        type: is_on
+        device_id: 8510f0c0a25dcda57d2560ed305d0c78
+        entity_id: 836c0933efc45c66db79937680ba5329
+        domain: switch
+    - type: turn_on
+      device_id: 8510f0c0a25dcda57d2560ed305d0c78
+      entity_id: 836c0933efc45c66db79937680ba5329
+      domain: switch
+    else:
+    - condition: not
+      conditions:
+      - condition: device
+        type: is_off
+        device_id: 8510f0c0a25dcda57d2560ed305d0c78
+        entity_id: 836c0933efc45c66db79937680ba5329
+        domain: switch
+    - type: turn_off
+      device_id: 8510f0c0a25dcda57d2560ed305d0c78
+      entity_id: 836c0933efc45c66db79937680ba5329
+      domain: switch
+  mode: single

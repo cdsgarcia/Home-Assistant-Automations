@@ -1,0 +1,44 @@
+- id: '1781042326479'
+  alias: A/C Night OFF Sequence - Sunrise
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: 01:00:00
+  conditions:
+  - condition: not
+    conditions:
+    - condition: device
+      device_id: f0ac383606adb08783dd4317b30b7514
+      domain: climate
+      entity_id: 6b825ba36b730908c201d9cba94b685a
+      type: is_hvac_mode
+      hvac_mode: 'off'
+  actions:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 30
+    target:
+      device_id: f0ac383606adb08783dd4317b30b7514
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: fan_only
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: 'off'
+  mode: single

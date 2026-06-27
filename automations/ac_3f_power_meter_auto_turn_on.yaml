@@ -1,0 +1,66 @@
+- id: '1780455063606'
+  alias: A/C 3F Power Meter - Auto Turn On
+  description: ''
+  triggers:
+  - trigger: time
+    at: '10:00:00'
+  - trigger: time
+    at: '11:00:00'
+  - trigger: time
+    at: '12:00:00'
+  - trigger: time
+    at: '13:00:00'
+  conditions:
+  - condition: or
+    conditions:
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        above: 45
+      - condition: time
+        before: '10:05:00'
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        above: 60
+      - condition: time
+        before: '11:05:00'
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        above: 75
+      - condition: time
+        before: '12:05:00'
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        above: 90
+      - condition: time
+        before: '13:05:00'
+  - condition: device
+    type: is_off
+    device_id: 73be0b81a93c4901708d886e1f886fee
+    entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+    domain: switch
+  actions:
+  - type: turn_on
+    device_id: 73be0b81a93c4901708d886e1f886fee
+    entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+    domain: switch
+  mode: single

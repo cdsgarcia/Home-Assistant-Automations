@@ -1,0 +1,84 @@
+- id: '1780332380363'
+  alias: EF-R30241 Light
+  description: ''
+  triggers:
+  - type: not_plugged_in
+    device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+    entity_id: 678ea093f9228c6e7aa912e0df7a994f
+    domain: binary_sensor
+    trigger: device
+  - trigger: numeric_state
+    entity_id:
+    - sensor.ef_r30241_battery_level
+    below: 51
+  - type: plugged_in
+    device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+    entity_id: 678ea093f9228c6e7aa912e0df7a994f
+    domain: binary_sensor
+    trigger: device
+  - trigger: numeric_state
+    entity_id:
+    - sensor.ef_r30241_battery_level
+    below: 21
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - type: is_plugged_in
+        condition: device
+        device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        entity_id: 678ea093f9228c6e7aa912e0df7a994f
+        domain: binary_sensor
+      sequence:
+      - device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        domain: select
+        entity_id: f45bdeafcbeb9114d4d6130cd02e93a1
+        type: select_option
+        option: 'off'
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ef_r30241_battery_level
+        below: 21
+      - type: is_not_plugged_in
+        condition: device
+        device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        entity_id: 678ea093f9228c6e7aa912e0df7a994f
+        domain: binary_sensor
+      sequence:
+      - device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        domain: select
+        entity_id: f45bdeafcbeb9114d4d6130cd02e93a1
+        type: select_option
+        option: sos
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ef_r30241_battery_level
+        below: 51
+        above: 20
+      - type: is_not_plugged_in
+        condition: device
+        device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        entity_id: 678ea093f9228c6e7aa912e0df7a994f
+        domain: binary_sensor
+      sequence:
+      - device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        domain: select
+        entity_id: f45bdeafcbeb9114d4d6130cd02e93a1
+        type: select_option
+        option: dim
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ef_r30241_battery_level
+        above: 50
+      - type: is_not_plugged_in
+        condition: device
+        device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        entity_id: 678ea093f9228c6e7aa912e0df7a994f
+        domain: binary_sensor
+      sequence:
+      - device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        domain: select
+        entity_id: f45bdeafcbeb9114d4d6130cd02e93a1
+        type: select_option
+        option: bright
+  mode: single

@@ -1,0 +1,52 @@
+- id: '1775201692883'
+  alias: A/C Afternoon OFF Sequence
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.srne_battery
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    below: 97
+  conditions:
+  - condition: time
+    after: '15:30:00'
+    before: '18:00:00'
+  - condition: not
+    conditions:
+    - condition: device
+      device_id: f0ac383606adb08783dd4317b30b7514
+      domain: climate
+      entity_id: 6b825ba36b730908c201d9cba94b685a
+      type: is_hvac_mode
+      hvac_mode: 'off'
+  actions:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 30
+    target:
+      device_id: f0ac383606adb08783dd4317b30b7514
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: fan_only
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: 'off'
+  mode: single

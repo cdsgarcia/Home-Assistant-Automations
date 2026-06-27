@@ -1,0 +1,831 @@
+- id: '1762919656180'
+  alias: A/C 3F Power Meter - Total Energy Reset
+  description: ''
+  triggers:
+  - trigger: time
+    at: '15:00:00'
+  conditions: []
+  actions:
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - button.a_c_3f_power_meter_data_reset
+  mode: single
+- id: '1775061536549'
+  alias: A/C 3F Power Meter - 3.0 kWh Limit
+  description: ''
+  triggers:
+  - type: energy
+    device_id: 73be0b81a93c4901708d886e1f886fee
+    entity_id: 80c49a382e3b4c289ac822f6103f2d2f
+    domain: sensor
+    trigger: device
+    above: 3
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions:
+  - condition: time
+    after: '15:00:00'
+    before: 09:00:00
+  - condition: device
+    type: is_on
+    device_id: 73be0b81a93c4901708d886e1f886fee
+    entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+    domain: switch
+  actions:
+  - type: turn_off
+    device_id: 73be0b81a93c4901708d886e1f886fee
+    entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+    domain: switch
+  mode: single
+- id: '1775201692883'
+  alias: A/C Afternoon OFF Sequence
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.srne_battery
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    below: 97
+  conditions:
+  - condition: time
+    after: '15:30:00'
+    before: '18:00:00'
+  - condition: not
+    conditions:
+    - condition: device
+      device_id: f0ac383606adb08783dd4317b30b7514
+      domain: climate
+      entity_id: 6b825ba36b730908c201d9cba94b685a
+      type: is_hvac_mode
+      hvac_mode: 'off'
+  actions:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 30
+    target:
+      device_id: f0ac383606adb08783dd4317b30b7514
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: fan_only
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: 'off'
+  mode: single
+- id: '1775488306594'
+  alias: A/C 3F Power Meter - Display Off
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - number.a_c_3f_power_meter_data_refresh_interval
+    above: 30
+  - trigger: numeric_state
+    entity_id:
+    - number.a_c_3f_power_meter_data_refresh_interval
+    below: 30
+  conditions: []
+  actions:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - device_id: 73be0b81a93c4901708d886e1f886fee
+    domain: select
+    entity_id: 61b5552ac4d3aa7e07729eea3e4e12b3
+    type: select_last
+  mode: single
+- id: '1775715616178'
+  alias: 'A/C 3F Power Meter - Data Refresh Interval '
+  description: ''
+  triggers:
+  - trigger: homeassistant
+    event: start
+  - trigger: numeric_state
+    entity_id:
+    - number.a_c_3f_power_meter_data_refresh_interval
+    above: 30
+  - trigger: numeric_state
+    entity_id:
+    - number.a_c_3f_power_meter_data_refresh_interval
+    below: 30
+  conditions:
+  - condition: or
+    conditions:
+    - condition: numeric_state
+      entity_id: number.a_c_3f_power_meter_data_refresh_interval
+      above: 30
+    - condition: numeric_state
+      entity_id: number.a_c_3f_power_meter_data_refresh_interval
+      below: 30
+  actions:
+  - action: number.set_value
+    metadata: {}
+    target:
+      entity_id: number.a_c_3f_power_meter_data_refresh_interval
+    data:
+      value: '30'
+  mode: single
+- id: '1777599244613'
+  alias: A/C Night ON Sequence - 8PM
+  description: ''
+  triggers:
+  - trigger: time
+    at: '20:00:00'
+  conditions:
+  - type: is_battery_level
+    condition: device
+    device_id: 74c0ed355a5657570d7f6a854a12eae8
+    entity_id: ea66587b238b9821e4d33ec7b93567de
+    domain: sensor
+    above: 75
+  - condition: not
+    conditions:
+    - condition: device
+      device_id: f0ac383606adb08783dd4317b30b7514
+      domain: climate
+      entity_id: 6b825ba36b730908c201d9cba94b685a
+      type: is_hvac_mode
+      hvac_mode: cool
+  actions:
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: fan_only
+  - delay:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: cool
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 26
+    target:
+      device_id: f0ac383606adb08783dd4317b30b7514
+  mode: single
+- id: '1777952040513'
+  alias: A/C 3F Power Meter - Auto Turn Off
+  description: ''
+  triggers:
+  - trigger: time
+    at: 09:00:00
+  - trigger: time
+    at: '11:00:00'
+  - trigger: time
+    at: '12:00:00'
+  - trigger: time
+    at: '13:00:00'
+  - trigger: time
+    at: '14:00:00'
+  conditions:
+  - condition: or
+    conditions:
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        below: 30
+      - condition: time
+        after: 08:55:00
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        below: 60
+      - condition: time
+        after: '10:55:00'
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        below: 70
+      - condition: time
+        after: '11:55:00'
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        below: 80
+      - condition: time
+        after: '12:55:00'
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        below: 90
+      - condition: time
+        after: '13:55:00'
+  - condition: device
+    type: is_on
+    device_id: 73be0b81a93c4901708d886e1f886fee
+    entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+    domain: switch
+  actions:
+  - type: turn_off
+    device_id: 73be0b81a93c4901708d886e1f886fee
+    entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+    domain: switch
+  mode: single
+- id: '1780125525364'
+  alias: A/C Auto Set
+  description: ''
+  triggers:
+  - entity_id: sensor.a_c_power_meter_power_filtered
+    above: 720
+    trigger: numeric_state
+  - entity_id: sensor.a_c_power_meter_power_filtered
+    below: 500
+    trigger: numeric_state
+  - entity_id:
+    - climate.ac
+    attribute: current_temperature
+    trigger: state
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - entity_id:
+    - climate.ac
+    attribute: temperature
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    trigger: state
+  - entity_id:
+    - climate.ac
+    attribute: temperature
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: climate.ac
+    state: cool
+  - condition: time
+    after: 08:00:00
+    before: '20:00:00'
+  - condition: template
+    value_template: '{{ 16 <= state_attr(''climate.ac'', ''temperature'') | float(None)
+      <= 27 }}
+
+      '
+  actions:
+  - variables:
+      power: '{{ states(''sensor.a_c_power_meter_power_filtered'') | float(0) }}'
+      current_temp: '{{ state_attr(''climate.ac'', ''temperature'') | float(0) }}'
+      current_room_temp: '{{ state_attr(''climate.ac'', ''current_temperature'') |
+        float(0) }}'
+      target_min: 24
+      target_max: 27
+      target_low: 500
+      target_high: 720
+      power_cooldown: 300
+      temp_sync_cooldown: 1800
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ power > target_high and current_temp < target_max and
+          (as_timestamp(now()) - as_timestamp(states(''input_datetime.a_c_last_adjusted''),
+          0)) > power_cooldown }}
+
+          '
+      sequence:
+      - action: climate.set_temperature
+        target:
+          entity_id: climate.ac
+        data:
+          temperature: '{{ current_temp + 1 }}'
+      - action: input_datetime.set_datetime
+        target:
+          entity_id: input_datetime.a_c_last_adjusted
+        data:
+          datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+    - conditions:
+      - condition: template
+        value_template: '{{ power < target_low and current_temp > target_min and (as_timestamp(now())
+          - as_timestamp(states(''input_datetime.a_c_last_adjusted''), 0)) > power_cooldown
+          }}
+
+          '
+      sequence:
+      - action: climate.set_temperature
+        target:
+          entity_id: climate.ac
+        data:
+          temperature: '{{ current_temp - 1 }}'
+      - action: input_datetime.set_datetime
+        target:
+          entity_id: input_datetime.a_c_last_adjusted
+        data:
+          datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+    - conditions:
+      - condition: template
+        value_template: '{{ current_temp > current_room_temp and power < target_high
+          and (as_timestamp(now()) - as_timestamp(states(''input_datetime.a_c_last_adjusted''),
+          0)) > temp_sync_cooldown }}'
+      sequence:
+      - action: climate.set_temperature
+        target:
+          entity_id: climate.ac
+        data:
+          temperature: '{{ (current_temp - 1) | round(1) }}'
+      - action: input_datetime.set_datetime
+        target:
+          entity_id: input_datetime.a_c_last_adjusted
+        data:
+          datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+    - conditions:
+      - condition: template
+        value_template: '{{ current_temp < current_room_temp and power < target_high
+          and (as_timestamp(now()) - as_timestamp(states(''input_datetime.a_c_last_adjusted''),
+          0)) > temp_sync_cooldown }}'
+      sequence:
+      - action: climate.set_temperature
+        target:
+          entity_id: climate.ac
+        data:
+          temperature: '{{ (current_temp + 1) | round(1) }}'
+      - action: input_datetime.set_datetime
+        target:
+          entity_id: input_datetime.a_c_last_adjusted
+        data:
+          datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+    default: []
+  mode: single
+- id: '1780315038964'
+  alias: A/C Night OFF Sequence - SOC
+  description: ''
+  triggers:
+  - id: trigger_morning
+    trigger: numeric_state
+    entity_id:
+    - sensor.srne_battery
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    below: 15
+  - id: trigger_evening
+    trigger: numeric_state
+    entity_id:
+    - sensor.srne_battery
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    below: 20
+  conditions:
+  - condition: or
+    conditions:
+    - condition: and
+      conditions:
+      - condition: time
+        after: 02:00:00
+        before: 07:00:00
+      - condition: trigger
+        id: trigger_morning
+    - condition: and
+      conditions:
+      - condition: time
+        after: '21:00:00'
+        before: 02:00:00
+      - condition: trigger
+        id: trigger_evening
+  - condition: not
+    conditions:
+    - condition: device
+      device_id: f0ac383606adb08783dd4317b30b7514
+      domain: climate
+      entity_id: 6b825ba36b730908c201d9cba94b685a
+      type: is_hvac_mode
+      hvac_mode: 'off'
+  actions:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 30
+    target:
+      device_id: f0ac383606adb08783dd4317b30b7514
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: fan_only
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: 'off'
+  mode: single
+- id: '1780320275625'
+  alias: Roof Deck Light
+  triggers:
+  - id: sunset
+    trigger: sun
+    event: sunset
+    offset: 00:20:00
+  - id: sunrise
+    trigger: sun
+    event: sunrise
+    offset: -00:20:00
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id: sunset
+    then:
+    - condition: not
+      conditions:
+      - condition: device
+        type: is_on
+        device_id: 8510f0c0a25dcda57d2560ed305d0c78
+        entity_id: 836c0933efc45c66db79937680ba5329
+        domain: switch
+    - type: turn_on
+      device_id: 8510f0c0a25dcda57d2560ed305d0c78
+      entity_id: 836c0933efc45c66db79937680ba5329
+      domain: switch
+    else:
+    - condition: not
+      conditions:
+      - condition: device
+        type: is_off
+        device_id: 8510f0c0a25dcda57d2560ed305d0c78
+        entity_id: 836c0933efc45c66db79937680ba5329
+        domain: switch
+    - type: turn_off
+      device_id: 8510f0c0a25dcda57d2560ed305d0c78
+      entity_id: 836c0933efc45c66db79937680ba5329
+      domain: switch
+  mode: single
+- id: '1780332380363'
+  alias: EF-R30241 Light
+  description: ''
+  triggers:
+  - type: not_plugged_in
+    device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+    entity_id: 678ea093f9228c6e7aa912e0df7a994f
+    domain: binary_sensor
+    trigger: device
+  - trigger: numeric_state
+    entity_id:
+    - sensor.ef_r30241_battery_level
+    below: 51
+  - type: plugged_in
+    device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+    entity_id: 678ea093f9228c6e7aa912e0df7a994f
+    domain: binary_sensor
+    trigger: device
+  - trigger: numeric_state
+    entity_id:
+    - sensor.ef_r30241_battery_level
+    below: 21
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - type: is_plugged_in
+        condition: device
+        device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        entity_id: 678ea093f9228c6e7aa912e0df7a994f
+        domain: binary_sensor
+      sequence:
+      - device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        domain: select
+        entity_id: f45bdeafcbeb9114d4d6130cd02e93a1
+        type: select_option
+        option: 'off'
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ef_r30241_battery_level
+        below: 21
+      - type: is_not_plugged_in
+        condition: device
+        device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        entity_id: 678ea093f9228c6e7aa912e0df7a994f
+        domain: binary_sensor
+      sequence:
+      - device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        domain: select
+        entity_id: f45bdeafcbeb9114d4d6130cd02e93a1
+        type: select_option
+        option: sos
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ef_r30241_battery_level
+        below: 51
+        above: 20
+      - type: is_not_plugged_in
+        condition: device
+        device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        entity_id: 678ea093f9228c6e7aa912e0df7a994f
+        domain: binary_sensor
+      sequence:
+      - device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        domain: select
+        entity_id: f45bdeafcbeb9114d4d6130cd02e93a1
+        type: select_option
+        option: dim
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ef_r30241_battery_level
+        above: 50
+      - type: is_not_plugged_in
+        condition: device
+        device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        entity_id: 678ea093f9228c6e7aa912e0df7a994f
+        domain: binary_sensor
+      sequence:
+      - device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
+        domain: select
+        entity_id: f45bdeafcbeb9114d4d6130cd02e93a1
+        type: select_option
+        option: bright
+  mode: single
+- id: '1780450934568'
+  alias: A/C 3F Power Meter - Auto Turn On SOC
+  triggers:
+  - trigger: state
+    entity_id: input_boolean.battery_reached_100_today
+    from: 'off'
+    to: 'on'
+  actions:
+  - if:
+    - condition: state
+      entity_id: automation.a_c_3f_power_meter_auto_turn_on
+      state: 'off'
+    then:
+    - action: automation.turn_on
+      target:
+        entity_id: automation.a_c_3f_power_meter_auto_turn_on
+  - if:
+    - condition: device
+      type: is_off
+      device_id: 73be0b81a93c4901708d886e1f886fee
+      entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+      domain: switch
+    then:
+    - type: turn_on
+      device_id: 73be0b81a93c4901708d886e1f886fee
+      entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+      domain: switch
+  mode: single
+- id: '1780455063606'
+  alias: A/C 3F Power Meter - Auto Turn On
+  description: ''
+  triggers:
+  - trigger: time
+    at: '10:00:00'
+  - trigger: time
+    at: '11:00:00'
+  - trigger: time
+    at: '12:00:00'
+  - trigger: time
+    at: '13:00:00'
+  conditions:
+  - condition: or
+    conditions:
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        above: 45
+      - condition: time
+        before: '10:05:00'
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        above: 60
+      - condition: time
+        before: '11:05:00'
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        above: 75
+      - condition: time
+        before: '12:05:00'
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        above: 90
+      - condition: time
+        before: '13:05:00'
+  - condition: device
+    type: is_off
+    device_id: 73be0b81a93c4901708d886e1f886fee
+    entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+    domain: switch
+  actions:
+  - type: turn_on
+    device_id: 73be0b81a93c4901708d886e1f886fee
+    entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+    domain: switch
+  mode: single
+- id: '1780458530449'
+  alias: Daily SOC Check
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.srne_battery
+    above: 97
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+    id: battery_full
+  - trigger: sun
+    event: sunrise
+    id: sunrise
+  - trigger: sun
+    event: sunset
+    id: sunset
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: battery_full
+      - condition: sun
+        after: sunrise
+        before: sunset
+      sequence:
+      - if:
+        - condition: state
+          entity_id: input_boolean.battery_reached_100_today
+          state: 'off'
+        then:
+        - action: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.battery_reached_100_today
+    - conditions:
+      - condition: trigger
+        id: sunrise
+      sequence:
+      - if:
+        - condition: state
+          entity_id: input_boolean.battery_reached_100_today
+          state: 'on'
+        then:
+        - action: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.battery_reached_100_today
+        - if:
+          - condition: state
+            entity_id: automation.a_c_3f_power_meter_auto_turn_on
+            state: 'off'
+          then:
+          - action: automation.turn_on
+            target:
+              entity_id: automation.a_c_3f_power_meter_auto_turn_on
+    - conditions:
+      - condition: trigger
+        id: sunset
+      - condition: state
+        entity_id: input_boolean.battery_reached_100_today
+        state: 'off'
+      sequence:
+      - if:
+        - condition: device
+          type: is_on
+          device_id: 73be0b81a93c4901708d886e1f886fee
+          entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+          domain: switch
+        then:
+        - type: turn_off
+          device_id: 73be0b81a93c4901708d886e1f886fee
+          entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+          domain: switch
+      - if:
+        - condition: state
+          entity_id: automation.a_c_3f_power_meter_auto_turn_on
+          state: 'on'
+        then:
+        - action: automation.turn_off
+          target:
+            entity_id: automation.a_c_3f_power_meter_auto_turn_on
+          data:
+            stop_actions: true
+  mode: queued
+  max: 2
+- id: '1781042326479'
+  alias: A/C Night OFF Sequence - Sunrise
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: 01:00:00
+  conditions:
+  - condition: not
+    conditions:
+    - condition: device
+      device_id: f0ac383606adb08783dd4317b30b7514
+      domain: climate
+      entity_id: 6b825ba36b730908c201d9cba94b685a
+      type: is_hvac_mode
+      hvac_mode: 'off'
+  actions:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 30
+    target:
+      device_id: f0ac383606adb08783dd4317b30b7514
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: fan_only
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: 'off'
+  mode: single

@@ -1,0 +1,49 @@
+- id: '1777599244613'
+  alias: A/C Night ON Sequence - 8PM
+  description: ''
+  triggers:
+  - trigger: time
+    at: '20:00:00'
+  conditions:
+  - type: is_battery_level
+    condition: device
+    device_id: 74c0ed355a5657570d7f6a854a12eae8
+    entity_id: ea66587b238b9821e4d33ec7b93567de
+    domain: sensor
+    above: 75
+  - condition: not
+    conditions:
+    - condition: device
+      device_id: f0ac383606adb08783dd4317b30b7514
+      domain: climate
+      entity_id: 6b825ba36b730908c201d9cba94b685a
+      type: is_hvac_mode
+      hvac_mode: cool
+  actions:
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: fan_only
+  - delay:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - device_id: f0ac383606adb08783dd4317b30b7514
+    domain: climate
+    entity_id: 6b825ba36b730908c201d9cba94b685a
+    type: set_hvac_mode
+    hvac_mode: cool
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 26
+    target:
+      device_id: f0ac383606adb08783dd4317b30b7514
+  mode: single

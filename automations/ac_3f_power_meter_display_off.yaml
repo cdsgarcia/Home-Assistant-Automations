@@ -1,0 +1,24 @@
+- id: '1775488306594'
+  alias: A/C 3F Power Meter - Display Off
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - number.a_c_3f_power_meter_data_refresh_interval
+    above: 30
+  - trigger: numeric_state
+    entity_id:
+    - number.a_c_3f_power_meter_data_refresh_interval
+    below: 30
+  conditions: []
+  actions:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - device_id: 73be0b81a93c4901708d886e1f886fee
+    domain: select
+    entity_id: 61b5552ac4d3aa7e07729eea3e4e12b3
+    type: select_last
+  mode: single

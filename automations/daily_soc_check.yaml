@@ -1,0 +1,86 @@
+- id: '1780458530449'
+  alias: Daily SOC Check
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.srne_battery
+    above: 97
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+    id: battery_full
+  - trigger: sun
+    event: sunrise
+    id: sunrise
+  - trigger: sun
+    event: sunset
+    id: sunset
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: battery_full
+      - condition: sun
+        after: sunrise
+        before: sunset
+      sequence:
+      - if:
+        - condition: state
+          entity_id: input_boolean.battery_reached_100_today
+          state: 'off'
+        then:
+        - action: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.battery_reached_100_today
+    - conditions:
+      - condition: trigger
+        id: sunrise
+      sequence:
+      - if:
+        - condition: state
+          entity_id: input_boolean.battery_reached_100_today
+          state: 'on'
+        then:
+        - action: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.battery_reached_100_today
+        - if:
+          - condition: state
+            entity_id: automation.a_c_3f_power_meter_auto_turn_on
+            state: 'off'
+          then:
+          - action: automation.turn_on
+            target:
+              entity_id: automation.a_c_3f_power_meter_auto_turn_on
+    - conditions:
+      - condition: trigger
+        id: sunset
+      - condition: state
+        entity_id: input_boolean.battery_reached_100_today
+        state: 'off'
+      sequence:
+      - if:
+        - condition: device
+          type: is_on
+          device_id: 73be0b81a93c4901708d886e1f886fee
+          entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+          domain: switch
+        then:
+        - type: turn_off
+          device_id: 73be0b81a93c4901708d886e1f886fee
+          entity_id: 76a0b938088c515fa8bce65d7e02aaf2
+          domain: switch
+      - if:
+        - condition: state
+          entity_id: automation.a_c_3f_power_meter_auto_turn_on
+          state: 'on'
+        then:
+        - action: automation.turn_off
+          target:
+            entity_id: automation.a_c_3f_power_meter_auto_turn_on
+          data:
+            stop_actions: true
+  mode: queued
+  max: 2
