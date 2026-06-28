@@ -23,7 +23,12 @@ These automations manage three main areas:
 | `sensor.srne_battery` | Solar battery SOC (%) |
 | `climate.ac` | 3rd-floor A/C unit (IR/WiFi climate entity) |
 | A/C 3F Power Meter (`device_id: 73be0b81…`) | Smart plug monitoring the A/C circuit |
-| `sensor.a_c_power_meter_power_filtered` | Filtered real-time power draw of the A/C (W) |
+| `sensor.a_c_power_meter_power_filtered_5m` | Filtered real-time power draw of the A/C — 5 min average (W) |
+| `sensor.a_c_power_meter_power_filtered_10m` | Filtered real-time power draw of the A/C — 10 min average (W) |
+| `sensor.a_c_power_meter_power_filtered_15m` | Filtered real-time power draw of the A/C — 15 min average (W) |
+| `sensor.a_c_power_meter_power_filtered_20m` | Filtered real-time power draw of the A/C — 20 min average (W) |
+| `sensor.a_c_power_meter_power_filtered_25m` | Filtered real-time power draw of the A/C — 25 min average (W) |
+| `sensor.a_c_power_meter_power_filtered_30m` | Filtered real-time power draw of the A/C — 30 min average (W) |
 | `input_boolean.battery_reached_100_today` | Flag: battery reached full charge today |
 | `input_datetime.a_c_last_adjusted` | Timestamp of last A/C temperature adjustment (cooldown tracking) |
 | EF-R30241 (`device_id: bbdfa75a…`) | Portable power station |
