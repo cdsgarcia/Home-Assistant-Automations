@@ -317,6 +317,7 @@
   - condition: time
     after: 08:00:00
     before: '20:00:00'
+    enabled: false
   - condition: template
     value_template: '{{ 16 <= state_attr(''climate.ac'', ''temperature'') | float(None)
       <= 27 }}
