@@ -130,12 +130,35 @@ Sequence: set temp to 30°C → 10 s delay → `fan_only` → 10 min delay → `
 #### [`A/C Auto Set`](automations/ac_auto_set.yaml)
 Dynamically adjusts the A/C setpoint during the day (**08:00–20:00**) while in `cool` mode, keeping power draw between 500 W and 720 W and temperature between 24°C and 27°C.
 
-| Condition | Action | Cooldown |
-|-----------|--------|----------|
-| Power > 720 W and setpoint < 27°C | Raise setpoint +1°C | 5 min |
-| Power < 500 W and setpoint > 24°C | Lower setpoint −1°C | 5 min |
-| Setpoint > room temp and power < 720 W | Lower setpoint −1°C | 30 min |
-| Setpoint < room temp and power < 720 W | Raise setpoint +1°C | 30 min |
+**Global Conditions** (must all pass before any action):
+
+| Condition | Value |
+|-----------|-------|
+| AC mode | `cool` only |
+| Time window | 08:00 – 20:00 |
+| Setpoint range | 16°C – 27°C (safety guard) |
+
+**Configuration Variables:**
+
+| Variable | Value |
+|----------|-------|
+| `target_min` | 24°C |
+| `target_max` | 27°C |
+| `target_low` | 500 W |
+| `target_high` | 720 W |
+| `power_cooldown` | 300 s (5 min) |
+| `temp_sync_cooldown` | 1800 s (30 min) |
+
+**Action Branches** (evaluated top-down, first match wins):
+
+| # | Condition | Action | Cooldown |
+|---|-----------|--------|----------|
+| 1 | Power **> 720 W** and setpoint **< 27°C** | Setpoint **+1°C** | 5 min |
+| 2 | Power **< 500 W** and setpoint **> 24°C** | Setpoint **−1°C** | 5 min |
+| 3 | Setpoint **> room temp** and power **< 720 W** | Setpoint **−1°C** | 30 min |
+| 4 | Setpoint **< room temp** and power **< 720 W** | Setpoint **+1°C** | 30 min |
+
+> **Dead band:** When power is between 500–720 W, only temp sync branches (3 & 4) can act — and only after a 30 min cooldown. To modify thresholds, edit only the `variables:` section in the YAML.
 
 ---
 

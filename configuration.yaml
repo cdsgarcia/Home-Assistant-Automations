@@ -1,0 +1,130 @@
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+template:
+  - sensor:
+      - name: "Grid L1 Power Signed"
+        unique_id: grid_l1_power_signed
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        icon: mdi:transmission-tower-export
+        state: >
+          {% set raw = states('sensor.srne_grid_l1_power') | int(0) %}
+          {% if raw > 32767 %}
+            {{ (raw - 65536) * -1 }}
+          {% else %}
+            {{ raw * -1 }}
+          {% endif %}
+
+      - name: "Today Battery Charge kWatt-Hour"
+        unique_id: today_battery_charge_kwatt_hour
+        unit_of_measurement: "kWh"
+        device_class: energy
+        state_class: total
+        icon: mdi:battery-plus
+        state: >-
+          {{ ((states('sensor.srne_today_battery_charge_ampere_hour') | float(0)) *
+          (states('sensor.srne_battery_voltage') | float(0)) / 1000) | round(2) }}
+
+      - name: Today Battery Discharge kWatt-Hour
+        unique_id: today_battery_discharge_kwatt_hour
+        unit_of_measurement: "kWh"
+        device_class: energy
+        state_class: total
+        icon: mdi:battery-minus
+        state: >-
+          {{ ((states('sensor.srne_today_battery_discharge_ampere_hour') | float(0)) *
+          (states('sensor.srne_battery_voltage') | float(0)) / 1000) | round(2) }}
+
+      - name: "Total Battery Power Absolute"
+        unique_id: total_battery_power_absolute
+        unit_of_measurement: "W"
+        icon: mdi:flash
+        state: "{{ states('sensor.total_battery_power') | float(0) | abs }}"
+        device_class: "power"
+        state_class: "measurement"
+
+      - name: "PV Power kW"
+        unique_id: sensor.srne_pv_power_kw
+        unit_of_measurement: ""
+        icon: mdi:flash
+        state:  "{{ states('sensor.srne_pv_power') | float(0) / 1000 | round(1) }}"
+        device_class: "power"
+        state_class: "measurement"
+
+      - name: "Total Battery Power kW"
+        unique_id: sensor.total_battery_power_kw
+        unit_of_measurement: ""
+        icon: mdi:flash
+        state:  "{{ states('sensor.total_battery_power') | float(0) / 1000 | round(1) }}"
+        device_class: "power"
+        state_class: "measurement"
+
+      - name: "Total Battery Power Absolute kW"
+        unique_id: sensor.total_battery_power_absolute_kw
+        unit_of_measurement: ""
+        icon: mdi:flash
+        state:  "{{ states('sensor.total_battery_power_absolute') | float(0) / 1000 | round(1) }}"
+        device_class: "power"
+        state_class: "measurement"
+
+      - name: "Battery Reached Full Today"
+        unique_id: sensor.battery_reached_full_today
+        state: >
+          {{ 'YES' if is_state('input_boolean.battery_reached_100_today', 'on') else 'NO' }}
+        icon: >
+          {{ 'mdi:battery-check' if is_state('input_boolean.battery_reached_100_today', 'on') else'mdi:battery-remove' }}
+
+sensor:
+  - platform: statistics
+    name: "A/C Power Meter Power Filtered 5m"
+    entity_id: sensor.a_c_1f_power_meter_power
+    state_characteristic: mean
+    max_age:
+      minutes: 5
+
+  - platform: statistics
+    name: "A/C Power Meter Power Filtered 10m"
+    entity_id: sensor.a_c_1f_power_meter_power
+    state_characteristic: mean
+    max_age:
+      minutes: 10
+
+  - platform: statistics
+    name: "A/C Power Meter Power Filtered 15m"
+    entity_id: sensor.a_c_1f_power_meter_power
+    state_characteristic: mean
+    max_age:
+      minutes: 15
+
+  - platform: statistics
+    name: "A/C Power Meter Power Filtered 20m"
+    entity_id: sensor.a_c_1f_power_meter_power
+    state_characteristic: mean
+    max_age:
+      minutes: 20
+
+  - platform: statistics
+    name: "A/C Power Meter Power Filtered 25m"
+    entity_id: sensor.a_c_1f_power_meter_power
+    state_characteristic: mean
+    max_age:
+      minutes: 25
+
+  - platform: statistics
+    name: "A/C Power Meter Power Filtered 30m"
+    entity_id: sensor.a_c_1f_power_meter_power
+    state_characteristic: mean
+    max_age:
+      minutes: 30
+

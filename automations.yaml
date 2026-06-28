@@ -280,10 +280,10 @@
   alias: A/C Auto Set
   description: ''
   triggers:
-  - entity_id: sensor.a_c_power_meter_power_filtered
+  - entity_id: sensor.a_c_power_meter_power_filtered_5m
     above: 720
     trigger: numeric_state
-  - entity_id: sensor.a_c_power_meter_power_filtered
+  - entity_id: sensor.a_c_power_meter_power_filtered_5m
     below: 500
     trigger: numeric_state
   - entity_id:
@@ -324,7 +324,7 @@
       '
   actions:
   - variables:
-      power: '{{ states(''sensor.a_c_power_meter_power_filtered'') | float(0) }}'
+      power: '{{ states(''sensor.a_c_power_meter_power_filtered_5m'') | float(0) }}'
       current_temp: '{{ state_attr(''climate.ac'', ''temperature'') | float(0) }}'
       current_room_temp: '{{ state_attr(''climate.ac'', ''current_temperature'') |
         float(0) }}'
