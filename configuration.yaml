@@ -83,7 +83,7 @@ template:
         state: >
           {{ 'YES' if is_state('input_boolean.battery_reached_100_today', 'on') else 'NO' }}
         icon: >
-          {{ 'mdi:battery-check' if is_state('input_boolean.battery_reached_100_today', 'on') else'mdi:battery-remove' }}
+          {{ 'mdi:battery-check' if is_state('input_boolean.battery_reached_100_today', 'on') else 'mdi:battery-remove' }}
 
 sensor:
   - platform: statistics

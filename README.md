@@ -180,6 +180,29 @@ Controls the indicator light mode on the portable power station based on charge 
 
 ---
 
+## Troubleshooting
+
+### WinSCP Permission Denied when uploading to HA config folder
+
+If you're running HA in Docker and logging in via WinSCP as a non-root user, all files in the config folder are owned by `root` by default, giving your user read-only access.
+
+**Fix — transfer ownership of the files you need to edit (safe for Docker):**
+
+```bash
+sudo chown <your_user> ~/path/to/homeassistant_config/configuration.yaml
+sudo chown <your_user> ~/path/to/homeassistant_config/automations.yaml
+```
+
+**Verify:**
+```bash
+ls -lah ~/path/to/homeassistant_config/configuration.yaml
+```
+You should see your username instead of `root` in the owner column.
+
+> HA running inside Docker accesses files as root inside the container, so changing host ownership to your user has no effect on HA's ability to read/write the files.
+
+---
+
 ## Notes
 
 - All A/C sequences use a soft-off approach (ramp to 30°C → fan only → off) to reduce compressor stress.
