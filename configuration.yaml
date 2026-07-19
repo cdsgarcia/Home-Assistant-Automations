@@ -101,27 +101,6 @@ sensor:
       minutes: 10
 
   - platform: statistics
-    name: "A/C Power Meter Power Filtered 15m"
-    entity_id: sensor.a_c_1f_power_meter_power
-    state_characteristic: mean
-    max_age:
-      minutes: 15
-
-  - platform: statistics
-    name: "A/C Power Meter Power Filtered 20m"
-    entity_id: sensor.a_c_1f_power_meter_power
-    state_characteristic: mean
-    max_age:
-      minutes: 20
-
-  - platform: statistics
-    name: "A/C Power Meter Power Filtered 25m"
-    entity_id: sensor.a_c_1f_power_meter_power
-    state_characteristic: mean
-    max_age:
-      minutes: 25
-
-  - platform: statistics
     name: "A/C Power Meter Power Filtered 30m"
     entity_id: sensor.a_c_1f_power_meter_power
     state_characteristic: mean
