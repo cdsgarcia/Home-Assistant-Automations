@@ -24,14 +24,40 @@ These automations manage three main areas:
 | A/C 3F Power Meter (`device_id: 73be0b81…`) | Smart plug monitoring the A/C circuit |
 | `sensor.a_c_power_meter_power_filtered_5m` | Filtered real-time power draw of the A/C — 5 min average (W) |
 | `sensor.a_c_power_meter_power_filtered_10m` | Filtered real-time power draw of the A/C — 10 min average (W) |
-| `sensor.a_c_power_meter_power_filtered_15m` | Filtered real-time power draw of the A/C — 15 min average (W) |
-| `sensor.a_c_power_meter_power_filtered_20m` | Filtered real-time power draw of the A/C — 20 min average (W) |
-| `sensor.a_c_power_meter_power_filtered_25m` | Filtered real-time power draw of the A/C — 25 min average (W) |
 | `sensor.a_c_power_meter_power_filtered_30m` | Filtered real-time power draw of the A/C — 30 min average (W) |
 | `input_boolean.battery_reached_100_today` | Flag: battery reached full charge today |
 | `input_datetime.a_c_last_adjusted` | Timestamp of last A/C temperature adjustment (cooldown tracking) |
 | EF-R30241 (`device_id: bbdfa75a…`) | Portable power station |
 | Roof Deck Light (`device_id: 8510f0c0…`) | Outdoor roof deck switch |
+
+---
+
+## Configuration (`configuration.yaml`)
+
+The `configuration.yaml` file extends HA with custom sensors used across automations.
+
+### Template Sensors
+
+| Sensor | Description |
+|--------|-------------|
+| `sensor.grid_l1_power_signed` | Converts raw unsigned int to signed watts (import = positive, export = negative) |
+| `sensor.today_battery_charge_kwatt_hour` | Battery energy charged today in kWh (Ah × V ÷ 1000) |
+| `sensor.today_battery_discharge_kwatt_hour` | Battery energy discharged today in kWh (Ah × V ÷ 1000) |
+| `sensor.total_battery_power_absolute` | Absolute value of battery power — always positive (W) |
+| `sensor.pv_power_kw` | PV solar power in kW (1 decimal) |
+| `sensor.total_battery_power_kw` | Battery power in kW |
+| `sensor.total_battery_power_absolute_kw` | Absolute battery power in kW |
+| `sensor.battery_reached_full_today` | Human-readable `YES`/`NO` mirror of `input_boolean.battery_reached_100_today` |
+
+### Statistics Filter Sensors
+
+Rolling mean of A/C power draw sourced from `sensor.a_c_1f_power_meter_power`:
+
+| Sensor | Window | Use |
+|--------|--------|-----|
+| `sensor.a_c_power_meter_power_filtered_5m` | 5 min | Used by automations |
+| `sensor.a_c_power_meter_power_filtered_10m` | 10 min | Available for tuning |
+| `sensor.a_c_power_meter_power_filtered_30m` | 30 min | Available for tuning |
 
 ---
 
