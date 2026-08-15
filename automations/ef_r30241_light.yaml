@@ -10,7 +10,7 @@
   - trigger: numeric_state
     entity_id:
     - sensor.ef_r30241_battery_level
-    below: 51
+    below: 50
   - type: plugged_in
     device_id: bbdfa75a019e2cdd8eaf1bd7452c1a0b
     entity_id: 678ea093f9228c6e7aa912e0df7a994f
@@ -65,7 +65,7 @@
         domain: select
         entity_id: f45bdeafcbeb9114d4d6130cd02e93a1
         type: select_option
-        option: dim
+        option: bright
     - conditions:
       - condition: numeric_state
         entity_id: sensor.ef_r30241_battery_level
@@ -80,5 +80,4 @@
         domain: select
         entity_id: f45bdeafcbeb9114d4d6130cd02e93a1
         type: select_option
-        option: bright
-  mode: single
+        option: dim

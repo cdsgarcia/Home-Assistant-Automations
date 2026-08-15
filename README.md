@@ -10,8 +10,7 @@ These automations manage three main areas:
 
 | Area | Description |
 |------|-------------|
-| **A/C Energy Management** | Automatically turns the 3rd-floor A/C on/off and adjusts temperature based on solar battery SOC and time of day |
-| **A/C Smart Temperature** | Dynamically adjusts the A/C setpoint to keep power consumption within target bounds |
+| **A/C Energy Management** | Automatically turns the 3rd-floor A/C on/off based on solar battery SOC and time of day |
 | **Auxiliary Devices** | Controls the roof deck light and portable power station indicator light |
 
 ---
@@ -41,11 +40,13 @@ These automations manage three main areas:
 ### ☀️ Solar Battery / SOC Management
 
 #### [`Daily SOC Check`](automations/daily_soc_check.yaml)
-Tracks whether the battery reached full charge (>97%) during the day.
+Tracks whether the battery reached full charge (>99%) during the day.
 
-- **On battery full** (daytime only): sets `input_boolean.battery_reached_100_today` to `on`
-- **On sunrise**: resets the flag to `off` and re-enables the *Auto Turn On* automation if needed
+- **On battery full** (daytime only): sets `input_boolean.battery_reached_100_today` to `on` and re-enables `automation.roof_deck_light` (if disabled)
+- **On sunrise**: resets the flag to `off` and re-enables the *Auto Turn On* automation (if disabled)
 - **On sunset** (if battery never reached 100% today): turns off the A/C power meter switch and disables the *Auto Turn On* automation
+
+> All enable/disable actions use idempotent guards — they only act if the automation is not already in the desired state.
 
 ---
 
@@ -110,12 +111,12 @@ At **20:00**, if battery SOC > 75% and A/C is not already in cool mode:
 #### [`A/C Night OFF Sequence - SOC`](automations/ac_night_off_sequence_soc.yaml)
 Gracefully shuts down the A/C when the battery runs low at night:
 - **Evening (21:00–02:00)**: triggers when battery drops below **20%**
-- **Morning (02:00–07:00)**: triggers when battery drops below **15%**
+- **Early morning (21:00–07:00)**: triggers when battery drops below **15%**
 
 Sequence: set temp to 30°C → 10 s delay → `fan_only` → 15 min delay → `off`
 
 #### [`A/C Night OFF Sequence - Sunrise`](automations/ac_night_off_sequence_sunrise.yaml)
-1 hour after sunrise, if the A/C is still running:
+At sunrise, if the A/C is still running:
 
 Sequence: set temp to 30°C → 10 s delay → `fan_only` → 15 min delay → `off`
 
@@ -124,7 +125,7 @@ Sequence: set temp to 30°C → 10 s delay → `fan_only` → 15 min delay → `
 ### 🌅 A/C Afternoon Sequence
 
 #### [`A/C Afternoon OFF Sequence`](automations/ac_afternoon_off_sequence.yaml)
-Between **15:30–18:00**, if the solar battery drops below 97% SOC for 1 minute and the A/C is on:
+Between **15:30–18:00**, if the solar battery drops below 97% SOC for 1 minute and the A/C is not off:
 
 Sequence: set temp to 30°C → 10 s delay → `fan_only` → 10 min delay → `off`
 
@@ -132,38 +133,7 @@ Sequence: set temp to 30°C → 10 s delay → `fan_only` → 10 min delay → `
 
 ### 🌡️ A/C Smart Temperature Control
 
-#### [`A/C Auto Set`](automations/ac_auto_set.yaml)
-Dynamically adjusts the A/C setpoint during the day (**08:00–20:00**) while in `cool` mode, keeping power draw between 500 W and 720 W and temperature between 24°C and 27°C.
-
-**Global Conditions** (must all pass before any action):
-
-| Condition | Value |
-|-----------|-------|
-| AC mode | `cool` only |
-| Time window | 08:00 – 20:00 |
-| Setpoint range | 16°C – 27°C (safety guard) |
-
-**Configuration Variables:**
-
-| Variable | Value |
-|----------|-------|
-| `target_min` | 24°C |
-| `target_max` | 27°C |
-| `target_low` | 500 W |
-| `target_high` | 720 W |
-| `power_cooldown` | 300 s (5 min) |
-| `temp_sync_cooldown` | 1800 s (30 min) |
-
-**Action Branches** (evaluated top-down, first match wins):
-
-| # | Condition | Action | Cooldown |
-|---|-----------|--------|----------|
-| 1 | Power **> 720 W** and setpoint **< 27°C** | Setpoint **+1°C** | 5 min |
-| 2 | Power **< 500 W** and setpoint **> 24°C** | Setpoint **−1°C** | 5 min |
-| 3 | Setpoint **> room temp** and power **< 720 W** | Setpoint **−1°C** | 30 min |
-| 4 | Setpoint **< room temp** and power **< 720 W** | Setpoint **+1°C** | 30 min |
-
-> **Dead band:** When power is between 500–720 W, only temp sync branches (3 & 4) can act — and only after a 30 min cooldown. To modify thresholds, edit only the `variables:` section in the YAML.
+> **Note:** The `A/C Auto Set` automation has been disabled. The YAML is retained in [`automations/ac_auto_set.yaml`](automations/ac_auto_set.yaml) for reference/backup.
 
 ---
 
@@ -173,15 +143,23 @@ Dynamically adjusts the A/C setpoint during the day (**08:00–20:00**) while in
 - Turns **on** 20 minutes after sunset
 - Turns **off** 20 minutes before sunrise
 
+> Uses idempotent guards — only acts if the light is not already in the desired state.
+
 #### [`EF-R30241 Light`](automations/ef_r30241_light.yaml)
-Controls the indicator light mode on the portable power station based on charge state:
+Controls the indicator light mode on the portable power station based on charge state.
 
 | State | Light Mode |
 |-------|-----------|
 | Plugged in (charging) | Off |
 | Unplugged, battery < 21% | SOS |
-| Unplugged, battery 21–50% | Dim |
-| Unplugged, battery > 50% | Bright |
+| Unplugged, battery 21–50% | Bright |
+| Unplugged, battery > 50% | Dim |
+
+**Behaviour while unplugged:**
+- Starts at **Dim** when first unplugged (battery typically above 50%)
+- Automatically switches to **Bright** when battery drops below 50%
+- Automatically switches to **SOS** when battery drops below 21%
+- When plugged back in, light turns **Off** immediately regardless of battery level
 
 ---
 

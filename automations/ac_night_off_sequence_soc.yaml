@@ -26,7 +26,7 @@
     - condition: and
       conditions:
       - condition: time
-        after: 02:00:00
+        after: '21:00:00'
         before: 07:00:00
       - condition: trigger
         id: trigger_morning

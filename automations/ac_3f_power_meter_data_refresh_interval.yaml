@@ -1,5 +1,5 @@
 - id: '1775715616178'
-  alias: 'A/C 3F Power Meter - Data Refresh Interval '
+  alias: 'A/C 3F Power Meter - Data Refresh Interval'
   description: ''
   triggers:
   - trigger: homeassistant
