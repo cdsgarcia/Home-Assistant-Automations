@@ -1,6 +1,6 @@
 # Home Assistant Automations
 
-<a href="https://github.com/cdsgarcia/sunsynk-power-flow-card#support"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="28" width="120"></a>
+<a href="#support"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="28" width="120"></a>
 
 A collection of Home Assistant automations for a solar-powered home, focused on intelligent A/C energy management, battery state-of-charge (SOC) optimisation, and auxiliary device control.
 
