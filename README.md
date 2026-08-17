@@ -143,6 +143,11 @@ Gracefully shuts down the A/C when the battery runs low at night:
 
 Sequence: set temp to 30°C → 10 s delay → `fan_only` → 15 min delay → `off`
 
+#### [`A/C Set Target Temp +1C`](automations/ac_set_target_temp_plus_1c.yaml)
+At **5 hours before sunrise**, if the A/C is not off, increases the current target temperature by **1°C**.
+
+---
+
 #### [`A/C Night OFF Sequence - Sunrise`](automations/ac_night_off_sequence_sunrise.yaml)
 At sunrise, if the A/C is still running:
 

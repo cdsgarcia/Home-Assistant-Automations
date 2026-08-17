@@ -1,0 +1,24 @@
+- id: '1755482212000'
+  alias: A/C Set Target Temp +1C
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: '-05:00:00'
+  conditions:
+  - condition: not
+    conditions:
+    - condition: device
+      device_id: f0ac383606adb08783dd4317b30b7514
+      domain: climate
+      entity_id: 6b825ba36b730908c201d9cba94b685a
+      type: is_hvac_mode
+      hvac_mode: 'off'
+  actions:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: "{{ state_attr('climate.ac', 'temperature') | int + 1 }}"
+    target:
+      device_id: f0ac383606adb08783dd4317b30b7514
+  mode: single

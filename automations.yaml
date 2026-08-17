@@ -119,7 +119,7 @@
     type: select_last
   mode: single
 - id: '1775715616178'
-  alias: 'A/C 3F Power Meter - Data Refresh Interval'
+  alias: A/C 3F Power Meter - Data Refresh Interval
   description: ''
   triggers:
   - trigger: homeassistant
@@ -205,6 +205,8 @@
   - trigger: time
     at: 09:00:00
   - trigger: time
+    at: '10:00:00'
+  - trigger: time
     at: '11:00:00'
   - trigger: time
     at: '12:00:00'
@@ -225,6 +227,16 @@
         below: 30
       - condition: time
         after: 08:55:00
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        below: 50
+      - condition: time
+        after: '9:55:00'
     - condition: and
       conditions:
       - type: is_battery_level
@@ -664,6 +676,30 @@
             stop_actions: true
   mode: queued
   max: 2
+- id: '1755482212000'
+  alias: A/C Set Target Temp +1C
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: '-05:00:00'
+  conditions:
+  - condition: not
+    conditions:
+    - condition: device
+      device_id: f0ac383606adb08783dd4317b30b7514
+      domain: climate
+      entity_id: 6b825ba36b730908c201d9cba94b685a
+      type: is_hvac_mode
+      hvac_mode: 'off'
+  actions:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: "{{ state_attr('climate.ac', 'temperature') | int + 1 }}"
+    target:
+      device_id: f0ac383606adb08783dd4317b30b7514
+  mode: single
 - id: '1781042326479'
   alias: A/C Night OFF Sequence - Sunrise
   description: ''
