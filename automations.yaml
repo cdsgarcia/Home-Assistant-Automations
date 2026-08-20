@@ -363,47 +363,6 @@
     type: set_hvac_mode
     hvac_mode: 'off'
   mode: single
-- id: '1780320275625'
-  alias: Roof Deck Light
-  triggers:
-  - id: sunset
-    trigger: sun
-    event: sunset
-    offset: 00:20:00
-  - id: sunrise
-    trigger: sun
-    event: sunrise
-    offset: -00:20:00
-  conditions: []
-  actions:
-  - if:
-    - condition: trigger
-      id: sunset
-    then:
-    - condition: not
-      conditions:
-      - condition: device
-        type: is_on
-        device_id: 8510f0c0a25dcda57d2560ed305d0c78
-        entity_id: 836c0933efc45c66db79937680ba5329
-        domain: switch
-    - type: turn_on
-      device_id: 8510f0c0a25dcda57d2560ed305d0c78
-      entity_id: 836c0933efc45c66db79937680ba5329
-      domain: switch
-    else:
-    - condition: not
-      conditions:
-      - condition: device
-        type: is_off
-        device_id: 8510f0c0a25dcda57d2560ed305d0c78
-        entity_id: 836c0933efc45c66db79937680ba5329
-        domain: switch
-    - type: turn_off
-      device_id: 8510f0c0a25dcda57d2560ed305d0c78
-      entity_id: 836c0933efc45c66db79937680ba5329
-      domain: switch
-  mode: single
 - id: '1780332380363'
   alias: EF-R30241 Light
   description: ''
@@ -618,14 +577,16 @@
         - action: input_boolean.turn_on
           target:
             entity_id: input_boolean.battery_reached_100_today
-        - if:
-          - condition: state
+      - if:
+        - condition: state
+          entity_id: automation.roof_deck_light
+          state:
+          - 'off'
+        then:
+        - action: automation.turn_on
+          data: {}
+          target:
             entity_id: automation.roof_deck_light
-            state: 'off'
-          then:
-          - action: automation.turn_on
-            target:
-              entity_id: automation.roof_deck_light
     - conditions:
       - condition: trigger
         id: sunrise
@@ -682,7 +643,7 @@
   triggers:
   - trigger: sun
     event: sunrise
-    offset: '-05:00:00'
+    offset: -05:00:00
   conditions:
   - condition: not
     conditions:
@@ -696,7 +657,7 @@
   - action: climate.set_temperature
     metadata: {}
     data:
-      temperature: "{{ state_attr('climate.ac', 'temperature') | int + 1 }}"
+      temperature: '{{ state_attr(''climate.ac'', ''temperature'') | int + 1 }}'
     target:
       device_id: f0ac383606adb08783dd4317b30b7514
   mode: single
@@ -742,4 +703,45 @@
     entity_id: 6b825ba36b730908c201d9cba94b685a
     type: set_hvac_mode
     hvac_mode: 'off'
+  mode: single
+- id: '1787212363311'
+  alias: Roof Deck Light
+  triggers:
+  - id: sunset
+    trigger: sun
+    event: sunset
+    offset: 00:20:00
+  - id: sunrise
+    trigger: sun
+    event: sunrise
+    offset: -00:20:00
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id: sunset
+    then:
+    - condition: not
+      conditions:
+      - condition: device
+        type: is_on
+        device_id: 8510f0c0a25dcda57d2560ed305d0c78
+        entity_id: 836c0933efc45c66db79937680ba5329
+        domain: switch
+    - type: turn_on
+      device_id: 8510f0c0a25dcda57d2560ed305d0c78
+      entity_id: 836c0933efc45c66db79937680ba5329
+      domain: switch
+    else:
+    - condition: not
+      conditions:
+      - condition: device
+        type: is_off
+        device_id: 8510f0c0a25dcda57d2560ed305d0c78
+        entity_id: 836c0933efc45c66db79937680ba5329
+        domain: switch
+    - type: turn_off
+      device_id: 8510f0c0a25dcda57d2560ed305d0c78
+      entity_id: 836c0933efc45c66db79937680ba5329
+      domain: switch
   mode: single
