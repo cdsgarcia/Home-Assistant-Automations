@@ -9,7 +9,7 @@
       hours: 0
       minutes: 1
       seconds: 0
-    below: 97
+    below: 98
   conditions:
   - condition: time
     after: '15:30:00'

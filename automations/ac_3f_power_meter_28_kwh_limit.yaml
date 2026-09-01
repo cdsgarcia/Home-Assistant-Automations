@@ -1,5 +1,5 @@
 - id: '1775061536549'
-  alias: A/C 3F Power Meter - 3.0 kWh Limit
+  alias: A/C 3F Power Meter - 2.8 kWh Limit
   description: ''
   triggers:
   - type: energy
@@ -7,7 +7,7 @@
     entity_id: 80c49a382e3b4c289ac822f6103f2d2f
     domain: sensor
     trigger: device
-    above: 3
+    above: 2.8
     for:
       hours: 0
       minutes: 1

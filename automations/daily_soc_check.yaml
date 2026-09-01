@@ -3,7 +3,7 @@
   triggers:
   - trigger: numeric_state
     entity_id:
-    - sensor.srne_battery
+    - sensor.battery_soc_mean
     above: 99
     for:
       hours: 0
@@ -55,6 +55,9 @@
           target:
             entity_id: input_boolean.battery_reached_100_today
         - if:
+          - condition: state
+            entity_id: input_boolean.auto_turn_on_managed
+            state: 'on'
           - condition: state
             entity_id: automation.a_c_3f_power_meter_auto_turn_on
             state: 'off'

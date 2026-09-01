@@ -84,8 +84,8 @@ These automations manage the smart plug that supplies the A/C.
 
 #### [`A/C 3F Power Meter - Auto Turn On SOC`](automations/ac_3f_power_meter_auto_turn_on_soc.yaml)
 When `input_boolean.battery_reached_100_today` turns `on`:
-- Re-enables the *Auto Turn On* automation (if it was disabled)
-- Immediately turns on the A/C power meter switch
+- Re-enables the *Auto Turn On* automation (if `input_boolean.auto_turn_on_managed` is `on`)
+- Immediately turns on the A/C power meter switch (if currently off)
 
 #### [`A/C 3F Power Meter - Auto Turn On`](automations/ac_3f_power_meter_auto_turn_on.yaml)
 Turns the A/C power meter switch **on** at progressive time windows, gated by battery SOC:
@@ -105,6 +105,7 @@ Turns the A/C power meter switch **off** at progressive time windows if the batt
 | Time | Max Battery SOC |
 |------|----------------|
 | 09:00 | < 30% |
+| 10:00 | < 45% |
 | 11:00 | < 60% |
 | 12:00 | < 70% |
 | 13:00 | < 80% |
@@ -112,8 +113,8 @@ Turns the A/C power meter switch **off** at progressive time windows if the batt
 
 Only fires if the switch is currently on.
 
-#### [`A/C 3F Power Meter - 3.0 kWh Limit`](automations/ac_3f_power_meter_30_kwh_limit.yaml)
-Turns the A/C power meter switch **off** if total energy consumption exceeds **3.0 kWh** (and has been above it for 1 minute). Active between 15:00 and 09:00 only.
+#### [`A/C 3F Power Meter - 2.8 kWh Limit`](automations/ac_3f_power_meter_28_kwh_limit.yaml)
+Turns the A/C power meter switch **off** if total energy consumption exceeds **2.8 kWh** (and has been above it for 1 minute). Active between 15:00 and 09:00 only.
 
 #### [`A/C 3F Power Meter - Total Energy Reset`](automations/ac_3f_power_meter_total_energy_reset.yaml)
 Resets the power meter's energy counter daily at **15:00** by pressing the data-reset button.
@@ -158,7 +159,7 @@ Sequence: set temp to 30°C → 10 s delay → `fan_only` → 15 min delay → `
 ### 🌅 A/C Afternoon Sequence
 
 #### [`A/C Afternoon OFF Sequence`](automations/ac_afternoon_off_sequence.yaml)
-Between **15:30–18:00**, if the solar battery drops below 97% SOC for 1 minute and the A/C is not off:
+Between **15:30–18:00**, if the solar battery drops below 98% SOC for 1 minute and the A/C is not off:
 
 Sequence: set temp to 30°C → 10 s delay → `fan_only` → 10 min delay → `off`
 
@@ -194,6 +195,11 @@ Controls the indicator light mode on the portable power station based on charge 
 - Automatically switches to **SOS** when battery drops below 21%
 - When plugged back in, light turns **Off** immediately regardless of battery level
 
+### 🔔 Notifications
+
+#### [`CYD-E713B0 Crash Alert`](automations/cyd_e713b0_crash_alert.yaml)
+Sends a mobile notification when the CYD-E713B0 device resets due to a real fault. Filters out routine reboots (OTA, API, power-on) and only alerts on: `panic`, `exception`, `brownout`, `watchdog`, `fault`, `glitch`, `lock up`, or `efuse error`.
+
 ---
 
 ## Troubleshooting
@@ -222,7 +228,7 @@ You should see your username instead of `root` in the owner column.
 ## Notes
 
 - All A/C sequences use a soft-off approach (ramp to 30°C → fan only → off) to reduce compressor stress.
-- The `A/C 3F Power Meter - Auto Turn On` automation is dynamically enabled/disabled by the `Daily SOC Check` and `A/C 3F Power Meter - Auto Turn On SOC` automations to prevent the A/C from turning on when the battery did not reach full charge that day.
+- The `A/C 3F Power Meter - Auto Turn On` automation is controlled by `input_boolean.auto_turn_on_managed`. When the toggle is **off**, Auto Turn On stays permanently disabled. When **on**, it is re-enabled at sunrise and when battery reaches 100%.
 - Device IDs in the YAML are specific to this installation and will need to be updated if migrating to a different HA instance.
 
 ---

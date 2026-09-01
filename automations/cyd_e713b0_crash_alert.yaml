@@ -1,0 +1,24 @@
+- id: '1787287413979'
+  alias: CYD-E713B0 Crash Alert
+  description: Notifies when the reset reason indicates a real fault (panic/brownout/watchdog/etc),
+    not a routine OTA/API/power-on reboot.
+  triggers:
+  - entity_id: sensor.cyd_e713b0_reset_reason
+    trigger: state
+  conditions:
+  - condition: template
+    value_template: "{% set s = trigger.to_state.state %} {% if s in ['unknown', 'unavailable',
+      none] %}\n  false\n{% else %}\n  {% set sl = s | lower %}\n  {{ 'panic' in sl
+      or 'exception' in sl or 'brownout' in sl or 'watchdog' in sl\n     or 'fault'
+      in sl or 'glitch' in sl or 'lock up' in sl or 'efuse error' in sl }}\n{% endif
+      %}\n"
+  actions:
+  - data:
+      title: ⚠️ CYD-E713B0 Crashed
+      message: 'Reset reason: {{ trigger.to_state.state }} Previous: {{ trigger.from_state.state
+        if trigger.from_state else ''n/a'' }} Time: {{ now().strftime(''%Y-%m-%d %H:%M:%S'')
+        }}
+
+        '
+    action: notify.mobile_app_22041216g
+  mode: single

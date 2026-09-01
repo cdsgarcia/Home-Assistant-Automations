@@ -14,7 +14,7 @@
       - button.a_c_3f_power_meter_data_reset
   mode: single
 - id: '1775061536549'
-  alias: A/C 3F Power Meter - 3.0 kWh Limit
+  alias: A/C 3F Power Meter - 2.8 kWh Limit
   description: ''
   triggers:
   - type: energy
@@ -22,7 +22,7 @@
     entity_id: 80c49a382e3b4c289ac822f6103f2d2f
     domain: sensor
     trigger: device
-    above: 3
+    above: 2.8
     for:
       hours: 0
       minutes: 1
@@ -53,7 +53,7 @@
       hours: 0
       minutes: 1
       seconds: 0
-    below: 97
+    below: 98
   conditions:
   - condition: time
     after: '15:30:00'
@@ -234,7 +234,7 @@
         device_id: 74c0ed355a5657570d7f6a854a12eae8
         entity_id: ea66587b238b9821e4d33ec7b93567de
         domain: sensor
-        below: 50
+        below: 45
       - condition: time
         after: '9:55:00'
     - condition: and
@@ -457,6 +457,9 @@
   actions:
   - if:
     - condition: state
+      entity_id: input_boolean.auto_turn_on_managed
+      state: 'on'
+    - condition: state
       entity_id: automation.a_c_3f_power_meter_auto_turn_on
       state: 'off'
     then:
@@ -546,7 +549,7 @@
   triggers:
   - trigger: numeric_state
     entity_id:
-    - sensor.srne_battery
+    - sensor.battery_soc_mean
     above: 99
     for:
       hours: 0
@@ -587,9 +590,11 @@
           data: {}
           target:
             entity_id: automation.roof_deck_light
+        enabled: true
     - conditions:
       - condition: trigger
         id: sunrise
+        enabled: true
       sequence:
       - if:
         - condition: state
@@ -601,12 +606,16 @@
             entity_id: input_boolean.battery_reached_100_today
         - if:
           - condition: state
+            entity_id: input_boolean.auto_turn_on_managed
+            state: 'on'
+          - condition: state
             entity_id: automation.a_c_3f_power_meter_auto_turn_on
             state: 'off'
           then:
           - action: automation.turn_on
             target:
               entity_id: automation.a_c_3f_power_meter_auto_turn_on
+        enabled: true
     - conditions:
       - condition: trigger
         id: sunset
@@ -635,6 +644,7 @@
             entity_id: automation.a_c_3f_power_meter_auto_turn_on
           data:
             stop_actions: true
+        enabled: true
   mode: queued
   max: 2
 - id: '1755482212000'
@@ -744,4 +754,28 @@
       device_id: 8510f0c0a25dcda57d2560ed305d0c78
       entity_id: 836c0933efc45c66db79937680ba5329
       domain: switch
+  mode: single
+- id: '1787287413979'
+  alias: CYD-E713B0 Crash Alert
+  description: Notifies when the reset reason indicates a real fault (panic/brownout/watchdog/etc),
+    not a routine OTA/API/power-on reboot.
+  triggers:
+  - entity_id: sensor.cyd_e713b0_reset_reason
+    trigger: state
+  conditions:
+  - condition: template
+    value_template: "{% set s = trigger.to_state.state %} {% if s in ['unknown', 'unavailable',
+      none] %}\n  false\n{% else %}\n  {% set sl = s | lower %}\n  {{ 'panic' in sl
+      or 'exception' in sl or 'brownout' in sl or 'watchdog' in sl\n     or 'fault'
+      in sl or 'glitch' in sl or 'lock up' in sl or 'efuse error' in sl }}\n{% endif
+      %}\n"
+  actions:
+  - data:
+      title: ⚠️ CYD-E713B0 Crashed
+      message: 'Reset reason: {{ trigger.to_state.state }} Previous: {{ trigger.from_state.state
+        if trigger.from_state else ''n/a'' }} Time: {{ now().strftime(''%Y-%m-%d %H:%M:%S'')
+        }}
+
+        '
+    action: notify.mobile_app_22041216g
   mode: single

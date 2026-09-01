@@ -5,6 +5,8 @@
   - trigger: time
     at: 09:00:00
   - trigger: time
+    at: '10:00:00'
+  - trigger: time
     at: '11:00:00'
   - trigger: time
     at: '12:00:00'
@@ -25,6 +27,16 @@
         below: 30
       - condition: time
         after: 08:55:00
+    - condition: and
+      conditions:
+      - type: is_battery_level
+        condition: device
+        device_id: 74c0ed355a5657570d7f6a854a12eae8
+        entity_id: ea66587b238b9821e4d33ec7b93567de
+        domain: sensor
+        below: 45
+      - condition: time
+        after: '9:55:00'
     - condition: and
       conditions:
       - type: is_battery_level
