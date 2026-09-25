@@ -4,12 +4,11 @@
   - trigger: numeric_state
     entity_id:
     - sensor.battery_soc_mean
-    above: 99
+    above: 95
     for:
       hours: 0
-      minutes: 1
+      minutes: 15
       seconds: 0
-      milliseconds: 0
     id: battery_full
   - trigger: sun
     event: sunrise

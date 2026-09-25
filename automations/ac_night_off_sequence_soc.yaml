@@ -5,7 +5,7 @@
   - id: trigger_morning
     trigger: numeric_state
     entity_id:
-    - sensor.srne_battery
+    - sensor.battery_soc_mean
     for:
       hours: 0
       minutes: 1
@@ -14,7 +14,7 @@
   - id: trigger_evening
     trigger: numeric_state
     entity_id:
-    - sensor.srne_battery
+    - sensor.battery_soc_mean
     for:
       hours: 0
       minutes: 1

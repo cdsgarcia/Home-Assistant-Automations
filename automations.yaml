@@ -14,7 +14,7 @@
       - button.a_c_3f_power_meter_data_reset
   mode: single
 - id: '1775061536549'
-  alias: A/C 3F Power Meter - 2.8 kWh Limit
+  alias: A/C 3F Power Meter - 3.0 kWh Limit
   description: ''
   triggers:
   - type: energy
@@ -22,7 +22,7 @@
     entity_id: 80c49a382e3b4c289ac822f6103f2d2f
     domain: sensor
     trigger: device
-    above: 2.8
+    above: 3
     for:
       hours: 0
       minutes: 1
@@ -48,7 +48,7 @@
   triggers:
   - trigger: numeric_state
     entity_id:
-    - sensor.srne_battery
+    - sensor.battery_soc_mean
     for:
       hours: 0
       minutes: 1
@@ -56,7 +56,7 @@
     below: 98
   conditions:
   - condition: time
-    after: '15:30:00'
+    after: '15:00:00'
     before: '18:00:00'
   - condition: not
     conditions:
@@ -156,12 +156,9 @@
   - trigger: time
     at: '20:00:00'
   conditions:
-  - type: is_battery_level
-    condition: device
-    device_id: 74c0ed355a5657570d7f6a854a12eae8
-    entity_id: ea66587b238b9821e4d33ec7b93567de
-    domain: sensor
-    above: 75
+  - condition: numeric_state
+    entity_id: sensor.battery_soc_mean
+    above: 65
   - condition: not
     conditions:
     - condition: device
@@ -219,62 +216,44 @@
     conditions:
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        below: 30
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        below: 52
       - condition: time
         after: 08:55:00
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        below: 45
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        below: 60
       - condition: time
         after: '9:55:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        below: 60
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        below: 68
       - condition: time
         after: '10:55:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        below: 70
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        below: 76
       - condition: time
         after: '11:55:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        below: 80
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        below: 84
       - condition: time
         after: '12:55:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        below: 90
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        below: 92
       - condition: time
         after: '13:55:00'
   - condition: device
@@ -295,7 +274,7 @@
   - id: trigger_morning
     trigger: numeric_state
     entity_id:
-    - sensor.srne_battery
+    - sensor.battery_soc_mean
     for:
       hours: 0
       minutes: 1
@@ -304,7 +283,7 @@
   - id: trigger_evening
     trigger: numeric_state
     entity_id:
-    - sensor.srne_battery
+    - sensor.battery_soc_mean
     for:
       hours: 0
       minutes: 1
@@ -495,42 +474,30 @@
     conditions:
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        above: 45
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        above: 68
       - condition: time
         before: '10:05:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        above: 60
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        above: 76
       - condition: time
         before: '11:05:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        above: 75
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        above: 84
       - condition: time
         before: '12:05:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        above: 90
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        above: 92
       - condition: time
         before: '13:05:00'
   - condition: device
@@ -550,12 +517,11 @@
   - trigger: numeric_state
     entity_id:
     - sensor.battery_soc_mean
-    above: 99
+    above: 95
     for:
       hours: 0
-      minutes: 1
+      minutes: 15
       seconds: 0
-      milliseconds: 0
     id: battery_full
   - trigger: sun
     event: sunrise

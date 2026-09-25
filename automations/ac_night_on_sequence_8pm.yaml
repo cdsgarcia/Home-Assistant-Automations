@@ -5,12 +5,9 @@
   - trigger: time
     at: '20:00:00'
   conditions:
-  - type: is_battery_level
-    condition: device
-    device_id: 74c0ed355a5657570d7f6a854a12eae8
-    entity_id: ea66587b238b9821e4d33ec7b93567de
-    domain: sensor
-    above: 75
+  - condition: numeric_state
+    entity_id: sensor.battery_soc_mean
+    above: 65
   - condition: not
     conditions:
     - condition: device

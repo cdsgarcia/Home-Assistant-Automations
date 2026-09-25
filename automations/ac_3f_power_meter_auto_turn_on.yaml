@@ -15,42 +15,30 @@
     conditions:
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        above: 45
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        above: 68
       - condition: time
         before: '10:05:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        above: 60
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        above: 76
       - condition: time
         before: '11:05:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        above: 75
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        above: 84
       - condition: time
         before: '12:05:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        above: 90
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        above: 92
       - condition: time
         before: '13:05:00'
   - condition: device

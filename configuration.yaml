@@ -85,6 +85,33 @@ template:
         icon: >
           {{ 'mdi:battery-check' if is_state('input_boolean.battery_reached_100_today', 'on') else 'mdi:battery-remove' }}
 
+      - name: "Battery SOC Mean"
+        unique_id: battery_soc_mean
+        unit_of_measurement: "%"
+        device_class: battery
+        state_class: measurement
+        icon: mdi:battery
+        state: >
+          {# Capacity-weighted mean SOC across all packs (rated Ah, update if a pack is added/replaced). #}
+          {# If any pack fails to report, the result is 'unavailable' rather than a skewed average. #}
+          {% set packs = [
+            ('sensor.m1_ble_battery', 100),
+            ('sensor.s1_ble_battery', 100),
+            ('sensor.s2_ble_battery', 100),
+            ('sensor.cst_ble_battery', 324)
+          ] %}
+          {% set ns = namespace(charge=0, capacity=0, all_ok=true) %}
+          {% for entity_id, ah in packs %}
+            {% set soc = states(entity_id) | float(none) %}
+            {% if soc is none %}
+              {% set ns.all_ok = false %}
+            {% else %}
+              {% set ns.charge = ns.charge + (soc * ah) %}
+              {% set ns.capacity = ns.capacity + ah %}
+            {% endif %}
+          {% endfor %}
+          {{ (ns.charge / ns.capacity) | round(1) if ns.all_ok else 'unavailable' }}
+
 sensor:
   - platform: statistics
     name: "A/C Power Meter Power Filtered 5m"

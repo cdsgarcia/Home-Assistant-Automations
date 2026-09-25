@@ -19,62 +19,44 @@
     conditions:
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        below: 30
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        below: 52
       - condition: time
         after: 08:55:00
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        below: 45
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        below: 60
       - condition: time
         after: '9:55:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        below: 60
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        below: 68
       - condition: time
         after: '10:55:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        below: 70
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        below: 76
       - condition: time
         after: '11:55:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        below: 80
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        below: 84
       - condition: time
         after: '12:55:00'
     - condition: and
       conditions:
-      - type: is_battery_level
-        condition: device
-        device_id: 74c0ed355a5657570d7f6a854a12eae8
-        entity_id: ea66587b238b9821e4d33ec7b93567de
-        domain: sensor
-        below: 90
+      - condition: numeric_state
+        entity_id: sensor.battery_soc_mean
+        below: 92
       - condition: time
         after: '13:55:00'
   - condition: device

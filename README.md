@@ -21,7 +21,7 @@ These automations manage three main areas:
 
 | Device / Entity | Role |
 |----------------|------|
-| `sensor.srne_battery` | Solar battery SOC (%) |
+| `sensor.battery_soc_mean` | Capacity-weighted mean solar battery SOC across all packs (%) |
 | `climate.ac` | 3rd-floor A/C unit (IR/WiFi climate entity) |
 | A/C 3F Power Meter (`device_id: 73be0b81…`) | Smart plug monitoring the A/C circuit |
 | `sensor.a_c_power_meter_power_filtered_5m` | Filtered real-time power draw of the A/C — 5 min average (W) |
@@ -50,6 +50,7 @@ The `configuration.yaml` file extends HA with custom sensors used across automat
 | `sensor.total_battery_power_kw` | Battery power in kW |
 | `sensor.total_battery_power_absolute_kw` | Absolute battery power in kW |
 | `sensor.battery_reached_full_today` | Human-readable `YES`/`NO` mirror of `input_boolean.battery_reached_100_today` |
+| `sensor.battery_soc_mean` | Capacity-weighted mean SOC across all battery packs (rated Ah); `unavailable` if any pack fails to report, rather than a skewed average |
 
 ### Statistics Filter Sensors
 
@@ -68,7 +69,7 @@ Rolling mean of A/C power draw sourced from `sensor.a_c_1f_power_meter_power`:
 ### ☀️ Solar Battery / SOC Management
 
 #### [`Daily SOC Check`](automations/daily_soc_check.yaml)
-Tracks whether the battery reached full charge (>99%) during the day.
+Tracks whether the battery reached full charge (>95%, sustained for 15 minutes) during the day.
 
 - **On battery full** (daytime only): sets `input_boolean.battery_reached_100_today` to `on` and re-enables `automation.roof_deck_light` (if disabled)
 - **On sunrise**: resets the flag to `off` and re-enables the *Auto Turn On* automation (if disabled)
@@ -92,10 +93,10 @@ Turns the A/C power meter switch **on** at progressive time windows, gated by ba
 
 | Time | Min Battery SOC |
 |------|----------------|
-| 10:00 | > 45% |
-| 11:00 | > 60% |
-| 12:00 | > 75% |
-| 13:00 | > 90% |
+| 10:00 | > 68% |
+| 11:00 | > 76% |
+| 12:00 | > 84% |
+| 13:00 | > 92% |
 
 Only fires if the switch is currently off.
 
@@ -104,17 +105,17 @@ Turns the A/C power meter switch **off** at progressive time windows if the batt
 
 | Time | Max Battery SOC |
 |------|----------------|
-| 09:00 | < 30% |
-| 10:00 | < 45% |
-| 11:00 | < 60% |
-| 12:00 | < 70% |
-| 13:00 | < 80% |
-| 14:00 | < 90% |
+| 09:00 | < 52% |
+| 10:00 | < 60% |
+| 11:00 | < 68% |
+| 12:00 | < 76% |
+| 13:00 | < 84% |
+| 14:00 | < 92% |
 
 Only fires if the switch is currently on.
 
-#### [`A/C 3F Power Meter - 2.8 kWh Limit`](automations/ac_3f_power_meter_28_kwh_limit.yaml)
-Turns the A/C power meter switch **off** if total energy consumption exceeds **2.8 kWh** (and has been above it for 1 minute). Active between 15:00 and 09:00 only.
+#### [`A/C 3F Power Meter - 3.0 kWh Limit`](automations/ac_3f_power_meter_30_kwh_limit.yaml)
+Turns the A/C power meter switch **off** if total energy consumption exceeds **3.0 kWh** (and has been above it for 1 minute). Active between 15:00 and 09:00 only.
 
 #### [`A/C 3F Power Meter - Total Energy Reset`](automations/ac_3f_power_meter_total_energy_reset.yaml)
 Resets the power meter's energy counter daily at **15:00** by pressing the data-reset button.
@@ -130,7 +131,7 @@ When the refresh interval entity changes, waits 10 seconds then selects the last
 ### 🌙 A/C Night Sequences
 
 #### [`A/C Night ON Sequence - 8PM`](automations/ac_night_on_sequence_8pm.yaml)
-At **20:00**, if battery SOC > 75% and A/C is not already in cool mode:
+At **20:00**, if battery SOC > 65% and A/C is not already in cool mode:
 1. Sets HVAC to `fan_only`
 2. Waits 2 minutes
 3. Sets HVAC to `cool`
@@ -159,7 +160,7 @@ Sequence: set temp to 30°C → 10 s delay → `fan_only` → 15 min delay → `
 ### 🌅 A/C Afternoon Sequence
 
 #### [`A/C Afternoon OFF Sequence`](automations/ac_afternoon_off_sequence.yaml)
-Between **15:30–18:00**, if the solar battery drops below 98% SOC for 1 minute and the A/C is not off:
+Between **15:00–18:00**, if the solar battery drops below 98% SOC for 1 minute and the A/C is not off:
 
 Sequence: set temp to 30°C → 10 s delay → `fan_only` → 10 min delay → `off`
 
