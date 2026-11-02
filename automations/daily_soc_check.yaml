@@ -4,10 +4,10 @@
   - trigger: numeric_state
     entity_id:
     - sensor.battery_soc_mean
-    above: 95
+    above: 98
     for:
       hours: 0
-      minutes: 15
+      minutes: 5
       seconds: 0
     id: battery_full
   - trigger: sun
@@ -36,14 +36,18 @@
       - if:
         - condition: state
           entity_id: automation.roof_deck_light
-          state: 'off'
+          state:
+          - 'off'
         then:
         - action: automation.turn_on
+          data: {}
           target:
             entity_id: automation.roof_deck_light
+        enabled: true
     - conditions:
       - condition: trigger
         id: sunrise
+        enabled: true
       sequence:
       - if:
         - condition: state
@@ -64,6 +68,7 @@
           - action: automation.turn_on
             target:
               entity_id: automation.a_c_3f_power_meter_auto_turn_on
+        enabled: true
     - conditions:
       - condition: trigger
         id: sunset
@@ -92,5 +97,6 @@
             entity_id: automation.a_c_3f_power_meter_auto_turn_on
           data:
             stop_actions: true
+        enabled: true
   mode: queued
   max: 2

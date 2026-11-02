@@ -4,7 +4,7 @@
   triggers:
   - trigger: sun
     event: sunrise
-    offset: '-05:00:00'
+    offset: -04:00:00
   conditions:
   - condition: not
     conditions:
@@ -18,7 +18,7 @@
   - action: climate.set_temperature
     metadata: {}
     data:
-      temperature: "{{ state_attr('climate.ac', 'temperature') | int + 1 }}"
+      temperature: '{{ state_attr(''climate.ac'', ''temperature'') | int + 1 }}'
     target:
       device_id: f0ac383606adb08783dd4317b30b7514
   mode: single

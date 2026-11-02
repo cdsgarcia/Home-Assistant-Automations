@@ -53,7 +53,7 @@
       hours: 0
       minutes: 1
       seconds: 0
-    below: 98
+    below: 97
   conditions:
   - condition: time
     after: '15:00:00'
@@ -158,7 +158,7 @@
   conditions:
   - condition: numeric_state
     entity_id: sensor.battery_soc_mean
-    above: 65
+    above: 75
   - condition: not
     conditions:
     - condition: device
@@ -517,10 +517,10 @@
   - trigger: numeric_state
     entity_id:
     - sensor.battery_soc_mean
-    above: 95
+    above: 98
     for:
       hours: 0
-      minutes: 15
+      minutes: 5
       seconds: 0
     id: battery_full
   - trigger: sun
@@ -619,7 +619,7 @@
   triggers:
   - trigger: sun
     event: sunrise
-    offset: -05:00:00
+    offset: -04:00:00
   conditions:
   - condition: not
     conditions:

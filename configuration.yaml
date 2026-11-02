@@ -93,24 +93,37 @@ template:
         icon: mdi:battery
         state: >
           {# Capacity-weighted mean SOC across all packs (rated Ah, update if a pack is added/replaced). #}
-          {# If any pack fails to report, the result is 'unavailable' rather than a skewed average. #}
+          {# A brief dropout (<5 min) on one pack holds the last computed mean instead of going #}
+          {# unavailable, so a momentary BLE blip can't reset/re-arm numeric_state 'for:' triggers #}
+          {# on the automations that consume this sensor. A real prolonged outage (>=5 min) still #}
+          {# reports 'unavailable' rather than a skewed or stale-forever average. #}
           {% set packs = [
             ('sensor.m1_ble_battery', 100),
             ('sensor.s1_ble_battery', 100),
             ('sensor.s2_ble_battery', 100),
             ('sensor.cst_ble_battery', 324)
           ] %}
-          {% set ns = namespace(charge=0, capacity=0, all_ok=true) %}
+          {% set ns = namespace(charge=0, capacity=0, all_ok=true, stale=false) %}
           {% for entity_id, ah in packs %}
-            {% set soc = states(entity_id) | float(none) %}
+            {% set st = states[entity_id] %}
+            {% set soc = st.state | float(none) if st else none %}
             {% if soc is none %}
               {% set ns.all_ok = false %}
+              {% if not st or (as_timestamp(now()) - as_timestamp(st.last_changed, 0)) > 300 %}
+                {% set ns.stale = true %}
+              {% endif %}
             {% else %}
               {% set ns.charge = ns.charge + (soc * ah) %}
               {% set ns.capacity = ns.capacity + ah %}
             {% endif %}
           {% endfor %}
-          {{ (ns.charge / ns.capacity) | round(1) if ns.all_ok else 'unavailable' }}
+          {% if ns.all_ok %}
+            {{ (ns.charge / ns.capacity) | round(1) }}
+          {% elif ns.stale or this.state in ['unknown', 'unavailable', none] %}
+            unavailable
+          {% else %}
+            {{ this.state }}
+          {% endif %}
 
 sensor:
   - platform: statistics
@@ -133,4 +146,3 @@ sensor:
     state_characteristic: mean
     max_age:
       minutes: 30
-

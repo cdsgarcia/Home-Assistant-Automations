@@ -50,7 +50,7 @@ The `configuration.yaml` file extends HA with custom sensors used across automat
 | `sensor.total_battery_power_kw` | Battery power in kW |
 | `sensor.total_battery_power_absolute_kw` | Absolute battery power in kW |
 | `sensor.battery_reached_full_today` | Human-readable `YES`/`NO` mirror of `input_boolean.battery_reached_100_today` |
-| `sensor.battery_soc_mean` | Capacity-weighted mean SOC across all battery packs (rated Ah); `unavailable` if any pack fails to report, rather than a skewed average |
+| `sensor.battery_soc_mean` | Capacity-weighted mean SOC across all battery packs (rated Ah). A pack dropout under 5 min holds the last value; a longer outage reports `unavailable` rather than a skewed average |
 
 ### Statistics Filter Sensors
 
@@ -69,7 +69,7 @@ Rolling mean of A/C power draw sourced from `sensor.a_c_1f_power_meter_power`:
 ### ☀️ Solar Battery / SOC Management
 
 #### [`Daily SOC Check`](automations/daily_soc_check.yaml)
-Tracks whether the battery reached full charge (>95%, sustained for 15 minutes) during the day.
+Tracks whether the battery reached full charge (>98%, sustained for 5 minutes) during the day.
 
 - **On battery full** (daytime only): sets `input_boolean.battery_reached_100_today` to `on` and re-enables `automation.roof_deck_light` (if disabled)
 - **On sunrise**: resets the flag to `off` and re-enables the *Auto Turn On* automation (if disabled)
@@ -131,7 +131,7 @@ When the refresh interval entity changes, waits 10 seconds then selects the last
 ### 🌙 A/C Night Sequences
 
 #### [`A/C Night ON Sequence - 8PM`](automations/ac_night_on_sequence_8pm.yaml)
-At **20:00**, if battery SOC > 65% and A/C is not already in cool mode:
+At **20:00**, if battery SOC > 75% and A/C is not already in cool mode:
 1. Sets HVAC to `fan_only`
 2. Waits 2 minutes
 3. Sets HVAC to `cool`
@@ -146,7 +146,7 @@ Gracefully shuts down the A/C when the battery runs low at night:
 Sequence: set temp to 30°C → 10 s delay → `fan_only` → 15 min delay → `off`
 
 #### [`A/C Set Target Temp +1C`](automations/ac_set_target_temp_plus_1c.yaml)
-At **5 hours before sunrise**, if the A/C is not off, increases the current target temperature by **1°C**.
+At **4 hours before sunrise**, if the A/C is not off, increases the current target temperature by **1°C**.
 
 ---
 
@@ -160,7 +160,7 @@ Sequence: set temp to 30°C → 10 s delay → `fan_only` → 15 min delay → `
 ### 🌅 A/C Afternoon Sequence
 
 #### [`A/C Afternoon OFF Sequence`](automations/ac_afternoon_off_sequence.yaml)
-Between **15:00–18:00**, if the solar battery drops below 98% SOC for 1 minute and the A/C is not off:
+Between **15:00–18:00**, if the solar battery drops below 97% SOC for 1 minute and the A/C is not off:
 
 Sequence: set temp to 30°C → 10 s delay → `fan_only` → 10 min delay → `off`
 

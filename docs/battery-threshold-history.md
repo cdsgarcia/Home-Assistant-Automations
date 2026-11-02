@@ -52,5 +52,13 @@ New thresholds were derived by picking clean **remaining-Ah-to-full** checkpoint
 
 | Automation | Current threshold | Notes |
 |---|---|---|
-| A/C Afternoon OFF Sequence | below 98% | Manual tuning planned after a week of observation |
 | A/C Night OFF Sequence - SOC | below 15% / 20% | Manual tuning planned after a week of observation |
+
+## 2026-11-02 — Manual tuning
+
+| Automation | Old | New |
+|---|---|---|
+| A/C Night ON Sequence - 8PM | above 65% | above 75% |
+| Daily SOC Check (battery full) | above 95% for 15 min | above 98% for 5 min |
+| A/C Afternoon OFF Sequence | below 98% | below 97% |
+| A/C Set Target Temp +1C (non-SOC) | 5 h before sunrise | 4 h before sunrise |

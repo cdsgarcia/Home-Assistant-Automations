@@ -7,7 +7,7 @@
   conditions:
   - condition: numeric_state
     entity_id: sensor.battery_soc_mean
-    above: 65
+    above: 75
   - condition: not
     conditions:
     - condition: device

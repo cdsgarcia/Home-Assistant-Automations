@@ -81,3 +81,4 @@
         entity_id: f45bdeafcbeb9114d4d6130cd02e93a1
         type: select_option
         option: dim
+  mode: single
