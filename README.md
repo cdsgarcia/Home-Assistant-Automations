@@ -114,8 +114,8 @@ Turns the A/C power meter switch **off** at progressive time windows if the batt
 
 Only fires if the switch is currently on.
 
-#### [`A/C 3F Power Meter - 3.0 kWh Limit`](automations/ac_3f_power_meter_30_kwh_limit.yaml)
-Turns the A/C power meter switch **off** if total energy consumption exceeds **3.0 kWh** (and has been above it for 1 minute). Active between 15:00 and 09:00 only.
+#### [`A/C 3F Power Meter - 3.5 kWh Limit`](automations/ac_3f_power_meter_35_kwh_limit.yaml)
+Turns the A/C power meter switch **off** if total energy consumption exceeds **3.5 kWh** (and has been above it for 1 minute). Active between 15:00 and 09:00 only.
 
 #### [`A/C 3F Power Meter - Total Energy Reset`](automations/ac_3f_power_meter_total_energy_reset.yaml)
 Resets the power meter's energy counter daily at **15:00** by pressing the data-reset button.

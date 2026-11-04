@@ -62,3 +62,11 @@ New thresholds were derived by picking clean **remaining-Ah-to-full** checkpoint
 | Daily SOC Check (battery full) | above 95% for 15 min | above 98% for 5 min |
 | A/C Afternoon OFF Sequence | below 98% | below 97% |
 | A/C Set Target Temp +1C (non-SOC) | 5 h before sunrise | 4 h before sunrise |
+
+## 2026-11-04 — A/C 3F energy cap
+
+| Automation | Old | New |
+|---|---|---|
+| A/C 3F Power Meter - kWh Limit (15:00–09:00) | 3.0 kWh | 3.5 kWh |
+
+Rationale: on full-charge days (SOC ~95% at 17:00, 624Ah bank), projected pre-sunrise SOC with a 3.5 kWh cap is ~59–71% monthly average (worst nights ~53%). Each extra 1 kWh costs ~1.5% SOC; a cap up to ~5 kWh still keeps ≥50% before sunrise.
