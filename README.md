@@ -203,6 +203,20 @@ Sends a mobile notification when the CYD-E713B0 device resets due to a real faul
 
 ---
 
+## Tools
+
+### [`tools/jbd_cell_full_voltage.py`](tools/jbd_cell_full_voltage.py)
+Reads or sets the JBD BMS **Cell Full Voltage** (EEPROM register `0x12`, mV) over BLE. The BMS resets its SOC to 100% only when a cell reaches this voltage. Only that one register is written, unlike the vendor app's "BMS write", which rewrites every register. The default is read-only; `--mv` without `--write` is a dry run. After writing, the script reads the value back in a new session to confirm it was saved.
+
+```bash
+pip install bleak
+python tools/jbd_cell_full_voltage.py                     # read M1/S1/S2
+python tools/jbd_cell_full_voltage.py --mv 3540 --write   # set all three packs
+```
+Disable the pack's BMS_BLE entry in Home Assistant first, because the BMS accepts only one BLE connection at a time.
+
+---
+
 ## Troubleshooting
 
 ### WinSCP Permission Denied when uploading to HA config folder
