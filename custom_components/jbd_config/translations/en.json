@@ -1,0 +1,20 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add JBD pack",
+        "description": "Pick a BMS_BLE pack with a JBD BMS (not the Pace/CST).",
+        "data": {
+          "address": "Pack",
+          "password": "BLE password (6 characters)"
+        }
+      }
+    },
+    "error": {
+      "password_length": "Password must be 6 characters"
+    },
+    "abort": {
+      "already_configured": "This pack is already added"
+    }
+  }
+}

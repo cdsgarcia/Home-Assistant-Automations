@@ -206,25 +206,20 @@ Sends a mobile notification when the CYD-E713B0 device resets due to a real faul
 ## Tools
 
 ### [`custom_components/jbd_config`](custom_components/jbd_config) — JBD BMS Config integration
-Changes the JBD (Gentai) BMS settings from Home Assistant over BLE. Each service call:
-1. unloads the pack's BMS_BLE entry, because the BMS accepts only one BLE connection;
-2. connects and authenticates;
-3. writes **only** the given settings, skipping any that are already equal;
-4. reads the values back in a fresh session to confirm they were saved;
-5. sets up the BMS_BLE entry again.
+Shows and edits the JBD (Gentai) BMS settings in Home Assistant over BLE. The entities appear on each pack's existing BMS_BLE device page:
 
-| Service | What it does |
+| Entity | Purpose |
 |---|---|
-| `jbd_config.read_config` | Returns `cell_full_mv` (reg `0x12`), `balance_start_mv` (`0x2A`), `balance_delta_mv` (`0x2B`). Nothing is written. |
-| `jbd_config.set_config` | Sets any of these. The response has `before`, `after` and `verified`. |
+| Cell full voltage (mV) | Register `0x12`: SOC resets to 100% when any cell reaches this voltage |
+| Balance start voltage (mV) | Register `0x2A` |
+| Balance delta (mV) | Register `0x2B` |
+| Read BMS settings (button) | Refreshes the values above from the BMS |
 
-```yaml
-action: jbd_config.set_config
-data:
-  pack: [M1, S1, S2]   # omit for all packs
-  cell_full_mv: 3500
-```
-Install: copy `custom_components/jbd_config` to the HA config folder, add the `jbd_config:` block from `configuration.yaml`, then restart. Gentai firmware ignores the function-config register `0x2D`, so the balance mode can't be changed.
+Changing a number writes only that setting, then reads it back in a fresh session. If the BMS didn't keep the value, an error is shown. During every read or write, the pack's BMS_BLE entry is paused, because the BMS accepts only one BLE connection.
+
+The `jbd_config.read_config` and `jbd_config.set_config` actions do the same for scripts. `read_config` also accepts raw `registers` for diagnostics.
+
+Install: copy `custom_components/jbd_config` to the HA config folder and restart. Then add each pack under **Settings > Devices & services > Add integration > JBD BMS Config**. Packs listed in the `jbd_config:` YAML block are imported automatically. The Gentai firmware ignores register `0x2D` (balance mode). The CST (Pace BMS) is not supported because its BLE settings commands are undocumented.
 
 Offline protocol tests: `python -m pytest tests -q`.
 

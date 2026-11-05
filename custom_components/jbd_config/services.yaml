@@ -9,6 +9,12 @@ read_config:
       selector:
         text:
           multiple: true
+    registers:
+      name: Raw registers
+      description: Extra EEPROM register addresses to read (diagnostics), e.g. 0x12-0x13, 0x32-0x35.
+      example: "[18, 19, 50, 51, 52, 53]"
+      selector:
+        object:
 
 set_config:
   name: Set JBD BMS config

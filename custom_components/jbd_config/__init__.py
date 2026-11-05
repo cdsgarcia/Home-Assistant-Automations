@@ -1,126 +1,75 @@
-"""JBD BMS Config: read/write JBD (Gentai) BMS EEPROM settings over BLE via services.
+"""JBD BMS Config: view and change JBD (Gentai) BMS EEPROM settings from Home Assistant.
 
-The BMS accepts one BLE connection, so each call temporarily unloads the pack's BMS_BLE
-config entry, does the work, then sets it up again.
+Each pack is a config entry whose entities (number + button) join the pack's BMS_BLE device.
+The BMS accepts one BLE connection, so every read/write briefly unloads the BMS_BLE entry.
 """
 from __future__ import annotations
 
-import asyncio
-import logging
-
 import voluptuous as vol
-from bleak.exc import BleakError
-from bleak_retry_connector import BleakClientWithServiceCache, establish_connection
 
-from homeassistant.components import bluetooth
-from homeassistant.config_entries import ConfigEntryState
+from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
-from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
+from homeassistant.exceptions import ServiceValidationError
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.typing import ConfigType
 
-from .protocol import SETTINGS, UUID_NOTIFY, UUID_WRITE, JbdSession
+from .const import CONF_ADDRESS, CONF_PASSWORD, DEFAULT_PASSWORD, DOMAIN
+from .pack import JbdPack
+from .protocol import SETTINGS
 
-_LOGGER = logging.getLogger(__name__)
-DOMAIN = "jbd_config"
-BMS_BLE_DOMAIN = "bms_ble"
+PLATFORMS = [Platform.BUTTON, Platform.NUMBER]
 
 PACK_SCHEMA = vol.Schema(
     {
         vol.Required("name"): cv.string,
-        vol.Required("address"): vol.All(cv.string, vol.Upper),
-        vol.Optional("password", default="123456"): vol.All(cv.string, vol.Length(min=6, max=6)),
+        vol.Required(CONF_ADDRESS): vol.All(cv.string, vol.Upper),
+        vol.Optional(CONF_PASSWORD, default=DEFAULT_PASSWORD): vol.All(cv.string, vol.Length(min=6, max=6)),
     }
 )
+# Optional legacy YAML; packs listed here are imported as UI config entries.
 CONFIG_SCHEMA = vol.Schema(
     {DOMAIN: vol.Schema({vol.Required("packs"): vol.All(cv.ensure_list, [PACK_SCHEMA])})},
     extra=vol.ALLOW_EXTRA,
 )
 
 
-def _norm(mac: str) -> str:
-    return mac.replace(":", "").replace("-", "").upper()
+def _packs(hass: HomeAssistant) -> dict[str, JbdPack]:
+    return {p.name: p for p in hass.data.get(DOMAIN, {}).values()}
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    packs = {p["name"]: p for p in config[DOMAIN]["packs"]}
-    locks = {name: asyncio.Lock() for name in packs}
-
-    def _bms_ble_entry(pack: dict):
-        for entry in hass.config_entries.async_entries(BMS_BLE_DOMAIN):
-            addr = entry.data.get("address") or entry.unique_id or ""
-            if _norm(addr) == _norm(pack["address"]) or entry.title == pack["name"]:
-                return entry
-        return None
-
-    async def _session(pack: dict, changes: dict[str, int]) -> dict[str, int]:
-        device = bluetooth.async_ble_device_from_address(hass, pack["address"], connectable=True)
-        if device is None:
-            raise HomeAssistantError(f"{pack['name']}: {pack['address']} not in Bluetooth range")
-        client = await establish_connection(
-            BleakClientWithServiceCache, device, pack["name"], max_attempts=4
+    hass.data.setdefault(DOMAIN, {})
+    for pack in config.get(DOMAIN, {}).get("packs", []):
+        hass.async_create_task(
+            hass.config_entries.flow.async_init(DOMAIN, context={"source": SOURCE_IMPORT}, data=pack)
         )
-        try:
-            async def write(data: bytes) -> None:
-                await client.write_gatt_char(UUID_WRITE, data, response=False)
 
-            s = JbdSession(write, pack["address"])
-            await client.start_notify(UUID_NOTIFY, s.on_notify)
-            await s.authenticate(pack["password"])
-            return await s.factory(changes)
-        finally:
-            await client.disconnect()
-
-    async def _run(name: str, changes: dict[str, int]) -> dict:
-        pack = packs[name]
-        async with locks[name]:
-            entry = _bms_ble_entry(pack)
-            unloaded = False
-            if entry and entry.state is ConfigEntryState.LOADED:
-                await hass.config_entries.async_unload(entry.entry_id)
-                unloaded = True
-                await asyncio.sleep(2)
-            try:
-                before = await _session(pack, {})
-                result: dict = {"before": before}
-                todo = {k: v for k, v in changes.items() if before.get(k) != v}
-                if todo:
-                    await _session(pack, todo)
-                    await asyncio.sleep(2)
-                    after = await _session(pack, {})  # fresh session proves it was saved
-                    result["after"] = after
-                    result["verified"] = all(after[k] == v for k, v in todo.items())
-                    _LOGGER.warning("%s: wrote %s, read back %s", name, todo, after)
-                elif changes:
-                    result["verified"] = True
-                    result["note"] = "already set, nothing written"
-                return result
-            except (BleakError, TimeoutError, OSError, PermissionError) as err:
-                raise HomeAssistantError(f"{name}: {err}") from err
-            finally:
-                if unloaded:
-                    await hass.config_entries.async_setup(entry.entry_id)
-
-    def _pack_names(call: ServiceCall) -> list[str]:
+    def _selected(call: ServiceCall) -> list[JbdPack]:
+        packs = _packs(hass)
         names = call.data.get("pack") or list(packs)
         unknown = [n for n in names if n not in packs]
         if unknown:
             raise ServiceValidationError(f"Unknown pack(s) {unknown}; configured: {list(packs)}")
-        return names
+        return [packs[n] for n in names]
 
     async def read_config(call: ServiceCall) -> ServiceResponse:
-        return {n: await _run(n, {}) for n in _pack_names(call)}
+        raw = tuple(call.data.get("registers", ()))
+        return {p.name: await p.run(raw=raw) for p in _selected(call)}
 
     async def set_config(call: ServiceCall) -> ServiceResponse:
         changes = {k: call.data[k] for k in SETTINGS if k in call.data}
         if not changes:
             raise ServiceValidationError("Give at least one setting to change")
-        return {n: await _run(n, changes) for n in _pack_names(call)}
+        return {p.name: await p.run(changes) for p in _selected(call)}
 
     pack_field = {vol.Optional("pack"): vol.All(cv.ensure_list, [cv.string])}
     hass.services.async_register(
         DOMAIN, "read_config", read_config,
-        schema=vol.Schema(pack_field), supports_response=SupportsResponse.ONLY,
+        schema=vol.Schema(
+            {**pack_field, vol.Optional("registers"): vol.All(cv.ensure_list, [vol.All(vol.Coerce(int), vol.Range(0x10, 0xFF))])}
+        ),
+        supports_response=SupportsResponse.ONLY,
     )
     hass.services.async_register(
         DOMAIN, "set_config", set_config,
@@ -133,3 +82,18 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         supports_response=SupportsResponse.OPTIONAL,
     )
     return True
+
+
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = JbdPack(
+        hass, entry.title, entry.data[CONF_ADDRESS], entry.data.get(CONF_PASSWORD, DEFAULT_PASSWORD)
+    )
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    return True
+
+
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    if ok:
+        hass.data[DOMAIN].pop(entry.entry_id, None)
+    return ok

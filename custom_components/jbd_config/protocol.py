@@ -124,14 +124,17 @@ class JbdSession:
         if f[2] != 0:
             raise OSError(f"write reg 0x{reg:02X} failed (status 0x{f[2]:02X})")
 
-    async def factory(self, changes: dict[str, int]) -> dict[str, int]:
-        """Enter factory mode, apply `changes`, read all SETTINGS, exit (save only if changed)."""
+    async def factory(self, changes: dict[str, int], raw_regs: tuple[int, ...] = ()) -> dict:
+        """Enter factory mode, apply `changes`, read all SETTINGS (+ raw_regs), exit (save only if changed)."""
         await self.write_u16(REG_FACTORY_ENTER, FACTORY_KEY)
         save = False
         try:
             for name, value in changes.items():
                 await self.write_u16(SETTINGS[name][0], value)
                 save = True
-            return {name: await self.read_u16(reg) for name, (reg, _, _) in SETTINGS.items()}
+            out: dict = {name: await self.read_u16(reg) for name, (reg, _, _) in SETTINGS.items()}
+            if raw_regs:
+                out["raw"] = {f"0x{r:02X}": await self.read_u16(r) for r in raw_regs}
+            return out
         finally:
             await self.write_u16(REG_FACTORY_EXIT, EXIT_SAVE if save else EXIT_DISCARD)
