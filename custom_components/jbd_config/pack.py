@@ -48,7 +48,12 @@ class JbdPack:
         return None
 
     async def _connect(self):
-        device = bluetooth.async_ble_device_from_address(self.hass, self.address, connectable=True)
+        device = None
+        for _ in range(15):  # just after a disconnect the pack may not be advertising yet
+            device = bluetooth.async_ble_device_from_address(self.hass, self.address, connectable=True)
+            if device:
+                break
+            await asyncio.sleep(2)
         if device is None:
             raise HomeAssistantError(f"{self.name}: {self.address} not in Bluetooth range")
         client = await establish_connection(BleakClientWithServiceCache, device, self.name, max_attempts=4)
