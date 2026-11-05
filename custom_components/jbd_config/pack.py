@@ -78,9 +78,9 @@ class JbdPack:
 
                 s = JbdSession(write, self.address)
                 await client.start_notify(UUID_NOTIFY, s.on_notify)
-                root = await s.authenticate(self.password)
+                auth = await s.authenticate(self.password)
                 result = await s.factory(changes, raw)
-                result["root_auth"] = root
+                result["auth"] = auth
                 return result
             except BleakError as err:
                 if attempt == 2 or changes:  # don't blindly repeat a write

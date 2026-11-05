@@ -76,7 +76,7 @@ def run(bms, changes, password="123456"):
     async def go():
         s = p.JbdSession(bms.write, MAC)
         bms.session = s
-        await s.authenticate(password)
+        bms.auth = await s.authenticate(password)
         return await s.factory(changes)
 
     return asyncio.run(go())
@@ -110,4 +110,4 @@ def test_no_password_module():
 def test_root_password_sent_after_user_password():
     bms = FakeBms()
     run(bms, {})
-    assert bms.root
+    assert bms.root and bms.auth == "root_ok"

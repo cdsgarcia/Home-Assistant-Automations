@@ -102,23 +102,24 @@ class JbdSession:
         f = await self._xfer(auth_frame(cmd, data), lambda f: f[:3] == bytes([0xFF, 0xAA, cmd]))
         return f[4 : 4 + f[3]]
 
-    async def authenticate(self, password: str) -> bool:
-        """BLE-module auth: user password, then root password. Returns True if root was accepted."""
+    async def authenticate(self, password: str) -> str:
+        """BLE-module auth: user password, then root password. Returns the auth stage reached."""
         try:
             st = await self._auth(0x15, b"000000")
         except TimeoutError:
-            return False  # BLE module without auth
+            return "no_auth_module"
         if st[:1] == b"\x02":
-            return False  # no password set
+            return f"no_password_set ({st.hex()})"
         rnd = (await self._auth(0x17, b""))[0]
         if (await self._auth(0x18, encrypt_password(self.mac, password, rnd)))[:1] != b"\x00":
             raise PermissionError("BLE password rejected")
         # Root level (as used by the JBD app) may be required to write protected EEPROM registers.
         try:
             rnd = (await self._auth(0x17, b""))[0]
-            return (await self._auth(0x1D, encrypt_password(self.mac, ROOT_PASSWORD, rnd)))[:1] == b"\x00"
+            r = await self._auth(0x1D, encrypt_password(self.mac, ROOT_PASSWORD, rnd))
         except TimeoutError:
-            return False
+            return f"user_ok, root_timeout (0x15={st.hex()})"
+        return "root_ok" if r[:1] == b"\x00" else f"user_ok, root_rejected ({r.hex()})"
 
     async def read_u16(self, reg: int) -> int:
         f = await self._xfer(jbd_frame(0xA5, reg), lambda f: f[0] == 0xDD and f[1] == reg)
