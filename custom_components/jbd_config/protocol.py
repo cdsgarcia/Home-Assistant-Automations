@@ -114,8 +114,8 @@ class JbdSession:
         if (await self._auth(0x18, encrypt_password(self.mac, password, rnd)))[:1] != b"\x00":
             raise PermissionError("BLE password rejected")
         # Root level (as used by the JBD app) may be required to write protected EEPROM registers.
+        # The vendor app reuses the user-password random byte here (syssi/esphome-jbd-bms#94 capture).
         try:
-            rnd = (await self._auth(0x17, b""))[0]
             r = await self._auth(0x1D, encrypt_password(self.mac, ROOT_PASSWORD, rnd))
         except TimeoutError:
             return f"user_ok, root_timeout (0x15={st.hex()})"

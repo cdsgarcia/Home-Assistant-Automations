@@ -43,12 +43,14 @@ class FakeBms:
             if cmd == 0x15:
                 d = self.auth_status
             elif cmd == 0x17:
+                self.rnd = (self.rnd + 0x11) & 0xFF  # fresh random per request
                 d = bytes([self.rnd])
             elif cmd == 0x18:
                 ok = f[4:10] == p.encrypt_password(MAC, self.password, self.rnd)
+                self.login_rnd = self.rnd
                 d = b"\x00" if ok else b"\x01"
-            else:  # 0x1D root password
-                self.root = f[4 : 4 + f[3]] == p.encrypt_password(MAC, p.ROOT_PASSWORD, self.rnd)
+            else:  # 0x1D root password, encrypted with the login random byte
+                self.root = f[4 : 4 + f[3]] == p.encrypt_password(MAC, p.ROOT_PASSWORD, self.login_rnd)
                 d = b"\x00" if self.root else b"\x01"
             self._send(p.auth_frame(cmd, d))
             return
@@ -111,3 +113,9 @@ def test_root_password_sent_after_user_password():
     bms = FakeBms()
     run(bms, {})
     assert bms.root and bms.auth == "root_ok"
+
+def test_encryption_matches_vendor_app_capture():
+    # syssi/esphome-jbd-bms#94: user "123123" then root, both with random 0x37
+    mac = "A4:C1:37:04:2D:BE"
+    assert p.encrypt_password(mac, "123123", 0x37).hex() == "cc2a3b6c56c4"
+    assert p.encrypt_password(mac, p.ROOT_PASSWORD, 0x37).hex() == "25baaa9d9005ae9b58775a6967696a"
