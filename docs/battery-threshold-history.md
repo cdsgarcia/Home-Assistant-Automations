@@ -70,3 +70,11 @@ New thresholds were derived by picking clean **remaining-Ah-to-full** checkpoint
 | A/C 3F Power Meter - kWh Limit (15:00–09:00) | 3.0 kWh | 3.5 kWh |
 
 Rationale: on full-charge days (SOC ~95% at 17:00, 624Ah bank), projected pre-sunrise SOC with a 3.5 kWh cap is ~59–71% monthly average (worst nights ~53%). Each extra 1 kWh costs ~1.5% SOC; a cap up to ~5 kWh still keeps ≥50% before sunrise.
+
+## 2026-11-05 — Battery-full detection
+
+| Automation | Old | New |
+|---|---|---|
+| Daily SOC Check (battery full) | above 98% for 5 min | above 97% for 5 min |
+
+Rationale: `battery_soc_mean` is capacity-weighted (CST 324Ah = 52%). The Gentai packs (JBD) reset to 100% only when a cell reaches Cell Full Voltage (3600mV), which M1/S1 don't reach at 56.4V, so they stick at ~96–97% and the mean peaked at only 98.9% on a real full day (Nov 5). Plan: lower Gentai Cell Full Voltage to 3500mV (`tools/jbd_cell_full_voltage.py` or the app).

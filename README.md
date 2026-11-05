@@ -69,7 +69,7 @@ Rolling mean of A/C power draw sourced from `sensor.a_c_1f_power_meter_power`:
 ### ☀️ Solar Battery / SOC Management
 
 #### [`Daily SOC Check`](automations/daily_soc_check.yaml)
-Tracks whether the battery reached full charge (>98%, sustained for 5 minutes) during the day.
+Tracks whether the battery reached full charge (>97%, sustained for 5 minutes) during the day.
 
 - **On battery full** (daytime only): sets `input_boolean.battery_reached_100_today` to `on` and re-enables `automation.roof_deck_light` (if disabled)
 - **On sunrise**: resets the flag to `off` and re-enables the *Auto Turn On* automation (if disabled)

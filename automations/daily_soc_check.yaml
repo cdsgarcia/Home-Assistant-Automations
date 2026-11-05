@@ -4,7 +4,7 @@
   - trigger: numeric_state
     entity_id:
     - sensor.battery_soc_mean
-    above: 98
+    above: 97
     for:
       hours: 0
       minutes: 5
