@@ -9,6 +9,7 @@ import asyncio
 import logging
 
 import voluptuous as vol
+from bleak.exc import BleakError
 from bleak_retry_connector import BleakClientWithServiceCache, establish_connection
 
 from homeassistant.components import bluetooth
