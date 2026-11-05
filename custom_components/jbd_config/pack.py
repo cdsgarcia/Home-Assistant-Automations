@@ -13,7 +13,7 @@ from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
 
-from .protocol import UUID_NOTIFY, UUID_WRITE, JbdSession
+from .protocol import SETTINGS, UUID_NOTIFY, UUID_WRITE, JbdSession
 
 _LOGGER = logging.getLogger(__name__)
 BMS_BLE_DOMAIN = "bms_ble"
@@ -36,7 +36,7 @@ class JbdPack:
         return lambda: self._listeners.remove(cb)
 
     def _update(self, values: dict) -> None:
-        self.values.update({k: v for k, v in values.items() if k != "raw"})
+        self.values.update({k: v for k, v in values.items() if k in SETTINGS})
         for cb in list(self._listeners):
             cb()
 
@@ -78,8 +78,10 @@ class JbdPack:
 
                 s = JbdSession(write, self.address)
                 await client.start_notify(UUID_NOTIFY, s.on_notify)
-                await s.authenticate(self.password)
-                return await s.factory(changes, raw)
+                root = await s.authenticate(self.password)
+                result = await s.factory(changes, raw)
+                result["root_auth"] = root
+                return result
             except BleakError as err:
                 if attempt == 2 or changes:  # don't blindly repeat a write
                     raise
@@ -108,7 +110,7 @@ class JbdPack:
                     await asyncio.sleep(2)
                     after = await self._session({})  # fresh session proves it was saved
                     result["after"] = after
-                    result["verified"] = all(after[k] == v for k, v in todo.items())
+                    result["verified"] = all(after.get(k) == v for k, v in todo.items())
                     self._update(after)
                     _LOGGER.warning("%s: wrote %s -> %s", self.name, todo, result)
                 elif changes:

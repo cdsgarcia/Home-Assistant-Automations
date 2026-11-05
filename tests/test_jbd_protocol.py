@@ -25,6 +25,7 @@ class FakeBms:
         self.pending = None
         self.auth_status, self.password, self.rnd = auth_status, password, 0x42
         self.session = None
+        self.root = False
         self.buf = b""
 
     def _send(self, frame: bytes):
@@ -43,9 +44,12 @@ class FakeBms:
                 d = self.auth_status
             elif cmd == 0x17:
                 d = bytes([self.rnd])
-            else:
+            elif cmd == 0x18:
                 ok = f[4:10] == p.encrypt_password(MAC, self.password, self.rnd)
                 d = b"\x00" if ok else b"\x01"
+            else:  # 0x1D root password
+                self.root = f[4 : 4 + f[3]] == p.encrypt_password(MAC, p.ROOT_PASSWORD, self.rnd)
+                d = b"\x00" if self.root else b"\x01"
             self._send(p.auth_frame(cmd, d))
             return
         if len(f) < 4 + f[3] + 3:
@@ -101,3 +105,9 @@ def test_wrong_password_rejected():
 
 def test_no_password_module():
     assert run(FakeBms(auth_status=b"\x02"), {})["cell_full_mv"] == 3600
+
+
+def test_root_password_sent_after_user_password():
+    bms = FakeBms()
+    run(bms, {})
+    assert bms.root

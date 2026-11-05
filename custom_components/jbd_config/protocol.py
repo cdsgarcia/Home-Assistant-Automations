@@ -16,6 +16,7 @@ FACTORY_KEY = 0x5678
 REG_FACTORY_EXIT = 0x01
 EXIT_SAVE = 0x2828
 EXIT_DISCARD = 0x0000
+ROOT_PASSWORD = "JBDbtpwd!@#2023"  # fixed JBD BLE-module root password (syssi/esphome-jbd-bms)
 
 # Writable EEPROM settings: name -> (register, min, max). All U16, mV.
 SETTINGS: dict[str, tuple[int, int, int]] = {
@@ -39,8 +40,9 @@ def auth_frame(cmd: int, data: bytes) -> bytes:
 
 
 def encrypt_password(mac: str, password: str, rnd: int) -> bytes:
+    """((mac[i] ^ pw[i]) + rnd) & 0xFF; MAC bytes beyond the 6th count as 0."""
     mac_b = bytes.fromhex(mac.replace(":", ""))
-    return bytes(((mac_b[i] ^ ord(password[i])) + rnd) & 0xFF for i in range(6))
+    return bytes((((mac_b[i] if i < 6 else 0) ^ ord(c)) + rnd) & 0xFF for i, c in enumerate(password))
 
 
 class FrameAssembler:
@@ -100,16 +102,23 @@ class JbdSession:
         f = await self._xfer(auth_frame(cmd, data), lambda f: f[:3] == bytes([0xFF, 0xAA, cmd]))
         return f[4 : 4 + f[3]]
 
-    async def authenticate(self, password: str) -> None:
+    async def authenticate(self, password: str) -> bool:
+        """BLE-module auth: user password, then root password. Returns True if root was accepted."""
         try:
             st = await self._auth(0x15, b"000000")
         except TimeoutError:
-            return  # BLE module without auth
+            return False  # BLE module without auth
         if st[:1] == b"\x02":
-            return  # no password set
-        rnd = (await self._auth(0x17, b"\x00"))[0]
+            return False  # no password set
+        rnd = (await self._auth(0x17, b""))[0]
         if (await self._auth(0x18, encrypt_password(self.mac, password, rnd)))[:1] != b"\x00":
             raise PermissionError("BLE password rejected")
+        # Root level (as used by the JBD app) may be required to write protected EEPROM registers.
+        try:
+            rnd = (await self._auth(0x17, b""))[0]
+            return (await self._auth(0x1D, encrypt_password(self.mac, ROOT_PASSWORD, rnd)))[:1] == b"\x00"
+        except TimeoutError:
+            return False
 
     async def read_u16(self, reg: int) -> int:
         f = await self._xfer(jbd_frame(0xA5, reg), lambda f: f[0] == 0xDD and f[1] == reg)
