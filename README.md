@@ -205,6 +205,29 @@ Sends a mobile notification when the CYD-E713B0 device resets due to a real faul
 
 ## Tools
 
+### [`custom_components/jbd_config`](custom_components/jbd_config) — JBD BMS Config integration
+Changes the JBD (Gentai) BMS settings from Home Assistant over BLE. Each service call:
+1. unloads the pack's BMS_BLE entry, because the BMS accepts only one BLE connection;
+2. connects and authenticates;
+3. writes **only** the given settings, skipping any that are already equal;
+4. reads the values back in a fresh session to confirm they were saved;
+5. sets up the BMS_BLE entry again.
+
+| Service | What it does |
+|---|---|
+| `jbd_config.read_config` | Returns `cell_full_mv` (reg `0x12`), `balance_start_mv` (`0x2A`), `balance_delta_mv` (`0x2B`). Nothing is written. |
+| `jbd_config.set_config` | Sets any of these. The response has `before`, `after` and `verified`. |
+
+```yaml
+action: jbd_config.set_config
+data:
+  pack: [M1, S1, S2]   # omit for all packs
+  cell_full_mv: 3500
+```
+Install: copy `custom_components/jbd_config` to the HA config folder, add the `jbd_config:` block from `configuration.yaml`, then restart. Gentai firmware ignores the function-config register `0x2D`, so the balance mode can't be changed.
+
+Offline protocol tests: `python -m pytest tests -q`.
+
 ### [`tools/jbd_cell_full_voltage.py`](tools/jbd_cell_full_voltage.py)
 Reads or sets the JBD BMS **Cell Full Voltage** (EEPROM register `0x12`, mV) over BLE. The BMS resets its SOC to 100% only when a cell reaches this voltage. Only that one register is written, unlike the vendor app's "BMS write", which rewrites every register. The default is read-only; `--mv` without `--write` is a dry run. After writing, the script reads the value back in a new session to confirm it was saved.
 

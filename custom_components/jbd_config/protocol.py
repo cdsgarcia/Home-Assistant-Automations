@@ -1,0 +1,137 @@
+"""JBD BMS BLE protocol: frames, BLE-module auth, factory-mode register access.
+
+Transport-agnostic: JbdSession takes an async `write(bytes)` callable, and the caller feeds
+notifications into `on_notify`. This keeps it testable without bleak or Home Assistant.
+"""
+from __future__ import annotations
+
+import asyncio
+from collections.abc import Awaitable, Callable
+
+UUID_NOTIFY = "0000ff01-0000-1000-8000-00805f9b34fb"
+UUID_WRITE = "0000ff02-0000-1000-8000-00805f9b34fb"
+
+REG_FACTORY_ENTER = 0x00
+FACTORY_KEY = 0x5678
+REG_FACTORY_EXIT = 0x01
+EXIT_SAVE = 0x2828
+EXIT_DISCARD = 0x0000
+
+# Writable EEPROM settings: name -> (register, min, max). All U16, mV.
+SETTINGS: dict[str, tuple[int, int, int]] = {
+    "cell_full_mv": (0x12, 3400, 3650),  # SOC resets to 100% when a cell reaches this
+    "balance_start_mv": (0x2A, 3300, 3600),
+    "balance_delta_mv": (0x2B, 5, 50),
+}
+
+
+def jbd_frame(cmd: int, reg: int, data: bytes = b"") -> bytes:
+    """DD <cmd A5 read / 5A write> <reg> <len> <data> <crc16 BE> 77; crc = 0x10000 - sum(reg, len, data)."""
+    body = bytes([reg, len(data)]) + data
+    crc = (0x10000 - sum(body)) & 0xFFFF
+    return bytes([0xDD, cmd]) + body + crc.to_bytes(2, "big") + b"\x77"
+
+
+def auth_frame(cmd: int, data: bytes) -> bytes:
+    """FF AA <cmd> <len> <data> <sum8(cmd, len, data)>."""
+    body = bytes([cmd, len(data)]) + data
+    return b"\xff\xaa" + body + bytes([sum(body) & 0xFF])
+
+
+def encrypt_password(mac: str, password: str, rnd: int) -> bytes:
+    mac_b = bytes.fromhex(mac.replace(":", ""))
+    return bytes(((mac_b[i] ^ ord(password[i])) + rnd) & 0xFF for i in range(6))
+
+
+class FrameAssembler:
+    """Reassemble notification fragments into JBD (DD..77) or auth (FF AA..) frames."""
+
+    def __init__(self) -> None:
+        self.buf = bytearray()
+
+    def feed(self, chunk: bytes) -> list[bytes]:
+        self.buf += chunk
+        out: list[bytes] = []
+        while self.buf:
+            if self.buf[0] == 0xDD:
+                tail = 3
+            elif self.buf[:2] == b"\xff\xaa":
+                tail = 1
+            elif len(self.buf) == 1 and self.buf[0] == 0xFF:
+                break
+            else:
+                del self.buf[0]
+                continue
+            if len(self.buf) < 4 or len(self.buf) < 4 + self.buf[3] + tail:
+                break
+            n = 4 + self.buf[3] + tail
+            out.append(bytes(self.buf[:n]))
+            del self.buf[:n]
+        return out
+
+
+class JbdSession:
+    def __init__(self, write: Callable[[bytes], Awaitable[None]], mac: str) -> None:
+        self._write, self.mac = write, mac
+        self._asm = FrameAssembler()
+        self._q: asyncio.Queue[bytes] = asyncio.Queue()
+
+    def on_notify(self, _sender, data: bytearray) -> None:
+        for f in self._asm.feed(bytes(data)):
+            self._q.put_nowait(f)
+
+    async def _xfer(self, frame: bytes, match: Callable[[bytes], bool], timeout: float = 3.0) -> bytes:
+        while not self._q.empty():
+            self._q.get_nowait()
+        for i in range(0, len(frame), 20):
+            await self._write(frame[i : i + 20])
+        loop = asyncio.get_running_loop()
+        end = loop.time() + timeout
+        while (left := end - loop.time()) > 0:
+            try:
+                f = await asyncio.wait_for(self._q.get(), left)
+            except asyncio.TimeoutError:
+                break
+            if match(f):
+                return f
+        raise TimeoutError(f"no reply to {frame.hex(' ')}")
+
+    async def _auth(self, cmd: int, data: bytes) -> bytes:
+        f = await self._xfer(auth_frame(cmd, data), lambda f: f[:3] == bytes([0xFF, 0xAA, cmd]))
+        return f[4 : 4 + f[3]]
+
+    async def authenticate(self, password: str) -> None:
+        try:
+            st = await self._auth(0x15, b"000000")
+        except TimeoutError:
+            return  # BLE module without auth
+        if st[:1] == b"\x02":
+            return  # no password set
+        rnd = (await self._auth(0x17, b"\x00"))[0]
+        if (await self._auth(0x18, encrypt_password(self.mac, password, rnd)))[:1] != b"\x00":
+            raise PermissionError("BLE password rejected")
+
+    async def read_u16(self, reg: int) -> int:
+        f = await self._xfer(jbd_frame(0xA5, reg), lambda f: f[0] == 0xDD and f[1] == reg)
+        if f[2] != 0:
+            raise OSError(f"read reg 0x{reg:02X} failed (status 0x{f[2]:02X})")
+        return int.from_bytes(f[4:6], "big")
+
+    async def write_u16(self, reg: int, value: int) -> None:
+        f = await self._xfer(
+            jbd_frame(0x5A, reg, value.to_bytes(2, "big")), lambda f: f[0] == 0xDD and f[1] == reg
+        )
+        if f[2] != 0:
+            raise OSError(f"write reg 0x{reg:02X} failed (status 0x{f[2]:02X})")
+
+    async def factory(self, changes: dict[str, int]) -> dict[str, int]:
+        """Enter factory mode, apply `changes`, read all SETTINGS, exit (save only if changed)."""
+        await self.write_u16(REG_FACTORY_ENTER, FACTORY_KEY)
+        save = False
+        try:
+            for name, value in changes.items():
+                await self.write_u16(SETTINGS[name][0], value)
+                save = True
+            return {name: await self.read_u16(reg) for name, (reg, _, _) in SETTINGS.items()}
+        finally:
+            await self.write_u16(REG_FACTORY_EXIT, EXIT_SAVE if save else EXIT_DISCARD)

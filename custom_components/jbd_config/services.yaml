@@ -1,0 +1,49 @@
+read_config:
+  name: Read JBD BMS config
+  description: Read Cell Full Voltage and balance settings (nothing is written).
+  fields:
+    pack:
+      name: Pack
+      description: Pack names from configuration.yaml (default all).
+      example: '["M1"]'
+      selector:
+        text:
+          multiple: true
+
+set_config:
+  name: Set JBD BMS config
+  description: >-
+    Write only the given settings (skipped if already equal), then verify in a fresh session.
+  fields:
+    pack:
+      name: Pack
+      description: Pack names from configuration.yaml (default all).
+      example: '["M1", "S1", "S2"]'
+      selector:
+        text:
+          multiple: true
+    cell_full_mv:
+      name: Cell Full Voltage
+      description: SOC resets to 100% when any cell reaches this (mV).
+      example: 3500
+      selector:
+        number:
+          min: 3400
+          max: 3650
+          unit_of_measurement: mV
+    balance_start_mv:
+      name: Balance start voltage
+      example: 3400
+      selector:
+        number:
+          min: 3300
+          max: 3600
+          unit_of_measurement: mV
+    balance_delta_mv:
+      name: Balance delta
+      example: 8
+      selector:
+        number:
+          min: 5
+          max: 50
+          unit_of_measurement: mV

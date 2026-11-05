@@ -146,3 +146,15 @@ sensor:
     state_characteristic: mean
     max_age:
       minutes: 30
+
+# JBD (Gentai) BMS settings over BLE - services jbd_config.read_config / set_config.
+# Needs custom_components/jbd_config. Password defaults to the vendor default; add
+# `password: !secret ...` per pack if yours differs.
+jbd_config:
+  packs:
+    - name: M1
+      address: AA:C2:37:01:B9:02
+    - name: S1
+      address: AA:C2:37:01:DB:D7
+    - name: S2
+      address: AA:C2:37:01:E0:7F
