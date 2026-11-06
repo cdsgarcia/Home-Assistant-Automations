@@ -184,6 +184,88 @@
      "samples": 101,
      "normal_mv": 25.2,
      "mirrored_mv": 19.9
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-06 13:30:40.352",
+       "current": 44.05,
+       "cell": 8,
+       "hi": 3.4,
+       "gap_mv": 0,
+       "delta_mv": 4,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-06 13:47:14.358",
+       "current": 21.24,
+       "cell": 8,
+       "hi": 3.46,
+       "gap_mv": 2,
+       "delta_mv": 18,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-06 13:48:47.421",
+       "current": 20.76,
+       "cell": 8,
+       "hi": 3.519,
+       "gap_mv": 5,
+       "delta_mv": 33,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-06 14:41:00.374",
+       "current": 12.44,
+       "cell": 8,
+       "hi": 3.551,
+       "gap_mv": 2,
+       "delta_mv": 42,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-06 14:49:16.205",
+       "current": 6.14,
+       "cell": 8,
+       "hi": 3.607,
+       "gap_mv": 3,
+       "delta_mv": 53,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-06 14:49:16.205",
+       "current": 6.14,
+       "cell": 8,
+       "hi": 3.607,
+       "gap_mv": 3,
+       "delta_mv": 53,
+       "at_start": false
+      },
+      {
+       "th": 3.62,
+       "time": "2026-11-06 15:02:42.298",
+       "current": 0.63,
+       "cell": 8,
+       "hi": 3.635,
+       "gap_mv": 3,
+       "delta_mv": 61,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-06 13:30:40.352",
+      "peak": "2026-11-06 15:04:15.274",
+      "peak_v": 3.648,
+      "minutes": 93.6,
+      "mean_current": 6.53,
+      "max_current": 46.52
+     }
     }
    },
    "M1": {
@@ -351,6 +433,88 @@
      "samples": 21,
      "normal_mv": 5.1,
      "mirrored_mv": 17.0
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-06 12:55:57.422",
+       "current": 1.88,
+       "cell": 12,
+       "hi": 3.4,
+       "gap_mv": 1,
+       "delta_mv": 4,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-06 13:46:59.505",
+       "current": 9.0,
+       "cell": 12,
+       "hi": 3.461,
+       "gap_mv": 5,
+       "delta_mv": 10,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-06 13:48:29.556",
+       "current": 8.75,
+       "cell": 12,
+       "hi": 3.509,
+       "gap_mv": 9,
+       "delta_mv": 16,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-06 14:41:00.588",
+       "current": 5.17,
+       "cell": 12,
+       "hi": 3.558,
+       "gap_mv": 14,
+       "delta_mv": 26,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-06 14:41:30.585",
+       "current": 2.5,
+       "cell": 12,
+       "hi": 3.583,
+       "gap_mv": 19,
+       "delta_mv": 33,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-06 14:49:30.533",
+       "current": 0.59,
+       "cell": 12,
+       "hi": 3.614,
+       "gap_mv": 24,
+       "delta_mv": 40,
+       "at_start": false
+      },
+      {
+       "th": 3.62,
+       "time": "2026-11-06 15:02:30.415",
+       "current": 0.74,
+       "cell": 12,
+       "hi": 3.648,
+       "gap_mv": 24,
+       "delta_mv": 43,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-06 12:55:57.422",
+      "peak": "2026-11-06 15:04:30.481",
+      "peak_v": 3.649,
+      "minutes": 128.6,
+      "mean_current": 1.06,
+      "max_current": 9.23
+     }
     }
    },
    "S1": {
@@ -519,6 +683,88 @@
      "samples": 41,
      "normal_mv": 9.1,
      "mirrored_mv": 15.0
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-06 12:53:25.975",
+       "current": 1.92,
+       "cell": 13,
+       "hi": 3.4,
+       "gap_mv": 3,
+       "delta_mv": 7,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-06 13:46:39.944",
+       "current": 9.22,
+       "cell": 13,
+       "hi": 3.453,
+       "gap_mv": 2,
+       "delta_mv": 12,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-06 13:48:15.802",
+       "current": 9.13,
+       "cell": 13,
+       "hi": 3.5,
+       "gap_mv": 3,
+       "delta_mv": 17,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-06 14:01:57.042",
+       "current": 0.0,
+       "cell": 13,
+       "hi": 3.55,
+       "gap_mv": 3,
+       "delta_mv": 23,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-06 14:41:24.286",
+       "current": 5.41,
+       "cell": 13,
+       "hi": 3.58,
+       "gap_mv": 8,
+       "delta_mv": 35,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-06 14:49:14.966",
+       "current": 4.29,
+       "cell": 13,
+       "hi": 3.618,
+       "gap_mv": 9,
+       "delta_mv": 40,
+       "at_start": false
+      },
+      {
+       "th": 3.62,
+       "time": "2026-11-06 15:02:23.161",
+       "current": 4.25,
+       "cell": 13,
+       "hi": 3.636,
+       "gap_mv": 10,
+       "delta_mv": 43,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-06 12:53:25.975",
+      "peak": "2026-11-06 15:04:28.172",
+      "peak_v": 3.649,
+      "minutes": 131.0,
+      "mean_current": 1.18,
+      "max_current": 9.22
+     }
     }
    },
    "S2": {
@@ -686,6 +932,88 @@
      "samples": 61,
      "normal_mv": 11.3,
      "mirrored_mv": 29.7
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-06 12:44:30.420",
+       "current": 3.08,
+       "cell": 15,
+       "hi": 3.4,
+       "gap_mv": 2,
+       "delta_mv": 7,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-06 13:46:00.366",
+       "current": 9.09,
+       "cell": 15,
+       "hi": 3.456,
+       "gap_mv": 9,
+       "delta_mv": 27,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-06 13:48:00.542",
+       "current": 8.94,
+       "cell": 15,
+       "hi": 3.52,
+       "gap_mv": 18,
+       "delta_mv": 46,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-06 13:49:00.448",
+       "current": 8.62,
+       "cell": 15,
+       "hi": 3.583,
+       "gap_mv": 33,
+       "delta_mv": 78,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-06 13:49:00.448",
+       "current": 8.62,
+       "cell": 15,
+       "hi": 3.583,
+       "gap_mv": 33,
+       "delta_mv": 78,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-06 13:50:00.455",
+       "current": 2.89,
+       "cell": 15,
+       "hi": 3.601,
+       "gap_mv": 40,
+       "delta_mv": 90,
+       "at_start": false
+      },
+      {
+       "th": 3.62,
+       "time": "2026-11-06 14:41:30.278",
+       "current": 0.0,
+       "cell": 15,
+       "hi": 3.649,
+       "gap_mv": 53,
+       "delta_mv": 119,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-06 12:44:30.420",
+      "peak": "2026-11-06 14:41:30.278",
+      "peak_v": 3.649,
+      "minutes": 117.0,
+      "mean_current": 1.28,
+      "max_current": 9.17
+     }
     }
    }
   }
@@ -873,6 +1201,48 @@
      "samples": 78,
      "normal_mv": 21.5,
      "mirrored_mv": 14.6
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-05 15:02:00.206",
+       "current": 25.6,
+       "cell": 8,
+       "hi": 3.4,
+       "gap_mv": 0,
+       "delta_mv": 5,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-05 15:14:55.172",
+       "current": 7.74,
+       "cell": 8,
+       "hi": 3.451,
+       "gap_mv": 2,
+       "delta_mv": 16,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-05 15:22:41.197",
+       "current": 10.01,
+       "cell": 8,
+       "hi": 3.511,
+       "gap_mv": 3,
+       "delta_mv": 30,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-05 15:02:00.206",
+      "peak": "2026-11-05 15:24:14.176",
+      "peak_v": 3.546,
+      "minutes": 22.2,
+      "mean_current": 10.9,
+      "max_current": 25.6
+     }
     }
    },
    "M1": {
@@ -1038,6 +1408,58 @@
      "samples": 3,
      "normal_mv": 5.0,
      "mirrored_mv": 9.7
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-05 14:57:52.301",
+       "current": 2.69,
+       "cell": 12,
+       "hi": 3.4,
+       "gap_mv": 2,
+       "delta_mv": 5,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-05 15:13:22.408",
+       "current": 1.38,
+       "cell": 12,
+       "hi": 3.45,
+       "gap_mv": 5,
+       "delta_mv": 11,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-05 15:21:52.363",
+       "current": 1.1,
+       "cell": 12,
+       "hi": 3.5,
+       "gap_mv": 8,
+       "delta_mv": 15,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-05 15:23:52.263",
+       "current": 3.83,
+       "cell": 12,
+       "hi": 3.551,
+       "gap_mv": 14,
+       "delta_mv": 24,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-05 14:57:52.301",
+      "peak": "2026-11-05 15:23:52.263",
+      "peak_v": 3.551,
+      "minutes": 26.0,
+      "mean_current": 2.09,
+      "max_current": 4.05
+     }
     }
    },
    "S1": {
@@ -1206,6 +1628,58 @@
      "samples": 45,
      "normal_mv": 6.7,
      "mirrored_mv": 11.2
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-05 14:57:29.363",
+       "current": 2.68,
+       "cell": 13,
+       "hi": 3.4,
+       "gap_mv": 2,
+       "delta_mv": 8,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-05 15:12:59.261",
+       "current": 1.46,
+       "cell": 13,
+       "hi": 3.45,
+       "gap_mv": 2,
+       "delta_mv": 13,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-05 15:21:29.310",
+       "current": 1.26,
+       "cell": 13,
+       "hi": 3.5,
+       "gap_mv": 2,
+       "delta_mv": 17,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-05 15:23:59.539",
+       "current": 3.05,
+       "cell": 13,
+       "hi": 3.555,
+       "gap_mv": 4,
+       "delta_mv": 28,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-05 14:57:29.363",
+      "peak": "2026-11-05 15:23:59.539",
+      "peak_v": 3.555,
+      "minutes": 26.5,
+      "mean_current": 2.2,
+      "max_current": 4.27
+     }
     }
    },
    "S2": {
@@ -1373,6 +1847,78 @@
      "samples": 59,
      "normal_mv": 11.4,
      "mirrored_mv": 29.8
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-05 14:03:44.463",
+       "current": 2.96,
+       "cell": 15,
+       "hi": 3.4,
+       "gap_mv": 3,
+       "delta_mv": 9,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-05 15:08:17.495",
+       "current": 2.95,
+       "cell": 15,
+       "hi": 3.452,
+       "gap_mv": 10,
+       "delta_mv": 28,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-05 15:17:17.410",
+       "current": 2.69,
+       "cell": 15,
+       "hi": 3.502,
+       "gap_mv": 13,
+       "delta_mv": 40,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-05 15:22:47.349",
+       "current": 3.88,
+       "cell": 15,
+       "hi": 3.556,
+       "gap_mv": 22,
+       "delta_mv": 62,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-05 15:23:47.455",
+       "current": 4.1,
+       "cell": 15,
+       "hi": 3.6,
+       "gap_mv": 36,
+       "delta_mv": 87,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-05 15:23:47.455",
+       "current": 4.1,
+       "cell": 15,
+       "hi": 3.6,
+       "gap_mv": 36,
+       "delta_mv": 87,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-05 14:03:44.463",
+      "peak": "2026-11-05 15:24:47.356",
+      "peak_v": 3.603,
+      "minutes": 81.0,
+      "mean_current": 0.91,
+      "max_current": 4.31
+     }
     }
    }
   }
@@ -1569,6 +2115,48 @@
      "samples": 48,
      "normal_mv": 24.8,
      "mirrored_mv": 20.3
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:29:04.392",
+       "current": 11.75,
+       "cell": 5,
+       "hi": 3.414,
+       "gap_mv": 1,
+       "delta_mv": 16,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:32:41.368",
+       "current": 10.11,
+       "cell": 5,
+       "hi": 3.456,
+       "gap_mv": 0,
+       "delta_mv": 23,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:35:17.213",
+       "current": 9.59,
+       "cell": 8,
+       "hi": 3.505,
+       "gap_mv": 4,
+       "delta_mv": 34,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:29:04.392",
+      "peak": "2026-11-02 13:46:08.278",
+      "peak_v": 3.548,
+      "minutes": 17.1,
+      "mean_current": 5.26,
+      "max_current": 11.99
+     }
     }
    },
    "M1": {
@@ -1734,6 +2322,58 @@
      "samples": 8,
      "normal_mv": 4.7,
      "mirrored_mv": 8.3
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:28:35.607",
+       "current": 5.98,
+       "cell": 12,
+       "hi": 3.412,
+       "gap_mv": 3,
+       "delta_mv": 8,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:32:05.632",
+       "current": 5.53,
+       "cell": 12,
+       "hi": 3.453,
+       "gap_mv": 5,
+       "delta_mv": 11,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:35:06.570",
+       "current": 4.97,
+       "cell": 12,
+       "hi": 3.505,
+       "gap_mv": 10,
+       "delta_mv": 19,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 13:46:08.590",
+       "current": 1.46,
+       "cell": 12,
+       "hi": 3.553,
+       "gap_mv": 14,
+       "delta_mv": 27,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:28:35.607",
+      "peak": "2026-11-02 13:46:38.586",
+      "peak_v": 3.554,
+      "minutes": 18.0,
+      "mean_current": 2.7,
+      "max_current": 6.09
+     }
     }
    },
    "S1": {
@@ -1904,6 +2544,58 @@
      "samples": 29,
      "normal_mv": 7.7,
      "mirrored_mv": 12.4
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:28:45.335",
+       "current": 6.2,
+       "cell": 13,
+       "hi": 3.415,
+       "gap_mv": 3,
+       "delta_mv": 10,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:31:45.595",
+       "current": 5.92,
+       "cell": 13,
+       "hi": 3.45,
+       "gap_mv": 3,
+       "delta_mv": 15,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:35:15.280",
+       "current": 5.2,
+       "cell": 13,
+       "hi": 3.51,
+       "gap_mv": 5,
+       "delta_mv": 23,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 13:45:45.245",
+       "current": 4.71,
+       "cell": 13,
+       "hi": 3.555,
+       "gap_mv": 6,
+       "delta_mv": 30,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:28:45.335",
+      "peak": "2026-11-02 13:46:45.296",
+      "peak_v": 3.556,
+      "minutes": 18.0,
+      "mean_current": 2.8,
+      "max_current": 6.33
+     }
     }
    },
    "S2": {
@@ -2072,6 +2764,78 @@
      "samples": 28,
      "normal_mv": 13.9,
      "mirrored_mv": 34.4
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:28:47.315",
+       "current": 5.97,
+       "cell": 15,
+       "hi": 3.428,
+       "gap_mv": 6,
+       "delta_mv": 21,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:30:47.294",
+       "current": 5.69,
+       "cell": 15,
+       "hi": 3.454,
+       "gap_mv": 10,
+       "delta_mv": 29,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:33:47.305",
+       "current": 5.2,
+       "cell": 15,
+       "hi": 3.503,
+       "gap_mv": 14,
+       "delta_mv": 42,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 13:35:47.431",
+       "current": 4.77,
+       "cell": 15,
+       "hi": 3.562,
+       "gap_mv": 27,
+       "delta_mv": 70,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 13:45:48.309",
+       "current": 4.49,
+       "cell": 15,
+       "hi": 3.6,
+       "gap_mv": 32,
+       "delta_mv": 84,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-02 13:45:48.309",
+       "current": 4.49,
+       "cell": 15,
+       "hi": 3.6,
+       "gap_mv": 32,
+       "delta_mv": 84,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:28:47.315",
+      "peak": "2026-11-02 13:46:48.338",
+      "peak_v": 3.602,
+      "minutes": 18.0,
+      "mean_current": 2.61,
+      "max_current": 6.16
+     }
     }
    }
   }
@@ -2268,6 +3032,58 @@
      "samples": 54,
      "normal_mv": 26.6,
      "mirrored_mv": 22.0
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:29:04.392",
+       "current": 11.75,
+       "cell": 5,
+       "hi": 3.414,
+       "gap_mv": 1,
+       "delta_mv": 16,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:32:41.368",
+       "current": 10.11,
+       "cell": 5,
+       "hi": 3.456,
+       "gap_mv": 0,
+       "delta_mv": 23,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:35:17.213",
+       "current": 9.59,
+       "cell": 8,
+       "hi": 3.505,
+       "gap_mv": 4,
+       "delta_mv": 34,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 14:02:12.283",
+       "current": 0.0,
+       "cell": 8,
+       "hi": 3.574,
+       "gap_mv": 1,
+       "delta_mv": 50,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:29:04.392",
+      "peak": "2026-11-02 14:04:17.229",
+      "peak_v": 3.576,
+      "minutes": 35.2,
+      "mean_current": 3.61,
+      "max_current": 11.99
+     }
     }
    },
    "M1": {
@@ -2433,6 +3249,68 @@
      "samples": 10,
      "normal_mv": 4.8,
      "mirrored_mv": 8.9
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:28:35.607",
+       "current": 5.98,
+       "cell": 12,
+       "hi": 3.412,
+       "gap_mv": 3,
+       "delta_mv": 8,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:32:05.632",
+       "current": 5.53,
+       "cell": 12,
+       "hi": 3.453,
+       "gap_mv": 5,
+       "delta_mv": 11,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:35:06.570",
+       "current": 4.97,
+       "cell": 12,
+       "hi": 3.505,
+       "gap_mv": 10,
+       "delta_mv": 19,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 13:46:08.590",
+       "current": 1.46,
+       "cell": 12,
+       "hi": 3.553,
+       "gap_mv": 14,
+       "delta_mv": 27,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 14:02:14.529",
+       "current": 0.68,
+       "cell": 12,
+       "hi": 3.583,
+       "gap_mv": 17,
+       "delta_mv": 32,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:28:35.607",
+      "peak": "2026-11-02 14:04:14.587",
+      "peak_v": 3.585,
+      "minutes": 35.6,
+      "mean_current": 1.91,
+      "max_current": 6.09
+     }
     }
    },
    "S1": {
@@ -2603,6 +3481,68 @@
      "samples": 30,
      "normal_mv": 7.8,
      "mirrored_mv": 12.7
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:28:45.335",
+       "current": 6.2,
+       "cell": 13,
+       "hi": 3.415,
+       "gap_mv": 3,
+       "delta_mv": 10,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:31:45.595",
+       "current": 5.92,
+       "cell": 13,
+       "hi": 3.45,
+       "gap_mv": 3,
+       "delta_mv": 15,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:35:15.280",
+       "current": 5.2,
+       "cell": 13,
+       "hi": 3.51,
+       "gap_mv": 5,
+       "delta_mv": 23,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 13:45:45.245",
+       "current": 4.71,
+       "cell": 13,
+       "hi": 3.555,
+       "gap_mv": 6,
+       "delta_mv": 30,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 14:02:15.292",
+       "current": 0.61,
+       "cell": 13,
+       "hi": 3.584,
+       "gap_mv": 8,
+       "delta_mv": 35,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:28:45.335",
+      "peak": "2026-11-02 14:04:15.267",
+      "peak_v": 3.586,
+      "minutes": 35.5,
+      "mean_current": 1.93,
+      "max_current": 6.33
+     }
     }
    },
    "S2": {
@@ -2771,6 +3711,88 @@
      "samples": 29,
      "normal_mv": 14.1,
      "mirrored_mv": 35.2
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:28:47.315",
+       "current": 5.97,
+       "cell": 15,
+       "hi": 3.428,
+       "gap_mv": 6,
+       "delta_mv": 21,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:30:47.294",
+       "current": 5.69,
+       "cell": 15,
+       "hi": 3.454,
+       "gap_mv": 10,
+       "delta_mv": 29,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:33:47.305",
+       "current": 5.2,
+       "cell": 15,
+       "hi": 3.503,
+       "gap_mv": 14,
+       "delta_mv": 42,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 13:35:47.431",
+       "current": 4.77,
+       "cell": 15,
+       "hi": 3.562,
+       "gap_mv": 27,
+       "delta_mv": 70,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 13:45:48.309",
+       "current": 4.49,
+       "cell": 15,
+       "hi": 3.6,
+       "gap_mv": 32,
+       "delta_mv": 84,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-02 13:45:48.309",
+       "current": 4.49,
+       "cell": 15,
+       "hi": 3.6,
+       "gap_mv": 32,
+       "delta_mv": 84,
+       "at_start": false
+      },
+      {
+       "th": 3.62,
+       "time": "2026-11-02 14:02:18.330",
+       "current": 0.58,
+       "cell": 15,
+       "hi": 3.643,
+       "gap_mv": 46,
+       "delta_mv": 106,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:28:47.315",
+      "peak": "2026-11-02 14:04:18.373",
+      "peak_v": 3.646,
+      "minutes": 35.5,
+      "mean_current": 1.8,
+      "max_current": 6.16
+     }
     }
    }
   }
@@ -2967,6 +3989,58 @@
      "samples": 59,
      "normal_mv": 26.6,
      "mirrored_mv": 22.0
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:29:04.392",
+       "current": 11.75,
+       "cell": 5,
+       "hi": 3.414,
+       "gap_mv": 1,
+       "delta_mv": 16,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:32:41.368",
+       "current": 10.11,
+       "cell": 5,
+       "hi": 3.456,
+       "gap_mv": 0,
+       "delta_mv": 23,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:35:17.213",
+       "current": 9.59,
+       "cell": 8,
+       "hi": 3.505,
+       "gap_mv": 4,
+       "delta_mv": 34,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 14:02:12.283",
+       "current": 0.0,
+       "cell": 8,
+       "hi": 3.574,
+       "gap_mv": 1,
+       "delta_mv": 50,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:29:04.392",
+      "peak": "2026-11-02 14:04:17.229",
+      "peak_v": 3.576,
+      "minutes": 35.2,
+      "mean_current": 3.61,
+      "max_current": 11.99
+     }
     }
    },
    "M1": {
@@ -3132,6 +4206,68 @@
      "samples": 12,
      "normal_mv": 4.8,
      "mirrored_mv": 8.9
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:28:35.607",
+       "current": 5.98,
+       "cell": 12,
+       "hi": 3.412,
+       "gap_mv": 3,
+       "delta_mv": 8,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:32:05.632",
+       "current": 5.53,
+       "cell": 12,
+       "hi": 3.453,
+       "gap_mv": 5,
+       "delta_mv": 11,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:35:06.570",
+       "current": 4.97,
+       "cell": 12,
+       "hi": 3.505,
+       "gap_mv": 10,
+       "delta_mv": 19,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 13:46:08.590",
+       "current": 1.46,
+       "cell": 12,
+       "hi": 3.553,
+       "gap_mv": 14,
+       "delta_mv": 27,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 14:02:14.529",
+       "current": 0.68,
+       "cell": 12,
+       "hi": 3.583,
+       "gap_mv": 17,
+       "delta_mv": 32,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:28:35.607",
+      "peak": "2026-11-02 14:04:14.587",
+      "peak_v": 3.585,
+      "minutes": 35.6,
+      "mean_current": 1.91,
+      "max_current": 6.09
+     }
     }
    },
    "S1": {
@@ -3302,6 +4438,68 @@
      "samples": 33,
      "normal_mv": 8.0,
      "mirrored_mv": 13.0
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:28:45.335",
+       "current": 6.2,
+       "cell": 13,
+       "hi": 3.415,
+       "gap_mv": 3,
+       "delta_mv": 10,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:31:45.595",
+       "current": 5.92,
+       "cell": 13,
+       "hi": 3.45,
+       "gap_mv": 3,
+       "delta_mv": 15,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:35:15.280",
+       "current": 5.2,
+       "cell": 13,
+       "hi": 3.51,
+       "gap_mv": 5,
+       "delta_mv": 23,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 13:45:45.245",
+       "current": 4.71,
+       "cell": 13,
+       "hi": 3.555,
+       "gap_mv": 6,
+       "delta_mv": 30,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 14:02:15.292",
+       "current": 0.61,
+       "cell": 13,
+       "hi": 3.584,
+       "gap_mv": 8,
+       "delta_mv": 35,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:28:45.335",
+      "peak": "2026-11-02 14:04:15.267",
+      "peak_v": 3.586,
+      "minutes": 35.5,
+      "mean_current": 1.93,
+      "max_current": 6.33
+     }
     }
    },
    "S2": {
@@ -3470,6 +4668,88 @@
      "samples": 30,
      "normal_mv": 14.3,
      "mirrored_mv": 35.8
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:28:47.315",
+       "current": 5.97,
+       "cell": 15,
+       "hi": 3.428,
+       "gap_mv": 6,
+       "delta_mv": 21,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:30:47.294",
+       "current": 5.69,
+       "cell": 15,
+       "hi": 3.454,
+       "gap_mv": 10,
+       "delta_mv": 29,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:33:47.305",
+       "current": 5.2,
+       "cell": 15,
+       "hi": 3.503,
+       "gap_mv": 14,
+       "delta_mv": 42,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 13:35:47.431",
+       "current": 4.77,
+       "cell": 15,
+       "hi": 3.562,
+       "gap_mv": 27,
+       "delta_mv": 70,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 13:45:48.309",
+       "current": 4.49,
+       "cell": 15,
+       "hi": 3.6,
+       "gap_mv": 32,
+       "delta_mv": 84,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-02 13:45:48.309",
+       "current": 4.49,
+       "cell": 15,
+       "hi": 3.6,
+       "gap_mv": 32,
+       "delta_mv": 84,
+       "at_start": false
+      },
+      {
+       "th": 3.62,
+       "time": "2026-11-02 14:02:18.330",
+       "current": 0.58,
+       "cell": 15,
+       "hi": 3.643,
+       "gap_mv": 46,
+       "delta_mv": 106,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:28:47.315",
+      "peak": "2026-11-02 14:04:18.373",
+      "peak_v": 3.646,
+      "minutes": 35.5,
+      "mean_current": 1.8,
+      "max_current": 6.16
+     }
     }
    }
   }
@@ -3670,6 +4950,68 @@
      "samples": 74,
      "normal_mv": 27.2,
      "mirrored_mv": 22.5
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:29:04.392",
+       "current": 11.75,
+       "cell": 5,
+       "hi": 3.414,
+       "gap_mv": 1,
+       "delta_mv": 16,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:32:41.368",
+       "current": 10.11,
+       "cell": 5,
+       "hi": 3.456,
+       "gap_mv": 0,
+       "delta_mv": 23,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:35:17.213",
+       "current": 9.59,
+       "cell": 8,
+       "hi": 3.505,
+       "gap_mv": 4,
+       "delta_mv": 34,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 14:02:12.283",
+       "current": 0.0,
+       "cell": 8,
+       "hi": 3.574,
+       "gap_mv": 1,
+       "delta_mv": 50,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 15:25:17.230",
+       "current": 4.5,
+       "cell": 8,
+       "hi": 3.588,
+       "gap_mv": 3,
+       "delta_mv": 55,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:29:04.392",
+      "peak": "2026-11-02 15:25:17.230",
+      "peak_v": 3.588,
+      "minutes": 116.2,
+      "mean_current": 2.97,
+      "max_current": 11.99
+     }
     }
    },
    "M1": {
@@ -3836,6 +5178,78 @@
      "samples": 20,
      "normal_mv": 4.8,
      "mirrored_mv": 11.9
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:28:35.607",
+       "current": 5.98,
+       "cell": 12,
+       "hi": 3.412,
+       "gap_mv": 3,
+       "delta_mv": 8,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:32:05.632",
+       "current": 5.53,
+       "cell": 12,
+       "hi": 3.453,
+       "gap_mv": 5,
+       "delta_mv": 11,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:35:06.570",
+       "current": 4.97,
+       "cell": 12,
+       "hi": 3.505,
+       "gap_mv": 10,
+       "delta_mv": 19,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 13:46:08.590",
+       "current": 1.46,
+       "cell": 12,
+       "hi": 3.553,
+       "gap_mv": 14,
+       "delta_mv": 27,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 14:02:14.529",
+       "current": 0.68,
+       "cell": 12,
+       "hi": 3.583,
+       "gap_mv": 17,
+       "delta_mv": 32,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-02 15:25:23.315",
+       "current": 0.0,
+       "cell": 12,
+       "hi": 3.602,
+       "gap_mv": 22,
+       "delta_mv": 42,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:28:35.607",
+      "peak": "2026-11-02 15:25:23.315",
+      "peak_v": 3.602,
+      "minutes": 116.8,
+      "mean_current": 1.5,
+      "max_current": 6.09
+     }
     }
    },
    "S1": {
@@ -4006,6 +5420,78 @@
      "samples": 43,
      "normal_mv": 8.7,
      "mirrored_mv": 14.1
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:28:45.335",
+       "current": 6.2,
+       "cell": 13,
+       "hi": 3.415,
+       "gap_mv": 3,
+       "delta_mv": 10,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:31:45.595",
+       "current": 5.92,
+       "cell": 13,
+       "hi": 3.45,
+       "gap_mv": 3,
+       "delta_mv": 15,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:35:15.280",
+       "current": 5.2,
+       "cell": 13,
+       "hi": 3.51,
+       "gap_mv": 5,
+       "delta_mv": 23,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 13:45:45.245",
+       "current": 4.71,
+       "cell": 13,
+       "hi": 3.555,
+       "gap_mv": 6,
+       "delta_mv": 30,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 14:02:15.292",
+       "current": 0.61,
+       "cell": 13,
+       "hi": 3.584,
+       "gap_mv": 8,
+       "delta_mv": 35,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-02 15:25:24.196",
+       "current": 0.0,
+       "cell": 13,
+       "hi": 3.601,
+       "gap_mv": 12,
+       "delta_mv": 45,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:28:45.335",
+      "peak": "2026-11-02 15:25:24.196",
+      "peak_v": 3.601,
+      "minutes": 116.6,
+      "mean_current": 1.54,
+      "max_current": 6.33
+     }
     }
    },
    "S2": {
@@ -4174,6 +5660,88 @@
      "samples": 39,
      "normal_mv": 15.8,
      "mirrored_mv": 39.7
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 13:28:47.315",
+       "current": 5.97,
+       "cell": 15,
+       "hi": 3.428,
+       "gap_mv": 6,
+       "delta_mv": 21,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 13:30:47.294",
+       "current": 5.69,
+       "cell": 15,
+       "hi": 3.454,
+       "gap_mv": 10,
+       "delta_mv": 29,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 13:33:47.305",
+       "current": 5.2,
+       "cell": 15,
+       "hi": 3.503,
+       "gap_mv": 14,
+       "delta_mv": 42,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 13:35:47.431",
+       "current": 4.77,
+       "cell": 15,
+       "hi": 3.562,
+       "gap_mv": 27,
+       "delta_mv": 70,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 13:45:48.309",
+       "current": 4.49,
+       "cell": 15,
+       "hi": 3.6,
+       "gap_mv": 32,
+       "delta_mv": 84,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-02 13:45:48.309",
+       "current": 4.49,
+       "cell": 15,
+       "hi": 3.6,
+       "gap_mv": 32,
+       "delta_mv": 84,
+       "at_start": false
+      },
+      {
+       "th": 3.62,
+       "time": "2026-11-02 14:02:18.330",
+       "current": 0.58,
+       "cell": 15,
+       "hi": 3.643,
+       "gap_mv": 46,
+       "delta_mv": 106,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 13:28:47.315",
+      "peak": "2026-11-02 15:24:35.249",
+      "peak_v": 3.649,
+      "minutes": 115.8,
+      "mean_current": 1.42,
+      "max_current": 6.16
+     }
     }
    }
   }
@@ -4360,6 +5928,58 @@
      "samples": 18,
      "normal_mv": 27.2,
      "mirrored_mv": 17.9
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 12:04:59.007",
+       "current": 64.72,
+       "cell": 3,
+       "hi": 3.401,
+       "gap_mv": 0,
+       "delta_mv": 4,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 12:13:16.869",
+       "current": 48.56,
+       "cell": 8,
+       "hi": 3.45,
+       "gap_mv": 0,
+       "delta_mv": 10,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 12:17:24.988",
+       "current": 19.3,
+       "cell": 8,
+       "hi": 3.506,
+       "gap_mv": 1,
+       "delta_mv": 25,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 12:20:00.024",
+       "current": 11.39,
+       "cell": 8,
+       "hi": 3.554,
+       "gap_mv": 4,
+       "delta_mv": 40,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 12:04:59.007",
+      "peak": "2026-11-02 12:21:03.004",
+      "peak_v": 3.579,
+      "minutes": 16.1,
+      "mean_current": 41.78,
+      "max_current": 65.39
+     }
     }
    },
    "M1": {
@@ -4527,6 +6147,68 @@
      "samples": 6,
      "normal_mv": 5.1,
      "mirrored_mv": 13.1
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 11:43:26.611",
+       "current": 2.65,
+       "cell": 1,
+       "hi": 3.4,
+       "gap_mv": 1,
+       "delta_mv": 3,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 12:10:57.508",
+       "current": 1.78,
+       "cell": 12,
+       "hi": 3.45,
+       "gap_mv": 4,
+       "delta_mv": 11,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 12:15:57.541",
+       "current": 6.93,
+       "cell": 12,
+       "hi": 3.503,
+       "gap_mv": 8,
+       "delta_mv": 16,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 12:18:57.457",
+       "current": 3.82,
+       "cell": 12,
+       "hi": 3.554,
+       "gap_mv": 15,
+       "delta_mv": 27,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 12:20:57.476",
+       "current": 3.11,
+       "cell": 12,
+       "hi": 3.588,
+       "gap_mv": 20,
+       "delta_mv": 35,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 11:43:26.611",
+      "peak": "2026-11-02 12:20:57.476",
+      "peak_v": 3.588,
+      "minutes": 37.5,
+      "mean_current": 2.0,
+      "max_current": 6.93
+     }
     }
    },
    "S1": {
@@ -4695,6 +6377,68 @@
      "samples": 48,
      "normal_mv": 7.6,
      "mirrored_mv": 10.0
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 11:40:37.331",
+       "current": 4.98,
+       "cell": 13,
+       "hi": 3.4,
+       "gap_mv": 1,
+       "delta_mv": 5,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 12:10:28.668",
+       "current": 2.09,
+       "cell": 13,
+       "hi": 3.451,
+       "gap_mv": 2,
+       "delta_mv": 15,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 12:16:05.644",
+       "current": 7.2,
+       "cell": 13,
+       "hi": 3.51,
+       "gap_mv": 2,
+       "delta_mv": 22,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 12:19:08.822",
+       "current": 4.24,
+       "cell": 13,
+       "hi": 3.561,
+       "gap_mv": 2,
+       "delta_mv": 32,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 12:20:40.572",
+       "current": 2.93,
+       "cell": 13,
+       "hi": 3.581,
+       "gap_mv": 4,
+       "delta_mv": 37,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 11:40:37.331",
+      "peak": "2026-11-02 12:21:10.385",
+      "peak_v": 3.598,
+      "minutes": 40.6,
+      "mean_current": 2.71,
+      "max_current": 7.2
+     }
     }
    },
    "S2": {
@@ -4862,6 +6606,88 @@
      "samples": 69,
      "normal_mv": 10.8,
      "mirrored_mv": 26.0
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-02 11:40:38.201",
+       "current": 3.27,
+       "cell": 15,
+       "hi": 3.406,
+       "gap_mv": 1,
+       "delta_mv": 6,
+       "at_start": true
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-02 12:06:38.325",
+       "current": 2.46,
+       "cell": 15,
+       "hi": 3.45,
+       "gap_mv": 10,
+       "delta_mv": 26,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-02 12:13:38.173",
+       "current": 5.71,
+       "cell": 15,
+       "hi": 3.506,
+       "gap_mv": 15,
+       "delta_mv": 41,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-02 12:17:38.196",
+       "current": 3.23,
+       "cell": 15,
+       "hi": 3.56,
+       "gap_mv": 26,
+       "delta_mv": 66,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-02 12:18:38.211",
+       "current": 3.63,
+       "cell": 15,
+       "hi": 3.59,
+       "gap_mv": 33,
+       "delta_mv": 81,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-02 12:19:08.215",
+       "current": 4.1,
+       "cell": 15,
+       "hi": 3.614,
+       "gap_mv": 43,
+       "delta_mv": 96,
+       "at_start": false
+      },
+      {
+       "th": 3.62,
+       "time": "2026-11-02 12:20:08.218",
+       "current": 2.51,
+       "cell": 15,
+       "hi": 3.63,
+       "gap_mv": 50,
+       "delta_mv": 104,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-02 11:40:38.201",
+      "peak": "2026-11-02 12:20:38.223",
+      "peak_v": 3.645,
+      "minutes": 40.0,
+      "mean_current": 2.15,
+      "max_current": 7.09
+     }
     }
    }
   }

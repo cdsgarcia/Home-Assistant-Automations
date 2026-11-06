@@ -33,6 +33,15 @@ Bit-order check: avg mV above pack min of flagged cells, reading bit0 = cell 1 (
 | S1 | 13:30:49 [1] @3.419 | [1, 2, 3, 4, 5] | 9.1 / 15.0 (n=41) | 0 |
 | S2 | 12:50:30 [2] @3.405 | [2, 3, 4, 5] | 11.3 / 29.7 (n=61) | 0 |
 
+Top of charge — first time the highest cell reaches each threshold: `current A · #cell · gap/Δ mV` (gap = 1st−2nd highest cell). Charge current lifts the highest cell, so compare gaps between captures only at similar current. `*` = already above at capture start. Window = from the 3.40 V crossing to the peak cell.
+
+| Pack | 3.40 V | 3.45 V | 3.50 V | 3.55 V | 3.58 V | 3.60 V | 3.62 V | 3.65 V | Window (min, mean / max A, peak V) |
+|---|---|---|---|---|---|---|---|---|---|
+| CST | 44.05 A · #8 · 0/4 @13:30 | 21.24 A · #8 · 2/18 @13:47 | 20.76 A · #8 · 5/33 @13:48 | 12.44 A · #8 · 2/42 @14:41 | 6.14 A · #8 · 3/53 @14:49 | 6.14 A · #8 · 3/53 @14:49 | 0.63 A · #8 · 3/61 @15:02 | – | 93.6 min, 6.53 / 46.52 A, 3.648 |
+| M1 | 1.88 A · #12 · 1/4 @12:55 | 9.0 A · #12 · 5/10 @13:46 | 8.75 A · #12 · 9/16 @13:48 | 5.17 A · #12 · 14/26 @14:41 | 2.5 A · #12 · 19/33 @14:41 | 0.59 A · #12 · 24/40 @14:49 | 0.74 A · #12 · 24/43 @15:02 | – | 128.6 min, 1.06 / 9.23 A, 3.649 |
+| S1 | 1.92 A · #13 · 3/7 @12:53 | 9.22 A · #13 · 2/12 @13:46 | 9.13 A · #13 · 3/17 @13:48 | 0.0 A · #13 · 3/23 @14:01 | 5.41 A · #13 · 8/35 @14:41 | 4.29 A · #13 · 9/40 @14:49 | 4.25 A · #13 · 10/43 @15:02 | – | 131.0 min, 1.18 / 9.22 A, 3.649 |
+| S2 | 3.08 A · #15 · 2/7 @12:44 | 9.09 A · #15 · 9/27 @13:46 | 8.94 A · #15 · 18/46 @13:48 | 8.62 A · #15 · 33/78 @13:49 | 8.62 A · #15 · 33/78 @13:49 | 2.89 A · #15 · 40/90 @13:50 | 0.0 A · #15 · 53/119 @14:41 | – | 117.0 min, 1.28 / 9.17 A, 3.649 |
+
 ## home-assistant_bms_ble_2026-11-05T07-58-21.096Z.log
 
 Window: 2026-11-05 14:03:44.463 → 2026-11-05 15:58:20.239  
@@ -63,6 +72,15 @@ Bit-order check: avg mV above pack min of flagged cells, reading bit0 = cell 1 (
 | M1 | 15:11:52 [1] @3.446 | [1, 5] | 5.0 / 9.7 (n=3) | 0 |
 | S1 | 15:04:29 [4] @3.423 | [1, 2, 3, 4, 5] | 6.7 / 11.2 (n=45) | 0 |
 | S2 | 14:57:17 [2] @3.410 | [2, 3, 4, 5] | 11.4 / 29.8 (n=59) | 0 |
+
+Top of charge — first time the highest cell reaches each threshold: `current A · #cell · gap/Δ mV` (gap = 1st−2nd highest cell). Charge current lifts the highest cell, so compare gaps between captures only at similar current. `*` = already above at capture start. Window = from the 3.40 V crossing to the peak cell.
+
+| Pack | 3.40 V | 3.45 V | 3.50 V | 3.55 V | 3.58 V | 3.60 V | 3.62 V | 3.65 V | Window (min, mean / max A, peak V) |
+|---|---|---|---|---|---|---|---|---|---|
+| CST | 25.6 A · #8 · 0/5 @15:02 | 7.74 A · #8 · 2/16 @15:14 | 10.01 A · #8 · 3/30 @15:22 | – | – | – | – | – | 22.2 min, 10.9 / 25.6 A, 3.546 |
+| M1 | 2.69 A · #12 · 2/5 @14:57 | 1.38 A · #12 · 5/11 @15:13 | 1.1 A · #12 · 8/15 @15:21 | 3.83 A · #12 · 14/24 @15:23 | – | – | – | – | 26.0 min, 2.09 / 4.05 A, 3.551 |
+| S1 | 2.68 A · #13 · 2/8 @14:57 | 1.46 A · #13 · 2/13 @15:12 | 1.26 A · #13 · 2/17 @15:21 | 3.05 A · #13 · 4/28 @15:23 | – | – | – | – | 26.5 min, 2.2 / 4.27 A, 3.555 |
+| S2 | 2.96 A · #15 · 3/9* @14:03 | 2.95 A · #15 · 10/28 @15:08 | 2.69 A · #15 · 13/40 @15:17 | 3.88 A · #15 · 22/62 @15:22 | 4.1 A · #15 · 36/87 @15:23 | 4.1 A · #15 · 36/87 @15:23 | – | – | 81.0 min, 0.91 / 4.31 A, 3.603 |
 
 ## home-assistant_bms_ble_2026-11-02T05-53-36.205Z.log
 
@@ -95,6 +113,15 @@ Bit-order check: avg mV above pack min of flagged cells, reading bit0 = cell 1 (
 | S1 | 13:29:15 [1, 2, 4] @3.420 | [1, 2, 3, 4, 5] | 7.7 / 12.4 (n=29) | 0 |
 | S2 | 13:28:47 [2, 4] @3.428 | [2, 3, 4, 5] | 13.9 / 34.4 (n=28) | 0 |
 
+Top of charge — first time the highest cell reaches each threshold: `current A · #cell · gap/Δ mV` (gap = 1st−2nd highest cell). Charge current lifts the highest cell, so compare gaps between captures only at similar current. `*` = already above at capture start. Window = from the 3.40 V crossing to the peak cell.
+
+| Pack | 3.40 V | 3.45 V | 3.50 V | 3.55 V | 3.58 V | 3.60 V | 3.62 V | 3.65 V | Window (min, mean / max A, peak V) |
+|---|---|---|---|---|---|---|---|---|---|
+| CST | 11.75 A · #5 · 1/16* @13:29 | 10.11 A · #5 · 0/23 @13:32 | 9.59 A · #8 · 4/34 @13:35 | – | – | – | – | – | 17.1 min, 5.26 / 11.99 A, 3.548 |
+| M1 | 5.98 A · #12 · 3/8* @13:28 | 5.53 A · #12 · 5/11 @13:32 | 4.97 A · #12 · 10/19 @13:35 | 1.46 A · #12 · 14/27 @13:46 | – | – | – | – | 18.0 min, 2.7 / 6.09 A, 3.554 |
+| S1 | 6.2 A · #13 · 3/10* @13:28 | 5.92 A · #13 · 3/15 @13:31 | 5.2 A · #13 · 5/23 @13:35 | 4.71 A · #13 · 6/30 @13:45 | – | – | – | – | 18.0 min, 2.8 / 6.33 A, 3.556 |
+| S2 | 5.97 A · #15 · 6/21* @13:28 | 5.69 A · #15 · 10/29 @13:30 | 5.2 A · #15 · 14/42 @13:33 | 4.77 A · #15 · 27/70 @13:35 | 4.49 A · #15 · 32/84 @13:45 | 4.49 A · #15 · 32/84 @13:45 | – | – | 18.0 min, 2.61 / 6.16 A, 3.602 |
+
 ## home-assistant_bms_ble_2026-11-02T06-05-39.158Z.log
 
 Window: 2026-11-02 13:28:35.607 → 2026-11-02 14:05:19.259  
@@ -125,6 +152,15 @@ Bit-order check: avg mV above pack min of flagged cells, reading bit0 = cell 1 (
 | M1 | 13:35:36 [4] @3.516 | [2, 4] | 4.8 / 8.9 (n=10) | 0 |
 | S1 | 13:29:15 [1, 2, 4] @3.420 | [1, 2, 3, 4, 5] | 7.8 / 12.7 (n=30) | 0 |
 | S2 | 13:28:47 [2, 4] @3.428 | [2, 3, 4, 5] | 14.1 / 35.2 (n=29) | 0 |
+
+Top of charge — first time the highest cell reaches each threshold: `current A · #cell · gap/Δ mV` (gap = 1st−2nd highest cell). Charge current lifts the highest cell, so compare gaps between captures only at similar current. `*` = already above at capture start. Window = from the 3.40 V crossing to the peak cell.
+
+| Pack | 3.40 V | 3.45 V | 3.50 V | 3.55 V | 3.58 V | 3.60 V | 3.62 V | 3.65 V | Window (min, mean / max A, peak V) |
+|---|---|---|---|---|---|---|---|---|---|
+| CST | 11.75 A · #5 · 1/16* @13:29 | 10.11 A · #5 · 0/23 @13:32 | 9.59 A · #8 · 4/34 @13:35 | 0.0 A · #8 · 1/50 @14:02 | – | – | – | – | 35.2 min, 3.61 / 11.99 A, 3.576 |
+| M1 | 5.98 A · #12 · 3/8* @13:28 | 5.53 A · #12 · 5/11 @13:32 | 4.97 A · #12 · 10/19 @13:35 | 1.46 A · #12 · 14/27 @13:46 | 0.68 A · #12 · 17/32 @14:02 | – | – | – | 35.6 min, 1.91 / 6.09 A, 3.585 |
+| S1 | 6.2 A · #13 · 3/10* @13:28 | 5.92 A · #13 · 3/15 @13:31 | 5.2 A · #13 · 5/23 @13:35 | 4.71 A · #13 · 6/30 @13:45 | 0.61 A · #13 · 8/35 @14:02 | – | – | – | 35.5 min, 1.93 / 6.33 A, 3.586 |
+| S2 | 5.97 A · #15 · 6/21* @13:28 | 5.69 A · #15 · 10/29 @13:30 | 5.2 A · #15 · 14/42 @13:33 | 4.77 A · #15 · 27/70 @13:35 | 4.49 A · #15 · 32/84 @13:45 | 4.49 A · #15 · 32/84 @13:45 | 0.58 A · #15 · 46/106 @14:02 | – | 35.5 min, 1.8 / 6.16 A, 3.646 |
 
 ## home-assistant_bms_ble_2026-11-02T06-09-41.989Z.log
 
@@ -157,6 +193,15 @@ Bit-order check: avg mV above pack min of flagged cells, reading bit0 = cell 1 (
 | S1 | 13:29:15 [1, 2, 4] @3.420 | [1, 2, 3, 4, 5] | 8.0 / 13.0 (n=33) | 0 |
 | S2 | 13:28:47 [2, 4] @3.428 | [2, 3, 4, 5] | 14.3 / 35.8 (n=30) | 0 |
 
+Top of charge — first time the highest cell reaches each threshold: `current A · #cell · gap/Δ mV` (gap = 1st−2nd highest cell). Charge current lifts the highest cell, so compare gaps between captures only at similar current. `*` = already above at capture start. Window = from the 3.40 V crossing to the peak cell.
+
+| Pack | 3.40 V | 3.45 V | 3.50 V | 3.55 V | 3.58 V | 3.60 V | 3.62 V | 3.65 V | Window (min, mean / max A, peak V) |
+|---|---|---|---|---|---|---|---|---|---|
+| CST | 11.75 A · #5 · 1/16* @13:29 | 10.11 A · #5 · 0/23 @13:32 | 9.59 A · #8 · 4/34 @13:35 | 0.0 A · #8 · 1/50 @14:02 | – | – | – | – | 35.2 min, 3.61 / 11.99 A, 3.576 |
+| M1 | 5.98 A · #12 · 3/8* @13:28 | 5.53 A · #12 · 5/11 @13:32 | 4.97 A · #12 · 10/19 @13:35 | 1.46 A · #12 · 14/27 @13:46 | 0.68 A · #12 · 17/32 @14:02 | – | – | – | 35.6 min, 1.91 / 6.09 A, 3.585 |
+| S1 | 6.2 A · #13 · 3/10* @13:28 | 5.92 A · #13 · 3/15 @13:31 | 5.2 A · #13 · 5/23 @13:35 | 4.71 A · #13 · 6/30 @13:45 | 0.61 A · #13 · 8/35 @14:02 | – | – | – | 35.5 min, 1.93 / 6.33 A, 3.586 |
+| S2 | 5.97 A · #15 · 6/21* @13:28 | 5.69 A · #15 · 10/29 @13:30 | 5.2 A · #15 · 14/42 @13:33 | 4.77 A · #15 · 27/70 @13:35 | 4.49 A · #15 · 32/84 @13:45 | 4.49 A · #15 · 32/84 @13:45 | 0.58 A · #15 · 46/106 @14:02 | – | 35.5 min, 1.8 / 6.16 A, 3.646 |
+
 ## home-assistant_bms_ble_2026-11-02T07-26-27.899Z.log
 
 Window: 2026-11-02 13:28:35.607 → 2026-11-02 15:26:24.203  
@@ -188,6 +233,15 @@ Bit-order check: avg mV above pack min of flagged cells, reading bit0 = cell 1 (
 | S1 | 13:29:15 [1, 2, 4] @3.420 | [1, 2, 3, 4, 5] | 8.7 / 14.1 (n=43) | 1 |
 | S2 | 13:28:47 [2, 4] @3.428 | [2, 3, 4, 5] | 15.8 / 39.7 (n=39) | 0 |
 
+Top of charge — first time the highest cell reaches each threshold: `current A · #cell · gap/Δ mV` (gap = 1st−2nd highest cell). Charge current lifts the highest cell, so compare gaps between captures only at similar current. `*` = already above at capture start. Window = from the 3.40 V crossing to the peak cell.
+
+| Pack | 3.40 V | 3.45 V | 3.50 V | 3.55 V | 3.58 V | 3.60 V | 3.62 V | 3.65 V | Window (min, mean / max A, peak V) |
+|---|---|---|---|---|---|---|---|---|---|
+| CST | 11.75 A · #5 · 1/16* @13:29 | 10.11 A · #5 · 0/23 @13:32 | 9.59 A · #8 · 4/34 @13:35 | 0.0 A · #8 · 1/50 @14:02 | 4.5 A · #8 · 3/55 @15:25 | – | – | – | 116.2 min, 2.97 / 11.99 A, 3.588 |
+| M1 | 5.98 A · #12 · 3/8* @13:28 | 5.53 A · #12 · 5/11 @13:32 | 4.97 A · #12 · 10/19 @13:35 | 1.46 A · #12 · 14/27 @13:46 | 0.68 A · #12 · 17/32 @14:02 | 0.0 A · #12 · 22/42 @15:25 | – | – | 116.8 min, 1.5 / 6.09 A, 3.602 |
+| S1 | 6.2 A · #13 · 3/10* @13:28 | 5.92 A · #13 · 3/15 @13:31 | 5.2 A · #13 · 5/23 @13:35 | 4.71 A · #13 · 6/30 @13:45 | 0.61 A · #13 · 8/35 @14:02 | 0.0 A · #13 · 12/45 @15:25 | – | – | 116.6 min, 1.54 / 6.33 A, 3.601 |
+| S2 | 5.97 A · #15 · 6/21* @13:28 | 5.69 A · #15 · 10/29 @13:30 | 5.2 A · #15 · 14/42 @13:33 | 4.77 A · #15 · 27/70 @13:35 | 4.49 A · #15 · 32/84 @13:45 | 4.49 A · #15 · 32/84 @13:45 | 0.58 A · #15 · 46/106 @14:02 | – | 115.8 min, 1.42 / 6.16 A, 3.649 |
+
 ## home-assistant_bms_ble_2026-11-02T04-24-08.061Z.log
 
 Window: 2026-11-02 11:40:26.588 → 2026-11-02 12:23:57.596  
@@ -218,3 +272,12 @@ Bit-order check: avg mV above pack min of flagged cells, reading bit0 = cell 1 (
 | M1 | 12:18:27 [4, 5] @3.540 | [2, 4, 5] | 5.1 / 13.1 (n=6) | 0 |
 | S1 | 11:50:11 [2] @3.410 | [1, 2, 3, 4, 5] | 7.6 / 10.0 (n=48) | 0 |
 | S2 | 11:41:38 [2] @3.407 | [2, 3, 4, 5] | 10.8 / 26.0 (n=69) | 0 |
+
+Top of charge — first time the highest cell reaches each threshold: `current A · #cell · gap/Δ mV` (gap = 1st−2nd highest cell). Charge current lifts the highest cell, so compare gaps between captures only at similar current. `*` = already above at capture start. Window = from the 3.40 V crossing to the peak cell.
+
+| Pack | 3.40 V | 3.45 V | 3.50 V | 3.55 V | 3.58 V | 3.60 V | 3.62 V | 3.65 V | Window (min, mean / max A, peak V) |
+|---|---|---|---|---|---|---|---|---|---|
+| CST | 64.72 A · #3 · 0/4 @12:04 | 48.56 A · #8 · 0/10 @12:13 | 19.3 A · #8 · 1/25 @12:17 | 11.39 A · #8 · 4/40 @12:20 | – | – | – | – | 16.1 min, 41.78 / 65.39 A, 3.579 |
+| M1 | 2.65 A · #1 · 1/3 @11:43 | 1.78 A · #12 · 4/11 @12:10 | 6.93 A · #12 · 8/16 @12:15 | 3.82 A · #12 · 15/27 @12:18 | 3.11 A · #12 · 20/35 @12:20 | – | – | – | 37.5 min, 2.0 / 6.93 A, 3.588 |
+| S1 | 4.98 A · #13 · 1/5* @11:40 | 2.09 A · #13 · 2/15 @12:10 | 7.2 A · #13 · 2/22 @12:16 | 4.24 A · #13 · 2/32 @12:19 | 2.93 A · #13 · 4/37 @12:20 | – | – | – | 40.6 min, 2.71 / 7.2 A, 3.598 |
+| S2 | 3.27 A · #15 · 1/6* @11:40 | 2.46 A · #15 · 10/26 @12:06 | 5.71 A · #15 · 15/41 @12:13 | 3.23 A · #15 · 26/66 @12:17 | 3.63 A · #15 · 33/81 @12:18 | 4.1 A · #15 · 43/96 @12:19 | 2.51 A · #15 · 50/104 @12:20 | – | 40.0 min, 2.15 / 7.09 A, 3.645 |

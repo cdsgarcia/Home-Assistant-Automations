@@ -6,7 +6,7 @@ Writes/updates (next to this script):
   history.json  - machine-readable list of capture summaries (one per log file)
   HISTORY.md    - human-readable tables, newest capture first
 """
-import argparse, ast, collections, json, os, re
+import argparse, ast, collections, csv, datetime, json, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SAMPLE_RE = re.compile(r"(\S+ \S+) \w+ .*?\] (\S+): BMS data sample (\{.*\})\s*$")
@@ -44,6 +44,45 @@ def cst_mask(hexstr):
 
 def bits(mask):
     return [i + 1 for i in range(16) if mask >> i & 1]
+
+
+TOC_THRESHOLDS = (3.40, 3.45, 3.50, 3.55, 3.58, 3.60, 3.62, 3.65)
+
+
+def top_of_charge(samples):
+    """samples: [(ts, current_A, cell_voltages)] in time order.
+
+    Charge current lifts the highest cell (I x R), so gaps are only comparable between
+    captures at similar current. For the first time the highest cell reaches each
+    threshold, record the current, cell, gap to the 2nd-highest cell and pack delta.
+    """
+    samples = [x for x in samples if x[2]]
+    if not samples:
+        return None
+    crossings, done = [], set()
+    for k, (ts, cur, c) in enumerate(samples):
+        hi, srt = max(c), sorted(c)
+        for th in TOC_THRESHOLDS:
+            if th not in done and hi >= th:
+                done.add(th)
+                crossings.append({"th": th, "time": ts, "current": cur, "cell": c.index(hi) + 1, "hi": hi,
+                                  "gap_mv": round((srt[-1] - srt[-2]) * 1000),
+                                  "delta_mv": round((hi - srt[0]) * 1000), "at_start": k == 0})
+    if not crossings:
+        return {"crossings": [], "window": None}
+    t0 = crossings[0]["time"]
+    i0 = next(k for k, x in enumerate(samples) if x[0] == t0)
+    ipk = max(range(i0, len(samples)), key=lambda k: max(samples[k][2]))
+    win = samples[i0:ipk + 1]
+    curs = [x[1] for x in win]
+    return {"crossings": crossings, "window": {
+        "start": t0, "peak": samples[ipk][0], "peak_v": max(samples[ipk][2]),
+        "minutes": round((_ts(samples[ipk][0]) - _ts(t0)) / 60, 1),
+        "mean_current": round(sum(curs) / len(curs), 2), "max_current": max(curs)}}
+
+
+def _ts(s):
+    return datetime.datetime.fromisoformat(s).timestamp()
 
 
 def summarise(rows, pay):
@@ -115,6 +154,7 @@ def summarise(rows, pay):
             "balance_first": {"time": first[0], "cells": bits(first[1]), "max_cell_v": first_v} if first else None,
             "balance_cells_ever": bits(union),
             "balance_bit_check": bit_check,
+            "top_of_charge": top_of_charge([(ts, d["current"], d.get("cell_voltages")) for ts, d in s]),
         }
     return out
 
@@ -158,7 +198,38 @@ def to_md(entry):
         bc = p.get("balance_bit_check") or {}
         bcs = f"{bc.get('normal_mv')} / {bc.get('mirrored_mv')} (n={bc.get('samples')})" if bc.get("samples") else "-"
         L.append(f"| {dev} | {bfs} | {p['balance_cells_ever'] or '-'} | {bcs} | {entry['errors'].get(dev, 0)} |")
+    L += ["", "Top of charge — first time the highest cell reaches each threshold: "
+          "`current A · #cell · gap/Δ mV` (gap = 1st−2nd highest cell). Charge current lifts the highest cell, "
+          "so compare gaps between captures only at similar current. `*` = already above at capture start. "
+          "Window = from the 3.40 V crossing to the peak cell.", "",
+          "| Pack | " + " | ".join(f"{th:.2f} V" for th in TOC_THRESHOLDS) + " | Window (min, mean / max A, peak V) |",
+          "|---|" + "---|" * len(TOC_THRESHOLDS) + "---|"]
+    for dev, p in entry["packs"].items():
+        toc = p.get("top_of_charge")
+        if not toc:
+            continue
+        by = {x["th"]: x for x in toc["crossings"]}
+        cols = []
+        for th in TOC_THRESHOLDS:
+            x = by.get(th)
+            cols.append(f"{x['current']} A · #{x['cell']} · {x['gap_mv']}/{x['delta_mv']}{'*' if x['at_start'] else ''}"
+                        f" @{t(x['time'])[:5]}" if x else "–")
+        w = toc["window"]
+        ws = f"{w['minutes']} min, {w['mean_current']} / {w['max_current']} A, {w['peak_v']:.3f}" if w else "–"
+        L.append(f"| {dev} | " + " | ".join(cols) + f" | {ws} |")
     return "\n".join(L) + "\n"
+
+
+def csv_samples(entry):
+    """Rebuild (pack -> [(ts, current, cells)]) for an entry from samples_<date>.csv."""
+    path = os.path.join(HERE, f"samples_{entry['start'][:10]}.csv")
+    if not os.path.exists(path):
+        return {}
+    out = collections.defaultdict(list)
+    for r in csv.DictReader(open(path, encoding="utf-8")):
+        if entry["start"] <= r["time"] <= entry["end"]:
+            out[r["pack"]].append((r["time"], float(r["current"]), [float(r[f"c{i}"]) for i in range(1, 17)]))
+    return out
 
 
 def main():
@@ -170,7 +241,14 @@ def main():
     a = ap.parse_args()
     hj = os.path.join(HERE, "history.json")
     if a.rebuild:
-        write_md(json.load(open(hj, encoding="utf-8")))
+        hist = json.load(open(hj, encoding="utf-8"))
+        for h in hist:  # backfill top-of-charge for captures summarised before it existed
+            smp = csv_samples(h)
+            for dev, p in h["packs"].items():
+                if "top_of_charge" not in p and smp.get(dev):
+                    p["top_of_charge"] = top_of_charge(smp[dev])
+        json.dump(hist, open(hj, "w", encoding="utf-8"), indent=1)
+        write_md(hist)
         return
     if not a.log:
         ap.error("log is required unless --rebuild is given")

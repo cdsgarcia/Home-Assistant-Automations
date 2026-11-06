@@ -14,6 +14,7 @@ python bms_logs\bms_log_summary.py "<path>\home-assistant_bms_ble_<timestamp>.lo
 - Running the script again on the same log file replaces its entry instead of adding a duplicate.
 - `python bms_logs\bms_log_summary.py --rebuild` regenerates `HISTORY.md` from `history.json` without a log (use after changing the table layout).
 - The top-cells table includes the gap (mV) between the 1st and 2nd highest / lowest cell at peak Δ. A large highest-cell gap means a single runaway cell.
+- The **top-of-charge** table records, for the first time each pack's highest cell reaches 3.40 / 3.45 / 3.50 / 3.55 / 3.58 / 3.60 / 3.62 / 3.65 V, the charge current, the cell, the gap to the 2nd-highest cell and the pack Δ, plus the minutes and mean/max current from 3.40 V to the peak. Charge current lifts the highest cell (I × R), so only compare gaps between captures at similar current. `--rebuild` backfills this from `samples_<date>.csv` for older captures.
 - `samples_<date>.csv` holds every parsed sample (all packs, all 16 cells, current, SOC, temp, balance mask) so the raw logs can be deleted and the data re-analysed later.
 - CST balance cells are decoded from the Pace `0x0A03` payload (bytes 6–7, little-endian, bit0 = cell 1). Gentai balance bits come from aiobmsble's `balancer` field, and their bit order is **unverified** (it may be mirrored).
 
