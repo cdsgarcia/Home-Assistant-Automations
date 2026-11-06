@@ -12,6 +12,8 @@ python bms_logs\bms_log_summary.py "<path>\home-assistant_bms_ble_<timestamp>.lo
 
 - `HISTORY.md` holds the readable tables, newest first. `history.json` holds the full data, including per-cell average deviation.
 - Running the script again on the same log file replaces its entry instead of adding a duplicate.
+- `python bms_logs\bms_log_summary.py --rebuild` regenerates `HISTORY.md` from `history.json` without a log (use after changing the table layout).
+- The top-cells table includes the gap (mV) between the 1st and 2nd highest / lowest cell at peak Δ. A large highest-cell gap means a single runaway cell.
 - `samples_<date>.csv` holds every parsed sample (all packs, all 16 cells, current, SOC, temp, balance mask) so the raw logs can be deleted and the data re-analysed later.
 - CST balance cells are decoded from the Pace `0x0A03` payload (bytes 6–7, little-endian, bit0 = cell 1). Gentai balance bits come from aiobmsble's `balancer` field, and their bit order is **unverified** (it may be mirrored).
 
