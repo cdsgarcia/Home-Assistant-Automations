@@ -4,8 +4,10 @@ Running record of BMS_BLE debug-log captures (CST + Gentai M1/S1/S2), so each ne
 
 ## Add a new capture
 
+Daily files come from the [`BMS Debug Log - Start on Boot`](../automations/bms_debug_log_start_on_boot.yaml) automation: `/config/bms_logs/bms_ble_YYYY-MM-DD.log.gz` on the HA host. The script reads `.gz` files directly, and each daily file becomes one capture.
+
 ```powershell
-python bms_logs\bms_log_summary.py "<path>\home-assistant_bms_ble_<timestamp>.log" `
+python bms_logs\bms_log_summary.py "<path>\bms_ble_2026-11-08.log.gz" `
   --settings "Inverter HMI 56.0V, stop chg 2A, recharge 54.0V, no BMS comm; balance 3.400V/8mV" `
   --note "What changed / why this capture"
 ```

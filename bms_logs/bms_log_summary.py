@@ -6,7 +6,7 @@ Writes/updates (next to this script):
   history.json  - machine-readable list of capture summaries (one per log file)
   HISTORY.md    - human-readable tables, newest capture first
 """
-import argparse, ast, collections, csv, datetime, json, os, re
+import argparse, ast, collections, csv, datetime, gzip, json, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SAMPLE_RE = re.compile(r"(\S+ \S+) \w+ .*?\] (\S+): BMS data sample (\{.*\})\s*$")
@@ -15,7 +15,7 @@ PAY_RE = re.compile(r"(\S+ \S+) .*0A03 payload: (.*)$")
 
 def parse(path):
     rows, pay, errs = [], [], []
-    for line in open(path, encoding="utf-8", errors="replace"):
+    for line in (gzip.open if path.endswith(".gz") else open)(path, "rt", encoding="utf-8", errors="replace"):
         m = SAMPLE_RE.match(line)
         if m:
             ts, dev, d = m.groups()

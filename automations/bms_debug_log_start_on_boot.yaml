@@ -1,0 +1,15 @@
+- id: '1794021260046'
+  alias: BMS Debug Log - Start on Boot
+  description: Writes BMS_BLE/aiobmsble debug logs for all packs to /config/bms_logs (daily files,
+    gzipped at midnight) for weekly analysis. Processed files are deleted manually; files older
+    than 28 days are removed as a safety net.
+  triggers:
+  - trigger: homeassistant
+    event: start
+  conditions: []
+  actions:
+  - action: jbd_config.debug_log_start
+    data:
+      path: /config/bms_logs
+      keep_days: 28
+  mode: single

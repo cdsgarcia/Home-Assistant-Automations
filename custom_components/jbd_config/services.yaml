@@ -127,3 +127,29 @@ set_config:
           min: 5
           max: 50
           unit_of_measurement: mV
+
+debug_log_start:
+  name: Start BMS debug log
+  description: >-
+    Write BMS_BLE and aiobmsble debug logs to daily files (bms_ble.log, gzipped at midnight to
+    bms_ble_YYYY-MM-DD.log.gz). These debug lines are kept out of home-assistant.log.
+  fields:
+    path:
+      name: Folder
+      description: Default <config>/bms_logs.
+      example: /config/bms_logs
+      selector:
+        text:
+    keep_days:
+      name: Keep days
+      description: Delete rotated files older than this (0 = keep all). Default 28.
+      example: 28
+      selector:
+        number:
+          min: 0
+          max: 365
+          unit_of_measurement: d
+
+debug_log_stop:
+  name: Stop BMS debug log
+  description: Stop writing the BMS debug log file and restore the previous log levels.

@@ -196,6 +196,11 @@ Controls the indicator light mode on the portable power station based on charge 
 - Automatically switches to **SOS** when battery drops below 21%
 - When plugged back in, light turns **Off** immediately regardless of battery level
 
+### 🔋 BMS Monitoring
+
+#### [`BMS Debug Log - Start on Boot`](automations/bms_debug_log_start_on_boot.yaml)
+On every HA start, calls `jbd_config.debug_log_start` so the BMS_BLE / aiobmsble debug logs of all packs are written to `/config/bms_logs` (one file per day, gzipped at midnight). Collect the `.gz` files weekly for [`bms_logs`](bms_logs) analysis, then delete them. Files older than 28 days are removed as a safety net.
+
 ### 🔔 Notifications
 
 #### [`CYD-E713B0 Crash Alert`](automations/cyd_e713b0_crash_alert.yaml)
@@ -224,6 +229,8 @@ Changing a number writes only that setting, then reads it back in a fresh sessio
 The `jbd_config.read_config` and `jbd_config.set_config` actions do the same for scripts. `read_config` also accepts raw `registers` for diagnostics.
 
 `jbd_config.esup_read` (read-only, returns a response) queries the UP16S "ES-UP" second protocol (function `0x78`). On firmware 12.x this protocol holds the real 100% SOC reset point, because the firmware ignores DD writes to register `0x12`. `jbd_config.esup_set` writes `full_adjust_v`/`full_adjust_c`/`balance_mode` (function `0x79`, values that differ only), then verifies them in a fresh session. The ES-UP address is the parallel DIP address (here M1=1, S1=2, S2=3). The last address found is tried first.
+
+`jbd_config.debug_log_start` (`path`, default `<config>/bms_logs`; `keep_days`, default 28, 0 = keep all) writes the `custom_components.bms_ble` and `aiobmsble` debug logs to `bms_ble.log` in the `home-assistant.log` line format. At midnight the file is gzipped to `bms_ble_YYYY-MM-DD.log.gz`. These debug lines are kept out of `home-assistant.log`; warnings still appear there. `jbd_config.debug_log_stop` stops it and restores the previous log levels.
 
 Install: copy `custom_components/jbd_config` to the HA config folder and restart. Then add each pack under **Settings > Devices & services > Add integration > JBD BMS Config**. Packs listed in the `jbd_config:` YAML block are imported automatically. The Gentai firmware ignores register `0x2D` (balance mode). The CST (Pace BMS) is not supported because its BLE settings commands are undocumented.
 

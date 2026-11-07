@@ -8,13 +8,14 @@ from __future__ import annotations
 import voluptuous as vol
 
 from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
-from homeassistant.const import Platform
+from homeassistant.const import EVENT_HOMEASSISTANT_STOP, Platform
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
 from homeassistant.exceptions import ServiceValidationError
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.typing import ConfigType
 
 from .const import CONF_ADDRESS, CONF_PASSWORD, DEFAULT_PASSWORD, DOMAIN
+from .debuglog import BmsDebugLog
 from .pack import JbdPack
 from .protocol import BALANCE_MODES, ESUP_BLOCKS, SETTINGS
 
@@ -80,6 +81,34 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             raise ServiceValidationError("Give full_adjust_v, full_adjust_c and/or balance_mode")
         addrs = tuple(call.data.get("addresses") or ()) or None
         return {p.name: await p.esup_set(addrs, writes) for p in _selected(call)}
+
+    debug_log = BmsDebugLog()
+
+    async def debug_log_start(call: ServiceCall) -> ServiceResponse:
+        await hass.async_add_executor_job(debug_log.start, call.data["path"], call.data["keep_days"])
+        return await hass.async_add_executor_job(debug_log.status)
+
+    async def debug_log_stop(call: ServiceCall) -> ServiceResponse:
+        await hass.async_add_executor_job(debug_log.stop)
+        return await hass.async_add_executor_job(debug_log.status)
+
+    async def _stop_on_shutdown(_event) -> None:
+        await hass.async_add_executor_job(debug_log.stop)
+
+    hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STOP, _stop_on_shutdown)
+    hass.services.async_register(
+        DOMAIN, "debug_log_start", debug_log_start,
+        schema=vol.Schema(
+            {
+                vol.Optional("path", default=hass.config.path("bms_logs")): cv.string,
+                vol.Optional("keep_days", default=28): vol.All(vol.Coerce(int), vol.Range(0, 365)),
+            }
+        ),
+        supports_response=SupportsResponse.OPTIONAL,
+    )
+    hass.services.async_register(
+        DOMAIN, "debug_log_stop", debug_log_stop, supports_response=SupportsResponse.OPTIONAL
+    )
 
     pack_field = {vol.Optional("pack"): vol.All(cv.ensure_list, [cv.string])}
     addr_field = {
