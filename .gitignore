@@ -1,2 +1,6 @@
 # Project instructions — local only, never committed
 .github/*instructions.md
+
+# Python bytecode
+__pycache__/
+*.pyc
