@@ -112,10 +112,41 @@ def balancing(samples, mirror):
                 per_cell[cellno(b)] += dur
     if not curs:
         return None
+    temps = [t for ts, d in samples if d.get("balancer") for t in d.get("temp_values", [])]
     return {"minutes": {k: round(v, 1) for k, v in mins.items()}, "total_min": round(sum(mins.values()), 1),
             "current": {"min": min(curs), "mean": round(sum(curs) / len(curs), 2), "max": max(curs)},
+            "temp_max": max(temps) if temps else None,
             "per_cell_min": {str(c): round(v, 1) for c, v in per_cell.most_common()},
             "cell_map": "bit0 = cell 16 (mirrored)" if mirror else "bit0 = cell 1", "events": events}
+
+
+def soc_resets(samples):
+    """Full-charge SOC resets: battery_level jumps to 100 by >= 2 points or cycle_charge jumps > 1 Ah.
+
+    For each reset, also record when the BMS first reports < 100 % again (the hold release) and the
+    number of 99<->100 flips in between.
+    """
+    out = []
+    for k in range(1, len(samples)):
+        (_, a), (ts, b) = samples[k - 1], samples[k]
+        sa, sb = a.get("battery_level"), b.get("battery_level")
+        if sb != 100 or not ((sa is not None and sb - sa >= 2) or b["cycle_charge"] - a["cycle_charge"] > 1):
+            continue
+        c = b.get("cell_voltages") or [0]
+        r = {"time": ts, "pack_v": b["voltage"], "current": b["current"], "soc_before": sa,
+             "ah_before": a["cycle_charge"], "ah_after": b["cycle_charge"], "hi_v": max(c),
+             "delta_mv": round((max(c) - min(c)) * 1000), "flips": 0, "release": None}
+        prev = 100
+        for ts2, d in samples[k + 1:]:
+            s = d.get("battery_level")
+            if s is not None and s < 100 and d["current"] < -0.2:
+                r["release"] = {"time": ts2, "ah": d["cycle_charge"], "soc": s}
+                break
+            if s != prev:
+                r["flips"] += 1
+            prev = s
+        out.append(r)
+    return out
 
 
 def summarise(rows, pay):
@@ -192,6 +223,7 @@ def summarise(rows, pay):
             "balance_bit_check": bit_check,
             "top_of_charge": top_of_charge([(ts, d["current"], d.get("cell_voltages")) for ts, d in s]),
             "balancing": balancing(s, mirror=dev != "CST"),
+            "soc_resets": soc_resets(s),
         }
     return out
 
@@ -258,18 +290,30 @@ def to_md(entry):
     if bal:
         L += ["", "Balancing — time with any balance bit set (charge > +0.2 A, rest, discharge < −0.2 A), "
               "pack current while balancing, and minutes per cell. Gentai cells use bit0 = cell 16 (aiobmsble#328).", "",
-              "| Pack | Total min | Charge / rest / discharge min | Current min / mean / max A | Minutes per cell |",
-              "|---|---|---|---|---|"]
+              "| Pack | Total min | Charge / rest / discharge min | Current min / mean / max A | Max temp °C | Minutes per cell |",
+              "|---|---|---|---|---|---|"]
         for dev, b in bal.items():
             m, c = b["minutes"], b["current"]
             pc = ", ".join(f"#{k} {v}" for k, v in b["per_cell_min"].items())
             L.append(f"| {dev} | {b['total_min']} | {m['charge']} / {m['rest']} / {m['discharge']} "
-                     f"| {c['min']} / {c['mean']} / {c['max']} | {pc} |")
+                     f"| {c['min']} / {c['mean']} / {c['max']} | {b.get('temp_max', '-')} | {pc} |")
         L += ["", "Balancing start/stop events: `time event · pack V · current A · highest #cell V · Δ mV`.", ""]
         for dev, b in bal.items():
             ev = "; ".join(f"{t(e['time'])} {e['event']} · {e['pack_v']:.2f} V · {e['current']} A · "
                            f"#{e['hi_cell']} {e['hi_v']:.3f} · {e['delta_mv']}" for e in b["events"])
             L.append(f"- **{dev}**: {ev}")
+    resets = [(dev, r) for dev, p in entry["packs"].items() for r in (p.get("soc_resets") or [])]
+    if any("soc_resets" in p for p in entry["packs"].values()):
+        L += ["", "Full-charge SOC resets — BMS jump to 100 %; *Release* = first < 100 % while discharging; "
+              "*Flips* = 99↔100 changes before release.", "",
+              "| Pack | Time | Pack V | Current A | SOC / Ah before → after | Highest cell V | Δ mV | Flips | Release (time, Ah) |",
+              "|---|---|---|---|---|---|---|---|---|"]
+        for dev, r in resets:
+            rel = f"{t(r['release']['time'])}, {r['release']['ah']}" if r["release"] else "not yet"
+            L.append(f"| {dev} | {t(r['time'])} | {r['pack_v']:.2f} | {r['current']} | {r['soc_before']}% / {r['ah_before']} → "
+                     f"{r['ah_after']} | {r['hi_v']:.3f} | {r['delta_mv']} | {r['flips']} | {rel} |")
+        if not resets:
+            L.append("| – | no reset in this capture | | | | | | | |")
     return "\n".join(L) + "\n"
 
 

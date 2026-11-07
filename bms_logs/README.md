@@ -21,6 +21,19 @@ python bms_logs\bms_log_summary.py "<path>\bms_ble_2026-11-08.log.gz" `
 - The **balancing** table shows, per pack, the minutes with any balance bit set (split into charge > +0.2 A / rest / discharge < −0.2 A), the min/mean/max pack current while balancing, and the minutes per cell. Below it, every balancing start/stop is listed with pack V, current, highest cell and Δ. Gentai cells in this section use the mirrored bit order (bit0 = cell 16). The 2026-11-07 captures show the highest cells balancing under that order (patman15/aiobmsble#328).
 - CST balance cells come from aiobmsble's `balancer` field (0.33.0+ reads `0x0A03` natively: bytes 6–7, little-endian, bit0 = cell 1). Older captures used the patched `0A03 payload` debug lines. Gentai balance bits come from aiobmsble's `balancer` field, and their bit order is **unverified** (it may be mirrored).
 
+## Weekly review checklist (every pack: M1, S1, S2, CST)
+
+Report each item for **all four packs side by side**, not just a pack under trial. A trial pack (e.g. S2 static balancing) is judged against the others.
+
+- Peak highest cell (#, V) and peak Δ / gap to the 2nd-highest cell, at similar top-cell voltage and current
+- Top-of-charge crossings (3.40 V → peak): time, current, cell
+- Balancing: minutes (charge / rest / discharge), current while balancing, max temp while balancing, minutes per cell, start/stop events
+- Full-charge SOC resets: time, pack V, current, Ah before → after, 99↔100 flips, release time and Ah
+- Temperature range (all sensors) and any pack running hotter than the others
+- Charge current share between packs, and any pack-to-pack current (one discharging while another charges)
+- Lowest cell at the bottom of discharge
+- BLE errors per pack, BMS alarm/protection codes, missing samples
+
 ## Baseline — 2026-11-02 (compare future captures against this)
 
 Data: `samples_2026-11-02.csv` (5 logs, 11:40–15:26). Compare at the **same top-cell voltage** — spread grows on the charge knee, so mid-SOC readings hide imbalance.
