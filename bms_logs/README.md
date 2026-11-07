@@ -18,7 +18,7 @@ python bms_logs\bms_log_summary.py "<path>\bms_ble_2026-11-08.log.gz" `
 - The top-cells table includes the gap (mV) between the 1st and 2nd highest / lowest cell at peak Δ. A large highest-cell gap means a single runaway cell.
 - The **top-of-charge** table records, for the first time each pack's highest cell reaches 3.40 / 3.45 / 3.50 / 3.55 / 3.58 / 3.60 / 3.62 / 3.65 V, the charge current, the cell, the gap to the 2nd-highest cell and the pack Δ, plus the minutes and mean/max current from 3.40 V to the peak. Charge current lifts the highest cell (I × R), so only compare gaps between captures at similar current. `--rebuild` backfills this from `samples_<date>.csv` for older captures.
 - `samples_<date>.csv` holds every parsed sample (all packs, all 16 cells, current, SOC, temp, balance mask) so the raw logs can be deleted and the data re-analysed later.
-- CST balance cells are decoded from the Pace `0x0A03` payload (bytes 6–7, little-endian, bit0 = cell 1). Gentai balance bits come from aiobmsble's `balancer` field, and their bit order is **unverified** (it may be mirrored).
+- CST balance cells come from aiobmsble's `balancer` field (0.33.0+ reads `0x0A03` natively: bytes 6–7, little-endian, bit0 = cell 1). Older captures used the patched `0A03 payload` debug lines. Gentai balance bits come from aiobmsble's `balancer` field, and their bit order is **unverified** (it may be mirrored).
 
 ## Baseline — 2026-11-02 (compare future captures against this)
 

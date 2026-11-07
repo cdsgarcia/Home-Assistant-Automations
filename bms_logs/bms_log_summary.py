@@ -107,8 +107,11 @@ def summarise(rows, pay):
         order = sorted(range(len(avg_dev)), key=lambda i: avg_dev[i])
         peak_c = next(c for ts, c in cells if ts == dmax[1])
         peak_order = sorted(range(len(peak_c)), key=lambda i: peak_c[i])
-        if dev == "CST":
+        if dev == "CST" and pay_masks:
             masks, bal_src = pay_masks, "0x0A03 bytes 6-7 LE"
+        elif dev == "CST":  # aiobmsble >= 0.33 decodes 0x0A03 natively into 'balancer'
+            masks = [(ts, d.get("balancer") or 0) for ts, d in s]
+            bal_src = "aiobmsble 'balancer' (0x0A03 bytes 6-7 LE)"
         else:
             masks = [(ts, d.get("balancer") or 0) for ts, d in s]
             bal_src = "aiobmsble 'balancer' (bit order unverified)"
