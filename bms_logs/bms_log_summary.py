@@ -85,6 +85,39 @@ def _ts(s):
     return datetime.datetime.fromisoformat(s).timestamp()
 
 
+def balancing(samples, mirror):
+    """samples: [(ts, data)] in time order; mirror: Gentai bit0 = cell 16 (aiobmsble#328).
+
+    Each balancing sample counts until the next sample (capped at 90 s so BLE gaps don't inflate it).
+    Returns minutes split by charge (> +0.2 A) / rest / discharge (< -0.2 A), per-cell minutes,
+    the pack current while balancing, and every start/stop transition.
+    """
+    cellno = (lambda b: 16 - b) if mirror else (lambda b: b + 1)
+    mins = {"charge": 0.0, "rest": 0.0, "discharge": 0.0}
+    per_cell, curs, events, prev = collections.Counter(), [], [], 0
+    for k, (ts, d) in enumerate(samples):
+        m, c, i = d.get("balancer") or 0, d.get("cell_voltages") or [], d["current"]
+        if bool(m) != bool(prev) and c:
+            events.append({"time": ts, "event": "start" if m else "stop", "pack_v": d["voltage"], "current": i,
+                           "hi_cell": c.index(max(c)) + 1, "hi_v": max(c),
+                           "delta_mv": round((max(c) - min(c)) * 1000)})
+        prev = m
+        if not m or k + 1 == len(samples):
+            continue
+        dur = min(_ts(samples[k + 1][0]) - _ts(ts), 90) / 60
+        mins["charge" if i > 0.2 else "discharge" if i < -0.2 else "rest"] += dur
+        curs.append(i)
+        for b in range(16):
+            if m >> b & 1:
+                per_cell[cellno(b)] += dur
+    if not curs:
+        return None
+    return {"minutes": {k: round(v, 1) for k, v in mins.items()}, "total_min": round(sum(mins.values()), 1),
+            "current": {"min": min(curs), "mean": round(sum(curs) / len(curs), 2), "max": max(curs)},
+            "per_cell_min": {str(c): round(v, 1) for c, v in per_cell.most_common()},
+            "cell_map": "bit0 = cell 16 (mirrored)" if mirror else "bit0 = cell 1", "events": events}
+
+
 def summarise(rows, pay):
     pay_masks = [(ts, cst_mask(h)) for ts, h in pay]
     out = {}
@@ -158,6 +191,7 @@ def summarise(rows, pay):
             "balance_cells_ever": bits(union),
             "balance_bit_check": bit_check,
             "top_of_charge": top_of_charge([(ts, d["current"], d.get("cell_voltages")) for ts, d in s]),
+            "balancing": balancing(s, mirror=dev != "CST"),
         }
     return out
 
@@ -220,6 +254,22 @@ def to_md(entry):
         w = toc["window"]
         ws = f"{w['minutes']} min, {w['mean_current']} / {w['max_current']} A, {w['peak_v']:.3f}" if w else "–"
         L.append(f"| {dev} | " + " | ".join(cols) + f" | {ws} |")
+    bal = {dev: p["balancing"] for dev, p in entry["packs"].items() if p.get("balancing")}
+    if bal:
+        L += ["", "Balancing — time with any balance bit set (charge > +0.2 A, rest, discharge < −0.2 A), "
+              "pack current while balancing, and minutes per cell. Gentai cells use bit0 = cell 16 (aiobmsble#328).", "",
+              "| Pack | Total min | Charge / rest / discharge min | Current min / mean / max A | Minutes per cell |",
+              "|---|---|---|---|---|"]
+        for dev, b in bal.items():
+            m, c = b["minutes"], b["current"]
+            pc = ", ".join(f"#{k} {v}" for k, v in b["per_cell_min"].items())
+            L.append(f"| {dev} | {b['total_min']} | {m['charge']} / {m['rest']} / {m['discharge']} "
+                     f"| {c['min']} / {c['mean']} / {c['max']} | {pc} |")
+        L += ["", "Balancing start/stop events: `time event · pack V · current A · highest #cell V · Δ mV`.", ""]
+        for dev, b in bal.items():
+            ev = "; ".join(f"{t(e['time'])} {e['event']} · {e['pack_v']:.2f} V · {e['current']} A · "
+                           f"#{e['hi_cell']} {e['hi_v']:.3f} · {e['delta_mv']}" for e in b["events"])
+            L.append(f"- **{dev}**: {ev}")
     return "\n".join(L) + "\n"
 
 
