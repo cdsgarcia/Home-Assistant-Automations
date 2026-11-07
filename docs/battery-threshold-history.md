@@ -78,3 +78,5 @@ Rationale: on full-charge days (SOC ~95% at 17:00, 624Ah bank), projected pre-su
 | Daily SOC Check (battery full) | above 98% for 5 min | above 97% for 5 min |
 
 Rationale: `battery_soc_mean` is capacity-weighted (CST 324Ah = 52%). The Gentai packs (JBD) reset to 100% only when a cell reaches Cell Full Voltage (3600mV), which M1/S1 don't reach at 56.4V, so they stick at ~96–97% and the mean peaked at only 98.9% on a real full day (Nov 5). Plan: lower Gentai Cell Full Voltage to 3500mV (`tools/jbd_cell_full_voltage.py` or the app).
+
+Outcome: register `0x12` is firmware-locked at 3600mV on Gentai firmware 12.x (DD writes are ignored), so the script was removed. Instead, the ES-UP full-charge reset point (`FullAdjust`) was changed from 56.80V/15A to 56.00V/2A via `jbd_config.esup_set` on 2026-11-07. All packs reset to 100% that day (~16:09).

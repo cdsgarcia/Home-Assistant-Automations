@@ -66,6 +66,8 @@ Rolling mean of A/C power draw sourced from `sensor.a_c_1f_power_meter_power`:
 
 ## Automations
 
+SOC threshold changes and the reasons for them are recorded in [`docs/battery-threshold-history.md`](docs/battery-threshold-history.md).
+
 ### ☀️ Solar Battery / SOC Management
 
 #### [`Daily SOC Check`](automations/daily_soc_check.yaml)
@@ -235,16 +237,6 @@ The `jbd_config.read_config` and `jbd_config.set_config` actions do the same for
 Install: copy `custom_components/jbd_config` to the HA config folder and restart. Then add each pack under **Settings > Devices & services > Add integration > JBD BMS Config**. Packs listed in the `jbd_config:` YAML block are imported automatically. The Gentai firmware ignores register `0x2D` (balance mode). The CST (Pace BMS) is not supported because its BLE settings commands are undocumented.
 
 Offline protocol tests: `python -m pytest tests -q`.
-
-### [`tools/jbd_cell_full_voltage.py`](tools/jbd_cell_full_voltage.py)
-Reads or sets the JBD BMS **Cell Full Voltage** (EEPROM register `0x12`, mV) over BLE. The BMS resets its SOC to 100% only when a cell reaches this voltage. Only that one register is written, unlike the vendor app's "BMS write", which rewrites every register. The default is read-only; `--mv` without `--write` is a dry run. After writing, the script reads the value back in a new session to confirm it was saved.
-
-```bash
-pip install bleak
-python tools/jbd_cell_full_voltage.py                     # read M1/S1/S2
-python tools/jbd_cell_full_voltage.py --mv 3540 --write   # set all three packs
-```
-Disable the pack's BMS_BLE entry in Home Assistant first, because the BMS accepts only one BLE connection at a time.
 
 ---
 
