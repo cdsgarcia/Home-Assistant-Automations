@@ -219,6 +219,8 @@ Changing a number writes only that setting, then reads it back in a fresh sessio
 
 The `jbd_config.read_config` and `jbd_config.set_config` actions do the same for scripts. `read_config` also accepts raw `registers` for diagnostics.
 
+`jbd_config.esup_read` (read-only, returns a response) queries the UP16S "ES-UP" second protocol (function `0x78`), which on firmware 12.x holds the real 100% SOC reset point: `full_adjust_v_x100` (register `0x1C0C`, ×0.01 V) and `full_adjust_c_x100` (`0x1C0E`, ×0.01 A). It tries each address in `addresses` until one replies. Whether the BLE module forwards ES-UP frames is unverified.
+
 Install: copy `custom_components/jbd_config` to the HA config folder and restart. Then add each pack under **Settings > Devices & services > Add integration > JBD BMS Config**. Packs listed in the `jbd_config:` YAML block are imported automatically. The Gentai firmware ignores register `0x2D` (balance mode). The CST (Pace BMS) is not supported because its BLE settings commands are undocumented.
 
 Offline protocol tests: `python -m pytest tests -q`.

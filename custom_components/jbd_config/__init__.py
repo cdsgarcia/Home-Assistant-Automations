@@ -16,7 +16,7 @@ from homeassistant.helpers.typing import ConfigType
 
 from .const import CONF_ADDRESS, CONF_PASSWORD, DEFAULT_PASSWORD, DOMAIN
 from .pack import JbdPack
-from .protocol import SETTINGS
+from .protocol import ESUP_BLOCKS, SETTINGS
 
 PLATFORMS = [Platform.BUTTON, Platform.NUMBER]
 
@@ -63,7 +63,23 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             raise ServiceValidationError("Give at least one setting to change")
         return {p.name: await p.run(changes) for p in _selected(call)}
 
+    async def esup_read(call: ServiceCall) -> ServiceResponse:
+        addrs = tuple(call.data.get("addresses") or (1, 0, 2, 3, 4))
+        blocks = tuple(call.data.get("blocks") or ESUP_BLOCKS)
+        return {p.name: await p.esup_read(addrs, blocks) for p in _selected(call)}
+
     pack_field = {vol.Optional("pack"): vol.All(cv.ensure_list, [cv.string])}
+    hass.services.async_register(
+        DOMAIN, "esup_read", esup_read,
+        schema=vol.Schema(
+            {
+                **pack_field,
+                vol.Optional("addresses"): vol.All(cv.ensure_list, [vol.All(vol.Coerce(int), vol.Range(0, 0x1F))]),
+                vol.Optional("blocks"): vol.All(cv.ensure_list, [vol.In(list(ESUP_BLOCKS))]),
+            }
+        ),
+        supports_response=SupportsResponse.ONLY,
+    )
     hass.services.async_register(
         DOMAIN, "read_config", read_config,
         schema=vol.Schema(

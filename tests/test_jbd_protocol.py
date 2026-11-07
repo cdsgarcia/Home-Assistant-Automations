@@ -27,6 +27,7 @@ class FakeBms:
         self.session = None
         self.root = False
         self.buf = b""
+        self.esup_addr = 1
 
     def _send(self, frame: bytes):
         for i in range(0, len(frame), 7):  # fragment replies
@@ -53,6 +54,18 @@ class FakeBms:
                 self.root = f[4 : 4 + f[3]] == p.encrypt_password(MAC, p.ROOT_PASSWORD, self.login_rnd)
                 d = b"\x00" if self.root else b"\x01"
             self._send(p.auth_frame(cmd, d))
+            return
+        if f[:1] != b"\xdd" and len(f) >= 2 and f[1] == p.ESUP_READ:
+            if len(f) < 10:
+                return
+            self.buf = b""
+            if f[0] != self.esup_addr:
+                return  # wrong address: no reply
+            data = bytearray(136)
+            data[12:14], data[14:16] = (5760).to_bytes(2, "big"), (1500).to_bytes(2, "big")
+            data[16:31] = b"UP16S019-XMDZ03"
+            hdr = f[:6] + len(data).to_bytes(2, "big") + data
+            self._send(hdr + p.crc16_modbus(hdr))
             return
         if len(f) < 4 + f[3] + 3:
             return
@@ -119,3 +132,35 @@ def test_encryption_matches_vendor_app_capture():
     mac = "A4:C1:37:04:2D:BE"
     assert p.encrypt_password(mac, "123123", 0x37).hex() == "cc2a3b6c56c4"
     assert p.encrypt_password(mac, p.ROOT_PASSWORD, 0x37).hex() == "25baaa9d9005ae9b58775a6967696a"
+
+
+def esup(bms, addr, timeout=3.0):
+    async def go():
+        bms.session = p.JbdSession(bms.write, MAC)
+        return await bms.session.esup_read(addr, *p.ESUP_BLOCKS["user_params"], timeout=timeout)
+
+    return asyncio.run(go())
+
+
+def test_esup_frame_matches_known_good():
+    # alexbadcat/jbd-bms-toolkit protocol-es-up.md example
+    assert p.esup_read_frame(1, 0x1C00, 0x1CA0).hex() == "01781c001ca000007c2e"
+
+
+def test_esup_read_reassembles_and_decodes():
+    d = p.esup_decode("user_params", esup(FakeBms(), 1))
+    assert d["full_adjust_v_x100"] == 5760 and d["full_adjust_c_x100"] == 1500
+    assert d["bms_code"] == "UP16S019-XMDZ03"
+
+
+def test_esup_wrong_address_times_out():
+    with pytest.raises((asyncio.TimeoutError, TimeoutError, OSError)):
+        esup(FakeBms(), 2, timeout=0.2)
+
+
+def test_esup_crc_mismatch_rejected():
+    bms = FakeBms()
+    send = bms._send
+    bms._send = lambda fr: send(fr[:-1] + bytes([fr[-1] ^ 0xFF]))
+    with pytest.raises(OSError, match="CRC"):
+        esup(bms, 1)

@@ -26,6 +26,61 @@ SETTINGS: dict[str, tuple[int, int, int]] = {
 }
 
 
+# ES-UP ("polyglot" UP16S firmware) second protocol: Modbus-like, fn 0x78 read / 0x79 write.
+# See alexbadcat/jbd-bms-toolkit docs/protocol-es-up.md. Only reads are implemented here.
+ESUP_READ = 0x78
+ESUP_BLOCKS: dict[str, tuple[int, int]] = {
+    "user_params": (0x1C00, 0x1C88),
+    "capacity": (0x2000, 0x2040),
+    "factory_mirror": (0x3900, 0x3940),
+}
+
+
+def crc16_modbus(data: bytes) -> bytes:
+    crc = 0xFFFF
+    for b in data:
+        crc ^= b
+        for _ in range(8):
+            crc = (crc >> 1) ^ 0xA001 if crc & 1 else crc >> 1
+    return crc.to_bytes(2, "little")
+
+
+def esup_read_frame(addr: int, start: int, end: int) -> bytes:
+    body = bytes([addr, ESUP_READ]) + start.to_bytes(2, "big") + end.to_bytes(2, "big") + b"\x00\x00"
+    return body + crc16_modbus(body)
+
+
+def _u16(d: bytes, off: int) -> int | None:
+    return int.from_bytes(d[off : off + 2], "big") if len(d) >= off + 2 else None
+
+
+def esup_decode(block: str, d: bytes) -> dict:
+    """Decode known fields (raw units noted in key names)."""
+    if block == "user_params":
+        code = d[16:48].split(b"\x00")[0].decode("ascii", "replace") if len(d) >= 48 else None
+        return {
+            "balance_start_mv": _u16(d, 4),
+            "balance_diff_mv": _u16(d, 6),
+            "full_adjust_v_x100": _u16(d, 12),
+            "full_adjust_c_x100": _u16(d, 14),
+            "bms_code": code,
+            "sleep_mv": _u16(d, 120),
+            "sleep_delay": _u16(d, 122),
+            "balance_mode": _u16(d, 124),
+            "rs485_protocol": _u16(d, 126),
+            "can_protocol": _u16(d, 128),
+        }
+    if block == "capacity":
+        return {
+            "nominal_ah_x100": _u16(d, 0),
+            "full_ah_x100": _u16(d, 2),
+            "remaining_ah_x100": _u16(d, 4),
+            "soc_x100": _u16(d, 6),
+            "cycles": _u16(d, 10),
+        }
+    return {}
+
+
 def jbd_frame(cmd: int, reg: int, data: bytes = b"") -> bytes:
     """DD <cmd A5 read / 5A write> <reg> <len> <data> <crc16 BE> 77; crc = 0x10000 - sum(reg, len, data)."""
     body = bytes([reg, len(data)]) + data
@@ -59,8 +114,16 @@ class FrameAssembler:
                 tail = 3
             elif self.buf[:2] == b"\xff\xaa":
                 tail = 1
-            elif len(self.buf) == 1 and self.buf[0] == 0xFF:
+            elif len(self.buf) == 1 and (self.buf[0] == 0xFF or self.buf[0] < 0x20):
                 break
+            elif self.buf[0] < 0x20 and self.buf[1] == ESUP_READ:
+                # ES-UP: addr 78 start:2 end:2 dlen:2 data crc:2
+                if len(self.buf) < 8 or len(self.buf) < 10 + int.from_bytes(self.buf[6:8], "big"):
+                    break
+                n = 10 + int.from_bytes(self.buf[6:8], "big")
+                out.append(bytes(self.buf[:n]))
+                del self.buf[:n]
+                continue
             else:
                 del self.buf[0]
                 continue
@@ -133,6 +196,16 @@ class JbdSession:
         )
         if f[2] != 0:
             raise OSError(f"write reg 0x{reg:02X} failed (status 0x{f[2]:02X})")
+
+    async def esup_read(self, addr: int, start: int, end: int, timeout: float = 3.0) -> bytes:
+        f = await self._xfer(
+            esup_read_frame(addr, start, end),
+            lambda f: len(f) >= 10 and f[1] == ESUP_READ and f[2:4] == start.to_bytes(2, "big"),
+            timeout,
+        )
+        if crc16_modbus(f[:-2]) != f[-2:]:
+            raise OSError(f"ES-UP CRC mismatch: {f.hex(' ')}")
+        return f[8:-2]
 
     async def factory(self, changes: dict[str, int], raw_regs: tuple[int, ...] = ()) -> dict:
         """Enter factory mode, apply `changes`, read all SETTINGS (+ raw_regs), exit (save only if changed)."""

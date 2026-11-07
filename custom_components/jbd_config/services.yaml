@@ -16,6 +16,32 @@ read_config:
       selector:
         object:
 
+esup_read:
+  name: Read ES-UP parameters (read-only)
+  description: >-
+    Query the newer JBD "ES-UP" protocol (fn 0x78) for FullAdjustV/FullAdjustC (the real 100% SOC
+    reset threshold on UP16S firmware), capacity and the factory mirror. Nothing is written.
+  fields:
+    pack:
+      name: Pack
+      description: Pack names (default all).
+      example: '["M1"]'
+      selector:
+        text:
+          multiple: true
+    addresses:
+      name: Addresses
+      description: ES-UP device addresses to try in order (default 1, 0, 2, 3, 4).
+      example: "[1]"
+      selector:
+        object:
+    blocks:
+      name: Blocks
+      description: user_params (0x1C00), capacity (0x2000), factory_mirror (0x3900). Default all.
+      example: '["user_params"]'
+      selector:
+        object:
+
 set_config:
   name: Set JBD BMS config
   description: >-

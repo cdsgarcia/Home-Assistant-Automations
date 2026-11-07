@@ -13,7 +13,7 @@ from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
 
-from .protocol import SETTINGS, UUID_NOTIFY, UUID_WRITE, JbdSession
+from .protocol import ESUP_BLOCKS, SETTINGS, UUID_NOTIFY, UUID_WRITE, JbdSession, esup_decode
 
 _LOGGER = logging.getLogger(__name__)
 BMS_BLE_DOMAIN = "bms_ble"
@@ -89,6 +89,57 @@ class JbdPack:
             finally:
                 await client.disconnect()
         raise HomeAssistantError("unreachable")
+
+    async def _esup_session(self, addrs: tuple[int, ...], blocks: tuple[str, ...]) -> dict:
+        client = await self._connect()
+        try:
+            async def write(data: bytes) -> None:
+                await client.write_gatt_char(UUID_WRITE, data, response=False)
+
+            s = JbdSession(write, self.address)
+            await client.start_notify(UUID_NOTIFY, s.on_notify)
+            out: dict = {"auth": await s.authenticate(self.password)}
+            addr = None
+            for a in addrs:  # find the address the BMS answers on
+                start, end = ESUP_BLOCKS[blocks[0]]
+                try:
+                    data = await s.esup_read(a, start, end)
+                except TimeoutError:
+                    continue
+                addr = a
+                out[blocks[0]] = {"hex": data.hex(), **esup_decode(blocks[0], data)}
+                break
+            out["addr"] = addr
+            if addr is None:
+                out["error"] = f"no ES-UP reply on addresses {list(addrs)}"
+                return out
+            for b in blocks[1:]:
+                start, end = ESUP_BLOCKS[b]
+                try:
+                    data = await s.esup_read(addr, start, end)
+                    out[b] = {"hex": data.hex(), **esup_decode(b, data)}
+                except (TimeoutError, OSError) as err:
+                    out[b] = {"error": str(err)}
+            return out
+        finally:
+            await client.disconnect()
+
+    async def esup_read(self, addrs: tuple[int, ...], blocks: tuple[str, ...]) -> dict:
+        """Read-only ES-UP query (nothing is written), with BMS_BLE paused meanwhile."""
+        async with self.lock:
+            entry = self._bms_ble_entry()
+            unloaded = False
+            if entry and entry.state is ConfigEntryState.LOADED:
+                await self.hass.config_entries.async_unload(entry.entry_id)
+                unloaded = True
+                await asyncio.sleep(2)
+            try:
+                return await self._esup_session(addrs, blocks)
+            except (BleakError, TimeoutError, OSError, PermissionError) as err:
+                raise HomeAssistantError(f"{self.name}: {err}") from err
+            finally:
+                if unloaded:
+                    await self.hass.config_entries.async_setup(entry.entry_id)
 
     async def run(self, changes: dict[str, int] | None = None, raw: tuple[int, ...] = ()) -> dict:
         """Read settings and optionally write `changes`, with BMS_BLE paused meanwhile."""
