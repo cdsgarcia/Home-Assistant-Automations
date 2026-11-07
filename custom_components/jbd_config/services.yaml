@@ -80,6 +80,15 @@ esup_set:
           max: 30.0
           step: 0.01
           unit_of_measurement: A
+    balance_mode:
+      name: Balance mode
+      description: charge = balance only while charging; static = balance only at rest.
+      example: static
+      selector:
+        select:
+          options:
+            - charge
+            - static
 
 set_config:
   name: Set JBD BMS config

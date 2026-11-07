@@ -16,9 +16,9 @@ from homeassistant.helpers.typing import ConfigType
 
 from .const import CONF_ADDRESS, CONF_PASSWORD, DEFAULT_PASSWORD, DOMAIN
 from .pack import JbdPack
-from .protocol import ESUP_BLOCKS, SETTINGS
+from .protocol import BALANCE_MODES, ESUP_BLOCKS, SETTINGS
 
-PLATFORMS = [Platform.BUTTON, Platform.NUMBER]
+PLATFORMS = [Platform.BUTTON, Platform.NUMBER, Platform.SELECT]
 
 PACK_SCHEMA = vol.Schema(
     {
@@ -74,8 +74,10 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             for k, f in (("full_adjust_v_x100", "full_adjust_v"), ("full_adjust_c_x100", "full_adjust_c"))
             if f in call.data
         }
+        if "balance_mode" in call.data:
+            writes["balance_mode"] = BALANCE_MODES[call.data["balance_mode"]]
         if not writes:
-            raise ServiceValidationError("Give full_adjust_v and/or full_adjust_c")
+            raise ServiceValidationError("Give full_adjust_v, full_adjust_c and/or balance_mode")
         addrs = tuple(call.data.get("addresses") or ()) or None
         return {p.name: await p.esup_set(addrs, writes) for p in _selected(call)}
 
@@ -102,6 +104,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
                 **addr_field,
                 vol.Optional("full_adjust_v"): vol.All(vol.Coerce(float), vol.Range(52.0, 58.4)),
                 vol.Optional("full_adjust_c"): vol.All(vol.Coerce(float), vol.Range(0.5, 30.0)),
+                vol.Optional("balance_mode"): vol.In(list(BALANCE_MODES)),
             }
         ),
         supports_response=SupportsResponse.OPTIONAL,

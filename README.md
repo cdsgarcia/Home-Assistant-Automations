@@ -216,13 +216,14 @@ Shows and edits the JBD (Gentai) BMS settings in Home Assistant over BLE. The en
 | Read BMS settings (button) | Refreshes the values above from the BMS |
 | Full charge voltage (ES-UP) (V) | `FullAdjustV`, ES-UP register `0x1C0C`: the real 100% SOC reset voltage on UP16S firmware 12.x |
 | Full charge current (ES-UP) (A) | `FullAdjustC`, `0x1C0E`: the charge current must have fallen to this for the reset |
-| Read ES-UP settings (button) | Refreshes the two ES-UP values |
+| Read ES-UP settings (button) | Refreshes the ES-UP values |
+| Balance mode (ES-UP) (select) | `0x1C7C`: `charge` balances only while charging, `static` only at rest. The two modes are mutually exclusive |
 
 Changing a number writes only that setting, then reads it back in a fresh session. If the BMS didn't keep the value, an error is shown. During every read or write, the pack's BMS_BLE entry is paused, because the BMS accepts only one BLE connection.
 
 The `jbd_config.read_config` and `jbd_config.set_config` actions do the same for scripts. `read_config` also accepts raw `registers` for diagnostics.
 
-`jbd_config.esup_read` (read-only, returns a response) queries the UP16S "ES-UP" second protocol (function `0x78`). On firmware 12.x this protocol holds the real 100% SOC reset point, because the firmware ignores DD writes to register `0x12`. `jbd_config.esup_set` writes `full_adjust_v`/`full_adjust_c` (function `0x79`, values that differ only), then verifies them in a fresh session. The ES-UP address is the parallel DIP address (here M1=1, S1=2, S2=3). The last address found is tried first.
+`jbd_config.esup_read` (read-only, returns a response) queries the UP16S "ES-UP" second protocol (function `0x78`). On firmware 12.x this protocol holds the real 100% SOC reset point, because the firmware ignores DD writes to register `0x12`. `jbd_config.esup_set` writes `full_adjust_v`/`full_adjust_c`/`balance_mode` (function `0x79`, values that differ only), then verifies them in a fresh session. The ES-UP address is the parallel DIP address (here M1=1, S1=2, S2=3). The last address found is tried first.
 
 Install: copy `custom_components/jbd_config` to the HA config folder and restart. Then add each pack under **Settings > Devices & services > Add integration > JBD BMS Config**. Packs listed in the `jbd_config:` YAML block are imported automatically. The Gentai firmware ignores register `0x2D` (balance mode). The CST (Pace BMS) is not supported because its BLE settings commands are undocumented.
 

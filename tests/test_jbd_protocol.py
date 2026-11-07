@@ -191,9 +191,9 @@ def test_esup_write_persists_with_or_without_ack(ack):
 
     async def go():
         bms.session = p.JbdSession(bms.write, MAC)
-        for k, v in (("full_adjust_v_x100", 5600), ("full_adjust_c_x100", 200)):
+        for k, v in (("full_adjust_v_x100", 5600), ("full_adjust_c_x100", 200), ("balance_mode", 1)):
             await bms.session.esup_write(1, p.ESUP_WRITABLE[k], v, timeout=0.2)
 
     asyncio.run(go())
     d = p.esup_decode("user_params", esup(bms, 1))
-    assert (d["full_adjust_v_x100"], d["full_adjust_c_x100"], d["bms_code"]) == (5600, 200, "UP16S019-XMDZ03")
+    assert (d["full_adjust_v_x100"], d["full_adjust_c_x100"], d["balance_mode"], d["bms_code"]) == (5600, 200, 1, "UP16S019-XMDZ03")

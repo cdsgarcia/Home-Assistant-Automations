@@ -8,6 +8,6 @@
   "documentation": "https://github.com/cdsgarcia/Home-Assistant-Automations",
   "iot_class": "local_polling",
   "requirements": [],
-  "version": "0.6.0",
+  "version": "0.7.0",
   "config_flow": true
 }

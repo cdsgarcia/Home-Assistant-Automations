@@ -30,7 +30,12 @@ SETTINGS: dict[str, tuple[int, int, int]] = {
 # See alexbadcat/jbd-bms-toolkit docs/protocol-es-up.md. Writes are limited to ESUP_WRITABLE.
 ESUP_READ, ESUP_WRITE = 0x78, 0x79
 ESUP_MARKER = b"\x11JBD"  # mandatory before a write payload
-ESUP_WRITABLE: dict[str, int] = {"full_adjust_v_x100": 0x1C0C, "full_adjust_c_x100": 0x1C0E}
+ESUP_WRITABLE: dict[str, int] = {
+    "full_adjust_v_x100": 0x1C0C,
+    "full_adjust_c_x100": 0x1C0E,
+    "balance_mode": 0x1C7C,  # 0 = balance only while charging, 1 = only at rest (static)
+}
+BALANCE_MODES = {"charge": 0, "static": 1}
 ESUP_BLOCKS: dict[str, tuple[int, int]] = {
     "user_params": (0x1C00, 0x1C88),
     "capacity": (0x2000, 0x2040),
