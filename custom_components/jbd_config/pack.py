@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 from collections.abc import Callable
+from contextlib import asynccontextmanager
 import logging
 
 from bleak.exc import BleakError
@@ -13,7 +14,15 @@ from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
 
-from .protocol import ESUP_BLOCKS, SETTINGS, UUID_NOTIFY, UUID_WRITE, JbdSession, esup_decode
+from .protocol import (
+    ESUP_BLOCKS,
+    ESUP_WRITABLE,
+    SETTINGS,
+    UUID_NOTIFY,
+    UUID_WRITE,
+    JbdSession,
+    esup_decode,
+)
 
 _LOGGER = logging.getLogger(__name__)
 BMS_BLE_DOMAIN = "bms_ble"
@@ -27,6 +36,7 @@ class JbdPack:
     def __init__(self, hass: HomeAssistant, name: str, address: str, password: str) -> None:
         self.hass, self.name, self.address, self.password = hass, name, address.upper(), password
         self.values: dict[str, int] = {}
+        self.esup_addr: int | None = None
         self.lock = asyncio.Lock()
         self._listeners: list[Callable[[], None]] = []
 
@@ -36,9 +46,16 @@ class JbdPack:
         return lambda: self._listeners.remove(cb)
 
     def _update(self, values: dict) -> None:
-        self.values.update({k: v for k, v in values.items() if k in SETTINGS})
+        self.values.update({k: v for k, v in values.items() if k in SETTINGS or k in ESUP_WRITABLE})
         for cb in list(self._listeners):
             cb()
+
+    def _esup_addrs(self, addrs: tuple[int, ...] | None) -> tuple[int, ...]:
+        if addrs:
+            return addrs
+        # Address = parallel DIP address (M1=1, S1=2, S2=3); the last one found is tried first.
+        default = (1, 2, 3, 4, 0)
+        return default if self.esup_addr is None else (self.esup_addr, *(a for a in default if a != self.esup_addr))
 
     def _bms_ble_entry(self):
         for entry in self.hass.config_entries.async_entries(BMS_BLE_DOMAIN):
@@ -90,7 +107,10 @@ class JbdPack:
                 await client.disconnect()
         raise HomeAssistantError("unreachable")
 
-    async def _esup_session(self, addrs: tuple[int, ...], blocks: tuple[str, ...]) -> dict:
+    async def _esup_session(
+        self, addrs: tuple[int, ...], blocks: tuple[str, ...], writes: dict[str, int] | None = None
+    ) -> dict:
+        """Find the ES-UP address, read `blocks` (user_params first if writing), then write changed `writes`."""
         client = await self._connect()
         try:
             async def write(data: bytes) -> None:
@@ -120,26 +140,65 @@ class JbdPack:
                     out[b] = {"hex": data.hex(), **esup_decode(b, data)}
                 except (TimeoutError, OSError) as err:
                     out[b] = {"error": str(err)}
+            if writes:
+                cur = out[blocks[0]]
+                todo = {k: v for k, v in writes.items() if cur.get(k) != v}
+                out["writes"] = {
+                    k: {"value": v, "ack": await s.esup_write(addr, ESUP_WRITABLE[k], v)} for k, v in todo.items()
+                }
             return out
         finally:
             await client.disconnect()
 
-    async def esup_read(self, addrs: tuple[int, ...], blocks: tuple[str, ...]) -> dict:
+    @asynccontextmanager
+    async def _bms_ble_paused(self):
+        entry = self._bms_ble_entry()
+        unloaded = False
+        if entry and entry.state is ConfigEntryState.LOADED:
+            await self.hass.config_entries.async_unload(entry.entry_id)
+            unloaded = True
+            await asyncio.sleep(2)
+        try:
+            yield
+        except (BleakError, TimeoutError, OSError, PermissionError) as err:
+            raise HomeAssistantError(f"{self.name}: {err}") from err
+        finally:
+            if unloaded:
+                await self.hass.config_entries.async_setup(entry.entry_id)
+
+    async def esup_read(self, addrs: tuple[int, ...] | None, blocks: tuple[str, ...]) -> dict:
         """Read-only ES-UP query (nothing is written), with BMS_BLE paused meanwhile."""
-        async with self.lock:
-            entry = self._bms_ble_entry()
-            unloaded = False
-            if entry and entry.state is ConfigEntryState.LOADED:
-                await self.hass.config_entries.async_unload(entry.entry_id)
-                unloaded = True
+        async with self.lock, self._bms_ble_paused():
+            out = await self._esup_session(self._esup_addrs(addrs), blocks)
+        if out.get("addr") is not None:
+            self.esup_addr = out["addr"]
+        if isinstance(out.get("user_params"), dict):
+            self._update(out["user_params"])
+        if out.get("error"):
+            raise HomeAssistantError(f"{self.name}: {out['error']}")
+        return out
+
+    async def esup_set(self, addrs: tuple[int, ...] | None, writes: dict[str, int]) -> dict:
+        """Write ES-UP user params that differ, then verify in a fresh session."""
+        async with self.lock, self._bms_ble_paused():
+            before = await self._esup_session(self._esup_addrs(addrs), ("user_params",), writes)
+            if before.get("error"):
+                raise HomeAssistantError(f"{self.name}: {before['error']}")
+            self.esup_addr = before["addr"]
+            result: dict = {"addr": before["addr"], "auth": before.get("auth")}
+            result["before"] = {k: before["user_params"].get(k) for k in writes}
+            result["writes"] = before.get("writes", {})
+            after_params = before["user_params"]
+            if result["writes"]:
                 await asyncio.sleep(2)
-            try:
-                return await self._esup_session(addrs, blocks)
-            except (BleakError, TimeoutError, OSError, PermissionError) as err:
-                raise HomeAssistantError(f"{self.name}: {err}") from err
-            finally:
-                if unloaded:
-                    await self.hass.config_entries.async_setup(entry.entry_id)
+                after = await self._esup_session((before["addr"],), ("user_params",))
+                after_params = after.get("user_params", {})
+            result["after"] = {k: after_params.get(k) for k in writes}
+            result["verified"] = all(result["after"].get(k) == v for k, v in writes.items())
+            if result["writes"]:
+                _LOGGER.warning("%s: ES-UP write %s", self.name, result)
+        self._update(after_params)
+        return result
 
     async def run(self, changes: dict[str, int] | None = None, raw: tuple[int, ...] = ()) -> dict:
         """Read settings and optionally write `changes`, with BMS_BLE paused meanwhile."""

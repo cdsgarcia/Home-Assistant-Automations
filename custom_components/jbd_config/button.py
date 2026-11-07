@@ -13,7 +13,8 @@ from .pack import JbdPack, norm_mac
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, add: AddEntitiesCallback) -> None:
-    add([JbdReadButton(hass.data[DOMAIN][entry.entry_id])])
+    pack = hass.data[DOMAIN][entry.entry_id]
+    add([JbdReadButton(pack), JbdEsupReadButton(pack)])
 
 
 class JbdReadButton(ButtonEntity):
@@ -29,3 +30,15 @@ class JbdReadButton(ButtonEntity):
 
     async def async_press(self) -> None:
         await self._pack.run()
+
+
+class JbdEsupReadButton(JbdReadButton):
+    _attr_name = "Read ES-UP settings"
+    _attr_icon = "mdi:battery-sync"
+
+    def __init__(self, pack: JbdPack) -> None:
+        super().__init__(pack)
+        self._attr_unique_id = f"{norm_mac(pack.address)}_read_esup"
+
+    async def async_press(self) -> None:
+        await self._pack.esup_read(None, ("user_params",))

@@ -27,8 +27,10 @@ SETTINGS: dict[str, tuple[int, int, int]] = {
 
 
 # ES-UP ("polyglot" UP16S firmware) second protocol: Modbus-like, fn 0x78 read / 0x79 write.
-# See alexbadcat/jbd-bms-toolkit docs/protocol-es-up.md. Only reads are implemented here.
-ESUP_READ = 0x78
+# See alexbadcat/jbd-bms-toolkit docs/protocol-es-up.md. Writes are limited to ESUP_WRITABLE.
+ESUP_READ, ESUP_WRITE = 0x78, 0x79
+ESUP_MARKER = b"\x11JBD"  # mandatory before a write payload
+ESUP_WRITABLE: dict[str, int] = {"full_adjust_v_x100": 0x1C0C, "full_adjust_c_x100": 0x1C0E}
 ESUP_BLOCKS: dict[str, tuple[int, int]] = {
     "user_params": (0x1C00, 0x1C88),
     "capacity": (0x2000, 0x2040),
@@ -47,6 +49,13 @@ def crc16_modbus(data: bytes) -> bytes:
 
 def esup_read_frame(addr: int, start: int, end: int) -> bytes:
     body = bytes([addr, ESUP_READ]) + start.to_bytes(2, "big") + end.to_bytes(2, "big") + b"\x00\x00"
+    return body + crc16_modbus(body)
+
+
+def esup_write_frame(addr: int, reg: int, value: int) -> bytes:
+    payload = ESUP_MARKER + value.to_bytes(2, "big")
+    body = bytes([addr, ESUP_WRITE]) + reg.to_bytes(2, "big") + (reg + 2).to_bytes(2, "big")
+    body += len(payload).to_bytes(2, "big") + payload
     return body + crc16_modbus(body)
 
 
@@ -116,7 +125,7 @@ class FrameAssembler:
                 tail = 1
             elif len(self.buf) == 1 and (self.buf[0] == 0xFF or self.buf[0] < 0x20):
                 break
-            elif self.buf[0] < 0x20 and self.buf[1] == ESUP_READ:
+            elif self.buf[0] < 0x20 and self.buf[1] in (ESUP_READ, ESUP_WRITE):
                 # ES-UP: addr 78 start:2 end:2 dlen:2 data crc:2
                 if len(self.buf) < 8 or len(self.buf) < 10 + int.from_bytes(self.buf[6:8], "big"):
                     break
@@ -140,8 +149,10 @@ class JbdSession:
         self._write, self.mac = write, mac
         self._asm = FrameAssembler()
         self._q: asyncio.Queue[bytes] = asyncio.Queue()
+        self._rx = bytearray()
 
     def on_notify(self, _sender, data: bytearray) -> None:
+        self._rx += data
         for f in self._asm.feed(bytes(data)):
             self._q.put_nowait(f)
 
@@ -206,6 +217,16 @@ class JbdSession:
         if crc16_modbus(f[:-2]) != f[-2:]:
             raise OSError(f"ES-UP CRC mismatch: {f.hex(' ')}")
         return f[8:-2]
+
+    async def esup_write(self, addr: int, reg: int, value: int, timeout: float = 1.5) -> str:
+        """Write one u16. The ack format is undocumented, so return the raw bytes received; verify by re-reading."""
+        self._rx.clear()
+        try:
+            await self._xfer(esup_write_frame(addr, reg, value), lambda f: f[1] == ESUP_WRITE, timeout)
+        except TimeoutError:
+            pass
+        self._asm.buf.clear()  # drop any partial, unparsed ack
+        return self._rx.hex(" ")
 
     async def factory(self, changes: dict[str, int], raw_regs: tuple[int, ...] = ()) -> dict:
         """Enter factory mode, apply `changes`, read all SETTINGS (+ raw_regs), exit (save only if changed)."""

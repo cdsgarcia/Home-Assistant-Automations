@@ -28,6 +28,10 @@ class FakeBms:
         self.root = False
         self.buf = b""
         self.esup_addr = 1
+        self.esup_ack = True
+        self.esup_params = bytearray(136)
+        self.esup_params[12:14], self.esup_params[14:16] = (5760).to_bytes(2, "big"), (1500).to_bytes(2, "big")
+        self.esup_params[16:31] = b"UP16S019-XMDZ03"
 
     def _send(self, frame: bytes):
         for i in range(0, len(frame), 7):  # fragment replies
@@ -61,11 +65,20 @@ class FakeBms:
             self.buf = b""
             if f[0] != self.esup_addr:
                 return  # wrong address: no reply
-            data = bytearray(136)
-            data[12:14], data[14:16] = (5760).to_bytes(2, "big"), (1500).to_bytes(2, "big")
-            data[16:31] = b"UP16S019-XMDZ03"
+            data = self.esup_params
             hdr = f[:6] + len(data).to_bytes(2, "big") + data
             self._send(hdr + p.crc16_modbus(hdr))
+            return
+        if f[:1] != b"\xdd" and len(f) >= 8 and f[1] == p.ESUP_WRITE:
+            if len(f) < 10 + int.from_bytes(f[6:8], "big"):
+                return
+            self.buf = b""
+            assert f[8:12] == p.ESUP_MARKER and p.crc16_modbus(f[:-2]) == f[-2:]
+            off = int.from_bytes(f[2:4], "big") - 0x1C00
+            self.esup_params[off : off + 2] = f[12:14]
+            if self.esup_ack:
+                ack = f[:6] + b"\x00\x00"
+                self._send(ack + p.crc16_modbus(ack))
             return
         if len(f) < 4 + f[3] + 3:
             return
@@ -164,3 +177,23 @@ def test_esup_crc_mismatch_rejected():
     bms._send = lambda fr: send(fr[:-1] + bytes([fr[-1] ^ 0xFF]))
     with pytest.raises(OSError, match="CRC"):
         esup(bms, 1)
+
+
+def test_esup_write_frame_matches_known_good():
+    # FullAdjustV 56.30 V example from alexbadcat/jbd-bms-toolkit
+    assert p.esup_write_frame(1, 0x1C0C, 5630).hex() == "01791c0c1c0e0006114a424415fe4dbe"
+
+
+@pytest.mark.parametrize("ack", [True, False])
+def test_esup_write_persists_with_or_without_ack(ack):
+    bms = FakeBms()
+    bms.esup_ack = ack
+
+    async def go():
+        bms.session = p.JbdSession(bms.write, MAC)
+        for k, v in (("full_adjust_v_x100", 5600), ("full_adjust_c_x100", 200)):
+            await bms.session.esup_write(1, p.ESUP_WRITABLE[k], v, timeout=0.2)
+
+    asyncio.run(go())
+    d = p.esup_decode("user_params", esup(bms, 1))
+    assert (d["full_adjust_v_x100"], d["full_adjust_c_x100"], d["bms_code"]) == (5600, 200, "UP16S019-XMDZ03")

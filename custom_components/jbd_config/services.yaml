@@ -31,7 +31,7 @@ esup_read:
           multiple: true
     addresses:
       name: Addresses
-      description: ES-UP device addresses to try in order (default 1, 0, 2, 3, 4).
+      description: ES-UP device addresses to try in order (default last found, then 1, 2, 3, 4, 0).
       example: "[1]"
       selector:
         object:
@@ -41,6 +41,45 @@ esup_read:
       example: '["user_params"]'
       selector:
         object:
+
+esup_set:
+  name: Set ES-UP full-charge reset point
+  description: >-
+    Write FullAdjustV/FullAdjustC (ES-UP fn 0x79, only values that differ), then verify in a fresh
+    session. SOC resets to 100% when the pack is at or above this voltage and the charge current
+    has fallen to this current.
+  fields:
+    pack:
+      name: Pack
+      description: Pack names (default all).
+      example: '["M1"]'
+      selector:
+        text:
+          multiple: true
+    addresses:
+      name: Addresses
+      description: ES-UP device addresses to try in order (default last found, then 1, 2, 3, 4, 0).
+      example: "[1]"
+      selector:
+        object:
+    full_adjust_v:
+      name: Full charge voltage
+      example: 56.0
+      selector:
+        number:
+          min: 52.0
+          max: 58.4
+          step: 0.01
+          unit_of_measurement: V
+    full_adjust_c:
+      name: Full charge current
+      example: 2.0
+      selector:
+        number:
+          min: 0.5
+          max: 30.0
+          step: 0.01
+          unit_of_measurement: A
 
 set_config:
   name: Set JBD BMS config

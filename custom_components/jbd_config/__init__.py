@@ -64,21 +64,47 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         return {p.name: await p.run(changes) for p in _selected(call)}
 
     async def esup_read(call: ServiceCall) -> ServiceResponse:
-        addrs = tuple(call.data.get("addresses") or (1, 0, 2, 3, 4))
+        addrs = tuple(call.data.get("addresses") or ()) or None
         blocks = tuple(call.data.get("blocks") or ESUP_BLOCKS)
         return {p.name: await p.esup_read(addrs, blocks) for p in _selected(call)}
 
+    async def esup_set(call: ServiceCall) -> ServiceResponse:
+        writes = {
+            k: round(call.data[f] * 100)
+            for k, f in (("full_adjust_v_x100", "full_adjust_v"), ("full_adjust_c_x100", "full_adjust_c"))
+            if f in call.data
+        }
+        if not writes:
+            raise ServiceValidationError("Give full_adjust_v and/or full_adjust_c")
+        addrs = tuple(call.data.get("addresses") or ()) or None
+        return {p.name: await p.esup_set(addrs, writes) for p in _selected(call)}
+
     pack_field = {vol.Optional("pack"): vol.All(cv.ensure_list, [cv.string])}
+    addr_field = {
+        vol.Optional("addresses"): vol.All(cv.ensure_list, [vol.All(vol.Coerce(int), vol.Range(0, 0x1F))])
+    }
     hass.services.async_register(
         DOMAIN, "esup_read", esup_read,
         schema=vol.Schema(
             {
                 **pack_field,
-                vol.Optional("addresses"): vol.All(cv.ensure_list, [vol.All(vol.Coerce(int), vol.Range(0, 0x1F))]),
+                **addr_field,
                 vol.Optional("blocks"): vol.All(cv.ensure_list, [vol.In(list(ESUP_BLOCKS))]),
             }
         ),
         supports_response=SupportsResponse.ONLY,
+    )
+    hass.services.async_register(
+        DOMAIN, "esup_set", esup_set,
+        schema=vol.Schema(
+            {
+                **pack_field,
+                **addr_field,
+                vol.Optional("full_adjust_v"): vol.All(vol.Coerce(float), vol.Range(52.0, 58.4)),
+                vol.Optional("full_adjust_c"): vol.All(vol.Coerce(float), vol.Range(0.5, 30.0)),
+            }
+        ),
+        supports_response=SupportsResponse.OPTIONAL,
     )
     hass.services.async_register(
         DOMAIN, "read_config", read_config,
