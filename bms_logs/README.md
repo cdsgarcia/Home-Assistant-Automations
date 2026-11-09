@@ -29,6 +29,7 @@ Report each item for **all four packs side by side**, not just a pack under tria
 - Top-of-charge crossings (3.40 V → peak): time, current, cell
 - Balancing: minutes (charge / rest / discharge), current while balancing, max temp while balancing, minutes per cell, start/stop events
 - Full-charge SOC resets: time, pack V, current, Ah before → after, 99↔100 flips, release time and Ah
+- Days that didn't reach full (low sun): from the *Daily charge peak* table, the peak SOC / Ah, top cell and the days since the last full charge. Below about 3.40 V no balancing happens and the SOC drifts, so after a run of such days compare the Ah jump at the next reset and the top-of-charge Δ with the previous full day
 - Temperature range (all sensors) and any pack running hotter than the others
 - Charge current share between packs, and any pack-to-pack current (one discharging while another charges)
 - Lowest cell at the bottom of discharge

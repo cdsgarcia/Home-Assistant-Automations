@@ -149,6 +149,27 @@ def soc_resets(samples):
     return out
 
 
+def daily_peaks(samples, resets):
+    """Per calendar day: did the pack reach full (BMS reset to 100 %)? If not, how high did it get.
+
+    Peak = the sample with the most remaining Ah; top cell = highest cell voltage of the day.
+    """
+    out = []
+    for day in sorted({ts[:10] for ts, _ in samples}):
+        s = [(ts, d) for ts, d in samples if ts[:10] == day and d.get("cell_voltages")]
+        if not s:
+            continue
+        pts, pd = max(s, key=lambda x: (x[1].get("cycle_charge") or 0, x[0]))
+        hts, hd = max(s, key=lambda x: max(x[1]["cell_voltages"]))
+        hc = hd["cell_voltages"]
+        full = next((r["time"] for r in resets if r["time"][:10] == day), None)
+        out.append({"day": day, "from": s[0][0], "to": s[-1][0], "full": full,
+                    "peak": {"time": pts, "soc": pd.get("battery_level"), "ah": pd.get("cycle_charge")},
+                    "top_cell": {"time": hts, "cell": hc.index(max(hc)) + 1, "v": max(hc),
+                                 "delta_mv": round((max(hc) - min(hc)) * 1000), "current": hd["current"]}})
+    return out
+
+
 def summarise(rows, pay):
     pay_masks = [(ts, cst_mask(h)) for ts, h in pay]
     out = {}
@@ -225,7 +246,20 @@ def summarise(rows, pay):
             "balancing": balancing(s, mirror=dev != "CST"),
             "soc_resets": soc_resets(s),
         }
+        out[dev]["daily"] = daily_peaks(s, out[dev]["soc_resets"])
     return out
+
+
+def add_last_full(entry, hist):
+    """Fill daily[].last_full = most recent full reset before that day, from this and earlier captures."""
+    for dev, p in entry["packs"].items():
+        fulls = sorted({r["time"] for h in hist + [entry] for r in (h["packs"].get(dev, {}).get("soc_resets") or [])}
+                       | {h["start"] for h in hist if h["start"] < entry["start"] and
+                          (h["packs"].get(dev, {}).get("soc") or [0, 0])[1] == 100
+                          and "soc_resets" not in h["packs"].get(dev, {})})
+        for d in p.get("daily", []):
+            prev = [f for f in fulls if f[:10] < d["day"]]
+            d["last_full"] = prev[-1] if prev else None
 
 
 def to_md(entry):
@@ -314,6 +348,20 @@ def to_md(entry):
                      f"{r['ah_after']} | {r['hi_v']:.3f} | {r['delta_mv']} | {r['flips']} | {rel} |")
         if not resets:
             L.append("| – | no reset in this capture | | | | | | | |")
+    daily = [(dev, d) for dev, p in entry["packs"].items() for d in (p.get("daily") or [])]
+    if daily:
+        L += ["", "Daily charge peak — *Full* = BMS reset to 100 % that day. On days that don't reach full, the "
+              "cells stay below the 3.40 V balance start, so no balancing happens and the SOC drifts until the next "
+              "full day (the drift shows as the Ah jump at the next reset). *Days* = days since the previous full reset.", "",
+              "| Day | Pack | Full | Peak SOC / Ah (time) | Top cell (time, current A) | Δ mV at top | Last full before (days) |",
+              "|---|---|---|---|---|---|---|"]
+        for dev, d in sorted(daily, key=lambda x: (x[1]["day"], x[0])):
+            pk, tc = d["peak"], d["top_cell"]
+            full = t(d["full"]) if d["full"] else ("no" if d["to"][11:13] >= "18" else "not yet")
+            lf = d.get("last_full")
+            days = (datetime.date.fromisoformat(d["day"]) - datetime.date.fromisoformat(lf[:10])).days if lf else None
+            L.append(f"| {d['day']} | {dev} | {full} | {pk['soc']}% / {pk['ah']} ({t(pk['time'])}) | #{tc['cell']} {tc['v']:.3f} "
+                     f"({t(tc['time'])}, {tc['current']}) | {tc['delta_mv']} | {lf[:10] + f' ({days})' if lf else '–'} |")
     return "\n".join(L) + "\n"
 
 
@@ -396,7 +444,9 @@ def main():
         "settings": a.settings, "note": a.note, "errors": dict(errs), "packs": summarise(rows, pay),
     }
     hist = json.load(open(hj, encoding="utf-8")) if os.path.exists(hj) else []
-    hist = [h for h in hist if h["log"] != entry["log"]] + [entry]
+    hist = [h for h in hist if h["log"] != entry["log"]]
+    add_last_full(entry, hist)
+    hist = hist + [entry]
     hist.sort(key=lambda h: h["start"], reverse=True)
     json.dump(hist, open(hj, "w", encoding="utf-8"), indent=1)
     write_md(hist)
