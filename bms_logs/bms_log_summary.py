@@ -317,29 +317,40 @@ def to_md(entry):
     return "\n".join(L) + "\n"
 
 
-def write_samples(rows):
-    """Append every sample to samples_<date>.csv (one file per day) so raw logs can be deleted."""
-    cols = ["time", "pack", "voltage", "current", "soc", "temp_max", "cycles", "problem", "balance_mask"]
+SAMPLE_COLS = (["time", "pack", "voltage", "current", "soc", "temp_max", "cycles", "problem", "balance_mask"]
+               + [f"c{i}" for i in range(1, 17)] + ["remaining_ah", "power", "temps", "event"])
+
+
+def write_samples(rows, errs=()):
+    """Merge every sample (and BLE error, event=ble_error) into samples_<date>.csv, one file per day,
+    so raw logs can be deleted. Older files are upgraded to the current columns (new ones left blank)."""
     by_day = collections.defaultdict(list)
     for ts, dev, d in rows:
         cv = d.get("cell_voltages") or []
         if len(cv) != 16:
             continue
+        # CST: top level has only cell max/min; the individual sensors are in packs[0]
+        temps = (d.get("packs") or [{}])[0].get("temp_values") or d.get("temp_values") or []
         bal = d.get("balancer")
-        by_day[ts[:10]].append([ts, dev, d.get("voltage"), d.get("current"), d.get("battery_level"),
-                                max(d.get("temp_values") or [None], key=lambda x: x or 0), d.get("cycles"),
-                                d.get("problem_code", 0), f"0x{int(bal):04X}" if bal not in (None, False) else "0x0000"] + cv)
+        r = {"time": ts, "pack": dev, "voltage": d.get("voltage"), "current": d.get("current"),
+             "soc": d.get("battery_level"), "temp_max": max(temps) if temps else "", "cycles": d.get("cycles"),
+             "problem": d.get("problem_code", int(bool(d.get("problem")))),
+             "balance_mask": f"0x{int(bal):04X}" if bal not in (None, False) else "0x0000",
+             "remaining_ah": d.get("cycle_charge"), "power": d.get("power"),
+             "temps": ";".join(str(x) for x in temps), "event": ""}
+        r.update({f"c{i}": v for i, v in enumerate(cv, 1)})
+        by_day[ts[:10]].append(r)
+    for ts, dev in errs:
+        by_day[ts[:10]].append({"time": ts, "pack": dev, "event": "ble_error"})
     for day, recs in by_day.items():
         path = os.path.join(HERE, f"samples_{day}.csv")
-        seen = set()
-        if os.path.exists(path):
-            seen = {(r["time"], r["pack"]) for r in csv.DictReader(open(path, encoding="utf-8"))}
-        new = not os.path.exists(path)
-        with open(path, "a", newline="", encoding="utf-8") as f:
-            w = csv.writer(f)
-            if new:
-                w.writerow(cols + [f"c{i}" for i in range(1, 17)])
-            w.writerows(r for r in recs if (r[0], r[1]) not in seen)
+        old = list(csv.DictReader(open(path, encoding="utf-8"))) if os.path.exists(path) else []
+        merged = {(r["time"], r["pack"], r.get("event") or ""): r for r in old}
+        merged.update({(r["time"], r["pack"], r["event"]): r for r in recs})
+        with open(path, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, SAMPLE_COLS, restval="", extrasaction="ignore")
+            w.writeheader()
+            w.writerows(merged[k] for k in sorted(merged))
 
 
 def csv_samples(entry):
@@ -349,7 +360,7 @@ def csv_samples(entry):
         return {}
     out = collections.defaultdict(list)
     for r in csv.DictReader(open(path, encoding="utf-8")):
-        if entry["start"] <= r["time"] <= entry["end"]:
+        if entry["start"] <= r["time"] <= entry["end"] and not r.get("event"):
             out[r["pack"]].append((r["time"], float(r["current"]), [float(r[f"c{i}"]) for i in range(1, 17)]))
     return out
 
@@ -377,7 +388,7 @@ def main():
     rows, pay, errs = parse(a.log)
     if not rows:
         raise SystemExit("no 'BMS data sample' lines found - is debug logging enabled?")
-    write_samples(rows)
+    write_samples(rows, errs)
     start, end = rows[0][0], rows[-1][0]
     errs = collections.Counter(dev for ts, dev in errs if start <= ts <= end)
     entry = {
