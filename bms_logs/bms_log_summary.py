@@ -317,6 +317,31 @@ def to_md(entry):
     return "\n".join(L) + "\n"
 
 
+def write_samples(rows):
+    """Append every sample to samples_<date>.csv (one file per day) so raw logs can be deleted."""
+    cols = ["time", "pack", "voltage", "current", "soc", "temp_max", "cycles", "problem", "balance_mask"]
+    by_day = collections.defaultdict(list)
+    for ts, dev, d in rows:
+        cv = d.get("cell_voltages") or []
+        if len(cv) != 16:
+            continue
+        bal = d.get("balancer")
+        by_day[ts[:10]].append([ts, dev, d.get("voltage"), d.get("current"), d.get("battery_level"),
+                                max(d.get("temp_values") or [None], key=lambda x: x or 0), d.get("cycles"),
+                                d.get("problem_code", 0), f"0x{int(bal):04X}" if bal not in (None, False) else "0x0000"] + cv)
+    for day, recs in by_day.items():
+        path = os.path.join(HERE, f"samples_{day}.csv")
+        seen = set()
+        if os.path.exists(path):
+            seen = {(r["time"], r["pack"]) for r in csv.DictReader(open(path, encoding="utf-8"))}
+        new = not os.path.exists(path)
+        with open(path, "a", newline="", encoding="utf-8") as f:
+            w = csv.writer(f)
+            if new:
+                w.writerow(cols + [f"c{i}" for i in range(1, 17)])
+            w.writerows(r for r in recs if (r[0], r[1]) not in seen)
+
+
 def csv_samples(entry):
     """Rebuild (pack -> [(ts, current, cells)]) for an entry from samples_<date>.csv."""
     path = os.path.join(HERE, f"samples_{entry['start'][:10]}.csv")
@@ -352,6 +377,7 @@ def main():
     rows, pay, errs = parse(a.log)
     if not rows:
         raise SystemExit("no 'BMS data sample' lines found - is debug logging enabled?")
+    write_samples(rows)
     start, end = rows[0][0], rows[-1][0]
     errs = collections.Counter(dev for ts, dev in errs if start <= ts <= end)
     entry = {
