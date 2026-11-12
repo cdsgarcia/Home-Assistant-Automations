@@ -1,5 +1,4002 @@
 [
  {
+  "log": "bms_ble_2026-11-11.log.gz",
+  "start": "2026-11-11 00:00:00.247",
+  "end": "2026-11-11 23:59:53.387",
+  "settings": "Inverter 56.4V, stop chg 2A, recharge 53.6V; Gentai FullAdjust 56.00V/2A; S2 balance static, M1/S1 charge",
+  "note": "Low-sun day, no full charge: peak SOC CST 92, M1 96, S1 97, S2 95%; top cells 3.38-3.40V, no balancing. Morning step bump S1/S2 28 mV. 1 CST + 1 S2 BLE error.",
+  "errors": {
+   "CST": 1,
+   "S2": 1
+  },
+  "packs": {
+   "CST": {
+    "samples": 2771,
+    "pack_v_min": [
+     52.86,
+     "2026-11-11 05:22:19.116"
+    ],
+    "pack_v_max": [
+     54.09,
+     "2026-11-11 14:37:29.594"
+    ],
+    "cell_max": {
+     "v": 3.377,
+     "cell": 5,
+     "time": "2026-11-11 14:32:49.179"
+    },
+    "cell_min": {
+     "v": 3.298,
+     "cell": 9,
+     "time": "2026-11-11 05:20:46.135"
+    },
+    "delta_max_mv": {
+     "mv": 10,
+     "time": "2026-11-11 18:06:42.202",
+     "at_max_cell_v": 3.318
+    },
+    "delta_end_mv": 2,
+    "current_max_chg": [
+     39.97,
+     "2026-11-11 14:36:58.210"
+    ],
+    "current_max_dchg": [
+     -20.98,
+     "2026-11-11 18:21:10.350"
+    ],
+    "soc": [
+     67,
+     92
+    ],
+    "temp_range": [
+     31.1,
+     32.0
+    ],
+    "cycles": 21,
+    "avg_dev_above_min_mv": [
+     0.7,
+     1.7,
+     1.6,
+     1.8,
+     1.6,
+     1.9,
+     1.5,
+     1.9,
+     1.3,
+     1.8,
+     1.6,
+     1.9,
+     1.3,
+     1.7,
+     1.5,
+     0.2
+    ],
+    "highest_cells": [
+     12,
+     8,
+     6,
+     10,
+     4,
+     14
+    ],
+    "lowest_cells": [
+     16,
+     1,
+     9,
+     13,
+     7,
+     15
+    ],
+    "peak_cell_voltages": [
+     3.313,
+     3.31,
+     3.309,
+     3.31,
+     3.31,
+     3.31,
+     3.309,
+     3.311,
+     3.318,
+     3.309,
+     3.309,
+     3.311,
+     3.31,
+     3.309,
+     3.308,
+     3.308
+    ],
+    "peak_highest": [
+     [
+      9,
+      3.318
+     ],
+     [
+      1,
+      3.313
+     ],
+     [
+      12,
+      3.311
+     ],
+     [
+      8,
+      3.311
+     ],
+     [
+      13,
+      3.31
+     ],
+     [
+      6,
+      3.31
+     ]
+    ],
+    "peak_lowest": [
+     [
+      15,
+      3.308
+     ],
+     [
+      16,
+      3.308
+     ],
+     [
+      3,
+      3.309
+     ],
+     [
+      7,
+      3.309
+     ],
+     [
+      10,
+      3.309
+     ],
+     [
+      11,
+      3.309
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (0x0A03 bytes 6-7 LE)",
+    "balance_first": null,
+    "balance_cells_ever": [],
+    "balance_bit_check": {
+     "samples": 0,
+     "normal_mv": null,
+     "mirrored_mv": null
+    },
+    "top_of_charge": {
+     "crossings": [],
+     "window": null
+    },
+    "balancing": null,
+    "soc_resets": [],
+    "daily": [
+     {
+      "day": "2026-11-11",
+      "from": "2026-11-11 00:00:06.242",
+      "to": "2026-11-11 23:59:51.295",
+      "full": null,
+      "peak": {
+       "time": "2026-11-11 16:19:36.164",
+       "soc": 92,
+       "ah": 317.29
+      },
+      "top_cell": {
+       "time": "2026-11-11 14:32:49.179",
+       "cell": 5,
+       "v": 3.377,
+       "delta_mv": 4,
+       "current": 39.35
+      },
+      "last_full": "2026-11-10 15:11:01.181"
+     }
+    ]
+   },
+   "M1": {
+    "samples": 2849,
+    "pack_v_min": [
+     52.81,
+     "2026-11-11 05:23:03.258"
+    ],
+    "pack_v_max": [
+     54.26,
+     "2026-11-11 14:37:22.504"
+    ],
+    "cell_max": {
+     "v": 3.393,
+     "cell": 1,
+     "time": "2026-11-11 14:37:22.504"
+    },
+    "cell_min": {
+     "v": 3.295,
+     "cell": 7,
+     "time": "2026-11-11 05:23:33.159"
+    },
+    "delta_max_mv": {
+     "mv": 18,
+     "time": "2026-11-11 04:16:03.215",
+     "at_max_cell_v": 3.318
+    },
+    "delta_end_mv": 3,
+    "current_max_chg": [
+     14.39,
+     "2026-11-11 10:07:27.181"
+    ],
+    "current_max_dchg": [
+     -9.12,
+     "2026-11-11 18:20:22.426"
+    ],
+    "soc": [
+     65,
+     96
+    ],
+    "temp_range": [
+     31.3,
+     34.5
+    ],
+    "cycles": 270,
+    "avg_dev_above_min_mv": [
+     3.8,
+     4.5,
+     1.7,
+     2.4,
+     2.9,
+     3.7,
+     0.9,
+     4.1,
+     1.3,
+     2.7,
+     2.1,
+     3.4,
+     1.9,
+     1.1,
+     2.7,
+     2.1
+    ],
+    "highest_cells": [
+     2,
+     8,
+     1,
+     6,
+     12,
+     5
+    ],
+    "lowest_cells": [
+     7,
+     14,
+     9,
+     3,
+     13,
+     11
+    ],
+    "peak_cell_voltages": [
+     3.307,
+     3.316,
+     3.307,
+     3.308,
+     3.314,
+     3.318,
+     3.3,
+     3.316,
+     3.307,
+     3.31,
+     3.304,
+     3.316,
+     3.307,
+     3.302,
+     3.309,
+     3.313
+    ],
+    "peak_highest": [
+     [
+      6,
+      3.318
+     ],
+     [
+      12,
+      3.316
+     ],
+     [
+      8,
+      3.316
+     ],
+     [
+      2,
+      3.316
+     ],
+     [
+      5,
+      3.314
+     ],
+     [
+      16,
+      3.313
+     ]
+    ],
+    "peak_lowest": [
+     [
+      7,
+      3.3
+     ],
+     [
+      14,
+      3.302
+     ],
+     [
+      11,
+      3.304
+     ],
+     [
+      1,
+      3.307
+     ],
+     [
+      3,
+      3.307
+     ],
+     [
+      9,
+      3.307
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (bit order unverified)",
+    "balance_first": null,
+    "balance_cells_ever": [],
+    "balance_bit_check": {
+     "samples": 0,
+     "normal_mv": null,
+     "mirrored_mv": null
+    },
+    "top_of_charge": {
+     "crossings": [],
+     "window": null
+    },
+    "balancing": null,
+    "soc_resets": [],
+    "daily": [
+     {
+      "day": "2026-11-11",
+      "from": "2026-11-11 00:00:00.247",
+      "to": "2026-11-11 23:59:42.499",
+      "full": null,
+      "peak": {
+       "time": "2026-11-11 14:37:52.632",
+       "soc": 96,
+       "ah": 96.68
+      },
+      "top_cell": {
+       "time": "2026-11-11 14:37:22.504",
+       "cell": 1,
+       "v": 3.393,
+       "delta_mv": 3,
+       "current": 1.66
+      },
+      "last_full": "2026-11-10 15:12:59.255"
+     }
+    ]
+   },
+   "S1": {
+    "samples": 2866,
+    "pack_v_min": [
+     52.83,
+     "2026-11-11 05:22:46.409"
+    ],
+    "pack_v_max": [
+     54.26,
+     "2026-11-11 14:37:10.296"
+    ],
+    "cell_max": {
+     "v": 3.394,
+     "cell": 13,
+     "time": "2026-11-11 14:37:10.296"
+    },
+    "cell_min": {
+     "v": 3.291,
+     "cell": 7,
+     "time": "2026-11-11 05:21:46.555"
+    },
+    "delta_max_mv": {
+     "mv": 28,
+     "time": "2026-11-11 06:58:48.430",
+     "at_max_cell_v": 3.34
+    },
+    "delta_end_mv": 4,
+    "current_max_chg": [
+     13.83,
+     "2026-11-11 10:07:30.316"
+    ],
+    "current_max_dchg": [
+     -8.59,
+     "2026-11-11 18:20:12.287"
+    ],
+    "soc": [
+     65,
+     97
+    ],
+    "temp_range": [
+     31.7,
+     34.3
+    ],
+    "cycles": 299,
+    "avg_dev_above_min_mv": [
+     5.9,
+     4.8,
+     4.1,
+     3.7,
+     5.4,
+     4.3,
+     0.2,
+     8.2,
+     6.0,
+     6.6,
+     7.6,
+     4.0,
+     8.1,
+     3.1,
+     5.1,
+     5.1
+    ],
+    "highest_cells": [
+     8,
+     13,
+     11,
+     10,
+     9,
+     1
+    ],
+    "lowest_cells": [
+     7,
+     14,
+     4,
+     12,
+     3,
+     6
+    ],
+    "peak_cell_voltages": [
+     3.327,
+     3.324,
+     3.324,
+     3.325,
+     3.322,
+     3.327,
+     3.312,
+     3.34,
+     3.325,
+     3.328,
+     3.334,
+     3.318,
+     3.336,
+     3.317,
+     3.323,
+     3.326
+    ],
+    "peak_highest": [
+     [
+      8,
+      3.34
+     ],
+     [
+      13,
+      3.336
+     ],
+     [
+      11,
+      3.334
+     ],
+     [
+      10,
+      3.328
+     ],
+     [
+      6,
+      3.327
+     ],
+     [
+      1,
+      3.327
+     ]
+    ],
+    "peak_lowest": [
+     [
+      7,
+      3.312
+     ],
+     [
+      14,
+      3.317
+     ],
+     [
+      12,
+      3.318
+     ],
+     [
+      5,
+      3.322
+     ],
+     [
+      15,
+      3.323
+     ],
+     [
+      2,
+      3.324
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (bit order unverified)",
+    "balance_first": null,
+    "balance_cells_ever": [],
+    "balance_bit_check": {
+     "samples": 0,
+     "normal_mv": null,
+     "mirrored_mv": null
+    },
+    "top_of_charge": {
+     "crossings": [],
+     "window": null
+    },
+    "balancing": null,
+    "soc_resets": [],
+    "daily": [
+     {
+      "day": "2026-11-11",
+      "from": "2026-11-11 00:00:13.404",
+      "to": "2026-11-11 23:59:53.387",
+      "full": null,
+      "peak": {
+       "time": "2026-11-11 14:38:10.303",
+       "soc": 97,
+       "ah": 97.31
+      },
+      "top_cell": {
+       "time": "2026-11-11 14:37:10.296",
+       "cell": 13,
+       "v": 3.394,
+       "delta_mv": 5,
+       "current": 2.79
+      },
+      "last_full": "2026-11-10 15:13:03.480"
+     }
+    ]
+   },
+   "S2": {
+    "samples": 2800,
+    "pack_v_min": [
+     52.91,
+     "2026-11-11 05:22:54.296"
+    ],
+    "pack_v_max": [
+     54.34,
+     "2026-11-11 14:37:10.093"
+    ],
+    "cell_max": {
+     "v": 3.4,
+     "cell": 15,
+     "time": "2026-11-11 14:37:10.093"
+    },
+    "cell_min": {
+     "v": 3.296,
+     "cell": 1,
+     "time": "2026-11-11 05:21:54.280"
+    },
+    "delta_max_mv": {
+     "mv": 28,
+     "time": "2026-11-11 06:55:55.300",
+     "at_max_cell_v": 3.34
+    },
+    "delta_end_mv": 5,
+    "current_max_chg": [
+     14.29,
+     "2026-11-11 09:53:24.482"
+    ],
+    "current_max_dchg": [
+     -9.41,
+     "2026-11-11 18:20:10.034"
+    ],
+    "soc": [
+     63,
+     95
+    ],
+    "temp_range": [
+     31.1,
+     36.2
+    ],
+    "cycles": 313,
+    "avg_dev_above_min_mv": [
+     0.9,
+     5.7,
+     1.3,
+     3.1,
+     2.1,
+     6.6,
+     7.9,
+     5.1,
+     4.7,
+     6.7,
+     8.0,
+     3.1,
+     7.2,
+     5.5,
+     7.0,
+     8.5
+    ],
+    "highest_cells": [
+     16,
+     11,
+     7,
+     13,
+     15,
+     10
+    ],
+    "lowest_cells": [
+     1,
+     3,
+     5,
+     4,
+     12,
+     9
+    ],
+    "peak_cell_voltages": [
+     3.312,
+     3.324,
+     3.313,
+     3.322,
+     3.314,
+     3.326,
+     3.339,
+     3.32,
+     3.322,
+     3.328,
+     3.332,
+     3.315,
+     3.334,
+     3.327,
+     3.34,
+     3.336
+    ],
+    "peak_highest": [
+     [
+      15,
+      3.34
+     ],
+     [
+      7,
+      3.339
+     ],
+     [
+      16,
+      3.336
+     ],
+     [
+      13,
+      3.334
+     ],
+     [
+      11,
+      3.332
+     ],
+     [
+      10,
+      3.328
+     ]
+    ],
+    "peak_lowest": [
+     [
+      1,
+      3.312
+     ],
+     [
+      3,
+      3.313
+     ],
+     [
+      5,
+      3.314
+     ],
+     [
+      12,
+      3.315
+     ],
+     [
+      8,
+      3.32
+     ],
+     [
+      4,
+      3.322
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (bit order unverified)",
+    "balance_first": null,
+    "balance_cells_ever": [],
+    "balance_bit_check": {
+     "samples": 0,
+     "normal_mv": null,
+     "mirrored_mv": null
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-11 14:37:10.093",
+       "current": 2.38,
+       "cell": 15,
+       "hi": 3.4,
+       "gap_mv": 2,
+       "delta_mv": 5,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-11 14:37:10.093",
+      "peak": "2026-11-11 14:37:10.093",
+      "peak_v": 3.4,
+      "minutes": 0.0,
+      "mean_current": 2.38,
+      "max_current": 2.38
+     }
+    },
+    "balancing": null,
+    "soc_resets": [],
+    "daily": [
+     {
+      "day": "2026-11-11",
+      "from": "2026-11-11 00:00:24.257",
+      "to": "2026-11-11 23:59:41.066",
+      "full": null,
+      "peak": {
+       "time": "2026-11-11 14:37:40.203",
+       "soc": 95,
+       "ah": 95.96
+      },
+      "top_cell": {
+       "time": "2026-11-11 14:37:10.093",
+       "cell": 15,
+       "v": 3.4,
+       "delta_mv": 5,
+       "current": 2.38
+      },
+      "last_full": "2026-11-10 15:12:52.287"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "log": "bms_ble_2026-11-10.log.gz",
+  "start": "2026-11-10 00:00:13.166",
+  "end": "2026-11-10 23:59:54.300",
+  "settings": "Inverter 56.4V, stop chg 2A, recharge 53.6V; Gentai FullAdjust 56.00V/2A; S2 balance static, M1/S1 charge",
+  "note": "Full day. All packs reset 15:11-15:13. S2 #15 peak 3.567 (gap 24 mV), delta at 3.50V 22 mV. M1 balanced 0.5 min. CST/S1/S2 balanced 51/19/6 min. 1 M1 BLE error.",
+  "errors": {
+   "M1": 1
+  },
+  "packs": {
+   "CST": {
+    "samples": 2780,
+    "pack_v_min": [
+     52.85,
+     "2026-11-10 05:50:17.215"
+    ],
+    "pack_v_max": [
+     56.51,
+     "2026-11-10 15:13:36.318"
+    ],
+    "cell_max": {
+     "v": 3.545,
+     "cell": 8,
+     "time": "2026-11-10 15:13:36.318"
+    },
+    "cell_min": {
+     "v": 3.296,
+     "cell": 1,
+     "time": "2026-11-10 05:45:07.162"
+    },
+    "delta_max_mv": {
+     "mv": 32,
+     "time": "2026-11-10 15:11:32.112",
+     "at_max_cell_v": 3.543
+    },
+    "delta_end_mv": 2,
+    "current_max_chg": [
+     41.3,
+     "2026-11-10 14:00:08.085"
+    ],
+    "current_max_dchg": [
+     -19.03,
+     "2026-11-10 17:45:04.263"
+    ],
+    "soc": [
+     66,
+     100
+    ],
+    "temp_range": [
+     31.4,
+     32.6
+    ],
+    "cycles": 20,
+    "avg_dev_above_min_mv": [
+     1.3,
+     2.6,
+     2.6,
+     2.4,
+     3.0,
+     3.0,
+     1.9,
+     3.3,
+     2.4,
+     2.6,
+     2.3,
+     3.0,
+     1.6,
+     2.2,
+     2.1,
+     0.5
+    ],
+    "highest_cells": [
+     8,
+     12,
+     6,
+     5,
+     10,
+     3
+    ],
+    "lowest_cells": [
+     16,
+     1,
+     13,
+     7,
+     15,
+     14
+    ],
+    "peak_cell_voltages": [
+     3.533,
+     3.524,
+     3.529,
+     3.519,
+     3.541,
+     3.53,
+     3.518,
+     3.543,
+     3.534,
+     3.523,
+     3.521,
+     3.527,
+     3.522,
+     3.518,
+     3.515,
+     3.511
+    ],
+    "peak_highest": [
+     [
+      8,
+      3.543
+     ],
+     [
+      5,
+      3.541
+     ],
+     [
+      9,
+      3.534
+     ],
+     [
+      1,
+      3.533
+     ],
+     [
+      6,
+      3.53
+     ],
+     [
+      3,
+      3.529
+     ]
+    ],
+    "peak_lowest": [
+     [
+      16,
+      3.511
+     ],
+     [
+      15,
+      3.515
+     ],
+     [
+      7,
+      3.518
+     ],
+     [
+      14,
+      3.518
+     ],
+     [
+      4,
+      3.519
+     ],
+     [
+      11,
+      3.521
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (0x0A03 bytes 6-7 LE)",
+    "balance_first": {
+     "time": "2026-11-10 14:55:31.505",
+     "cells": [
+      9
+     ],
+     "max_cell_v": 3.403
+    },
+    "balance_cells_ever": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14
+    ],
+    "balance_bit_check": {
+     "samples": 99,
+     "normal_mv": 12.8,
+     "mirrored_mv": 9.7
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-10 14:55:00.050",
+       "current": 15.69,
+       "cell": 5,
+       "hi": 3.4,
+       "gap_mv": 0,
+       "delta_mv": 5,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-10 15:01:12.289",
+       "current": 13.89,
+       "cell": 8,
+       "hi": 3.45,
+       "gap_mv": 0,
+       "delta_mv": 13,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-10 15:09:59.231",
+       "current": 10.96,
+       "cell": 8,
+       "hi": 3.512,
+       "gap_mv": 2,
+       "delta_mv": 25,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-10 14:55:00.050",
+      "peak": "2026-11-10 15:13:36.318",
+      "peak_v": 3.545,
+      "minutes": 18.6,
+      "mean_current": 8.22,
+      "max_current": 15.69
+     }
+    },
+    "balancing": {
+     "minutes": {
+      "charge": 29.0,
+      "rest": 21.7,
+      "discharge": 0.5
+     },
+     "total_min": 51.2,
+     "current": {
+      "min": -0.51,
+      "mean": 3.3,
+      "max": 15.3
+     },
+     "temp_max": 32.6,
+     "per_cell_min": {
+      "9": 51.2,
+      "8": 48.1,
+      "5": 47.6,
+      "1": 45.5,
+      "6": 45.5,
+      "12": 42.4,
+      "3": 42.4,
+      "2": 14.5,
+      "10": 13.4,
+      "11": 8.3,
+      "7": 6.2,
+      "13": 4.7,
+      "4": 0.5,
+      "14": 0.5
+     },
+     "cell_map": "bit0 = cell 1",
+     "events": [
+      {
+       "time": "2026-11-10 14:55:31.505",
+       "event": "start",
+       "pack_v": 54.48,
+       "current": 15.3,
+       "hi_cell": 8,
+       "hi_v": 3.403,
+       "delta_mv": 6
+      },
+      {
+       "time": "2026-11-10 15:12:34.162",
+       "event": "stop",
+       "pack_v": 56.35,
+       "current": -0.5,
+       "hi_cell": 8,
+       "hi_v": 3.532,
+       "delta_mv": 27
+      },
+      {
+       "time": "2026-11-10 15:13:05.092",
+       "event": "start",
+       "pack_v": 56.3,
+       "current": 0.0,
+       "hi_cell": 8,
+       "hi_v": 3.529,
+       "delta_mv": 28
+      },
+      {
+       "time": "2026-11-10 15:14:07.146",
+       "event": "stop",
+       "pack_v": 56.43,
+       "current": -0.88,
+       "hi_cell": 8,
+       "hi_v": 3.538,
+       "delta_mv": 29
+      },
+      {
+       "time": "2026-11-10 15:16:42.073",
+       "event": "start",
+       "pack_v": 56.26,
+       "current": 0.0,
+       "hi_cell": 8,
+       "hi_v": 3.524,
+       "delta_mv": 24
+      },
+      {
+       "time": "2026-11-10 15:21:21.112",
+       "event": "stop",
+       "pack_v": 56.1,
+       "current": 0.0,
+       "hi_cell": 8,
+       "hi_v": 3.513,
+       "delta_mv": 22
+      },
+      {
+       "time": "2026-11-10 15:27:02.108",
+       "event": "start",
+       "pack_v": 55.72,
+       "current": 0.0,
+       "hi_cell": 8,
+       "hi_v": 3.488,
+       "delta_mv": 18
+      },
+      {
+       "time": "2026-11-10 15:27:33.031",
+       "event": "stop",
+       "pack_v": 55.72,
+       "current": -0.89,
+       "hi_cell": 8,
+       "hi_v": 3.488,
+       "delta_mv": 19
+      },
+      {
+       "time": "2026-11-10 15:28:04.263",
+       "event": "start",
+       "pack_v": 55.7,
+       "current": 0.0,
+       "hi_cell": 5,
+       "hi_v": 3.486,
+       "delta_mv": 18
+      },
+      {
+       "time": "2026-11-10 15:32:43.101",
+       "event": "stop",
+       "pack_v": 55.56,
+       "current": -3.81,
+       "hi_cell": 8,
+       "hi_v": 3.477,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-10 15:33:14.232",
+       "event": "start",
+       "pack_v": 55.56,
+       "current": 0.0,
+       "hi_cell": 5,
+       "hi_v": 3.476,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-10 15:33:45.058",
+       "event": "stop",
+       "pack_v": 55.51,
+       "current": -3.81,
+       "hi_cell": 5,
+       "hi_v": 3.473,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-10 15:34:47.108",
+       "event": "start",
+       "pack_v": 55.41,
+       "current": 0.0,
+       "hi_cell": 5,
+       "hi_v": 3.466,
+       "delta_mv": 15
+      },
+      {
+       "time": "2026-11-10 15:40:59.232",
+       "event": "stop",
+       "pack_v": 55.37,
+       "current": -2.79,
+       "hi_cell": 8,
+       "hi_v": 3.465,
+       "delta_mv": 16
+      },
+      {
+       "time": "2026-11-10 15:41:30.057",
+       "event": "start",
+       "pack_v": 55.34,
+       "current": 0.0,
+       "hi_cell": 8,
+       "hi_v": 3.463,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-10 15:42:32.215",
+       "event": "stop",
+       "pack_v": 55.35,
+       "current": -1.38,
+       "hi_cell": 8,
+       "hi_v": 3.463,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-10 15:43:03.150",
+       "event": "start",
+       "pack_v": 55.32,
+       "current": 0.57,
+       "hi_cell": 5,
+       "hi_v": 3.461,
+       "delta_mv": 15
+      },
+      {
+       "time": "2026-11-10 15:47:42.179",
+       "event": "stop",
+       "pack_v": 55.53,
+       "current": -2.82,
+       "hi_cell": 8,
+       "hi_v": 3.475,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-10 15:48:44.131",
+       "event": "start",
+       "pack_v": 55.44,
+       "current": 1.06,
+       "hi_cell": 8,
+       "hi_v": 3.469,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-10 15:49:46.594",
+       "event": "stop",
+       "pack_v": 55.46,
+       "current": -1.79,
+       "hi_cell": 5,
+       "hi_v": 3.47,
+       "delta_mv": 16
+      },
+      {
+       "time": "2026-11-10 15:52:22.152",
+       "event": "start",
+       "pack_v": 55.33,
+       "current": 2.6,
+       "hi_cell": 5,
+       "hi_v": 3.461,
+       "delta_mv": 15
+      },
+      {
+       "time": "2026-11-10 15:59:37.958",
+       "event": "stop",
+       "pack_v": 55.43,
+       "current": -3.74,
+       "hi_cell": 5,
+       "hi_v": 3.468,
+       "delta_mv": 15
+      },
+      {
+       "time": "2026-11-10 16:02:44.227",
+       "event": "start",
+       "pack_v": 55.22,
+       "current": 0.0,
+       "hi_cell": 5,
+       "hi_v": 3.453,
+       "delta_mv": 14
+      },
+      {
+       "time": "2026-11-10 16:04:17.102",
+       "event": "stop",
+       "pack_v": 55.22,
+       "current": -0.62,
+       "hi_cell": 5,
+       "hi_v": 3.454,
+       "delta_mv": 15
+      },
+      {
+       "time": "2026-11-10 16:06:21.219",
+       "event": "start",
+       "pack_v": 55.16,
+       "current": 0.0,
+       "hi_cell": 5,
+       "hi_v": 3.45,
+       "delta_mv": 14
+      },
+      {
+       "time": "2026-11-10 16:07:23.167",
+       "event": "stop",
+       "pack_v": 55.16,
+       "current": -0.52,
+       "hi_cell": 5,
+       "hi_v": 3.45,
+       "delta_mv": 14
+      }
+     ]
+    },
+    "soc_resets": [
+     {
+      "time": "2026-11-10 15:11:01.181",
+      "pack_v": 56.28,
+      "current": 8.86,
+      "soc_before": 96,
+      "ah_before": 331.78,
+      "ah_after": 345.96,
+      "hi_v": 3.528,
+      "delta_mv": 28,
+      "flips": 0,
+      "release": {
+       "time": "2026-11-10 16:41:31.074",
+       "ah": 344.21,
+       "soc": 99
+      }
+     }
+    ],
+    "daily": [
+     {
+      "day": "2026-11-10",
+      "from": "2026-11-10 00:00:19.216",
+      "to": "2026-11-10 23:59:35.105",
+      "full": "2026-11-10 15:11:01.181",
+      "peak": {
+       "time": "2026-11-10 15:59:06.113",
+       "soc": 100,
+       "ah": 345.96
+      },
+      "top_cell": {
+       "time": "2026-11-10 15:13:36.318",
+       "cell": 8,
+       "v": 3.545,
+       "delta_mv": 32,
+       "current": 5.62
+      },
+      "last_full": "2026-11-09 14:40:02.185"
+     }
+    ]
+   },
+   "M1": {
+    "samples": 2875,
+    "pack_v_min": [
+     52.82,
+     "2026-11-10 05:46:16.170"
+    ],
+    "pack_v_max": [
+     56.52,
+     "2026-11-10 15:11:29.282"
+    ],
+    "cell_max": {
+     "v": 3.543,
+     "cell": 12,
+     "time": "2026-11-10 15:11:29.282"
+    },
+    "cell_min": {
+     "v": 3.297,
+     "cell": 7,
+     "time": "2026-11-10 05:33:46.186"
+    },
+    "delta_max_mv": {
+     "mv": 18,
+     "time": "2026-11-10 04:01:45.179",
+     "at_max_cell_v": 3.318
+    },
+    "delta_end_mv": 3,
+    "current_max_chg": [
+     14.88,
+     "2026-11-10 09:38:52.269"
+    ],
+    "current_max_dchg": [
+     -8.48,
+     "2026-11-10 17:45:00.169"
+    ],
+    "soc": [
+     64,
+     100
+    ],
+    "temp_range": [
+     31.5,
+     35.9
+    ],
+    "cycles": 270,
+    "avg_dev_above_min_mv": [
+     3.8,
+     4.9,
+     1.8,
+     2.6,
+     3.4,
+     4.5,
+     1.0,
+     4.7,
+     1.7,
+     3.0,
+     2.3,
+     4.4,
+     2.3,
+     1.1,
+     3.0,
+     2.6
+    ],
+    "highest_cells": [
+     2,
+     8,
+     6,
+     12,
+     1,
+     5
+    ],
+    "lowest_cells": [
+     7,
+     14,
+     9,
+     3,
+     11,
+     13
+    ],
+    "peak_cell_voltages": [
+     3.307,
+     3.315,
+     3.306,
+     3.308,
+     3.314,
+     3.318,
+     3.3,
+     3.316,
+     3.306,
+     3.31,
+     3.304,
+     3.316,
+     3.306,
+     3.302,
+     3.308,
+     3.312
+    ],
+    "peak_highest": [
+     [
+      6,
+      3.318
+     ],
+     [
+      12,
+      3.316
+     ],
+     [
+      8,
+      3.316
+     ],
+     [
+      2,
+      3.315
+     ],
+     [
+      5,
+      3.314
+     ],
+     [
+      16,
+      3.312
+     ]
+    ],
+    "peak_lowest": [
+     [
+      7,
+      3.3
+     ],
+     [
+      14,
+      3.302
+     ],
+     [
+      11,
+      3.304
+     ],
+     [
+      3,
+      3.306
+     ],
+     [
+      9,
+      3.306
+     ],
+     [
+      13,
+      3.306
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (bit order unverified)",
+    "balance_first": {
+     "time": "2026-11-10 15:11:59.242",
+     "cells": [
+      1,
+      4
+     ],
+     "max_cell_v": 3.535
+    },
+    "balance_cells_ever": [
+     1,
+     4
+    ],
+    "balance_bit_check": {
+     "samples": 1,
+     "normal_mv": 5.0,
+     "mirrored_mv": 5.5
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-10 14:52:29.223",
+       "current": 1.88,
+       "cell": 12,
+       "hi": 3.401,
+       "gap_mv": 2,
+       "delta_mv": 5,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-10 15:00:59.194",
+       "current": 4.98,
+       "cell": 12,
+       "hi": 3.453,
+       "gap_mv": 4,
+       "delta_mv": 7,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-10 15:09:59.252",
+       "current": 4.26,
+       "cell": 12,
+       "hi": 3.512,
+       "gap_mv": 6,
+       "delta_mv": 11,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-10 14:52:29.223",
+      "peak": "2026-11-10 15:11:29.282",
+      "peak_v": 3.543,
+      "minutes": 19.0,
+      "mean_current": 2.61,
+      "max_current": 5.28
+     }
+    },
+    "balancing": {
+     "minutes": {
+      "charge": 0.5,
+      "rest": 0.0,
+      "discharge": 0.0
+     },
+     "total_min": 0.5,
+     "current": {
+      "min": 0.64,
+      "mean": 0.64,
+      "max": 0.64
+     },
+     "temp_max": 35.8,
+     "per_cell_min": {
+      "16": 0.5,
+      "13": 0.5
+     },
+     "cell_map": "bit0 = cell 16 (mirrored)",
+     "events": [
+      {
+       "time": "2026-11-10 15:11:59.242",
+       "event": "start",
+       "pack_v": 56.4,
+       "current": 0.64,
+       "hi_cell": 12,
+       "hi_v": 3.535,
+       "delta_mv": 15
+      },
+      {
+       "time": "2026-11-10 15:12:29.151",
+       "event": "stop",
+       "pack_v": 56.34,
+       "current": 0.0,
+       "hi_cell": 12,
+       "hi_v": 3.532,
+       "delta_mv": 16
+      }
+     ]
+    },
+    "soc_resets": [
+     {
+      "time": "2026-11-10 15:12:59.255",
+      "pack_v": 56.28,
+      "current": 0.0,
+      "soc_before": 96,
+      "ah_before": 96.84,
+      "ah_after": 100.0,
+      "hi_v": 3.528,
+      "delta_mv": 15,
+      "flips": 6,
+      "release": {
+       "time": "2026-11-10 16:32:29.173",
+       "ah": 99.2,
+       "soc": 99
+      }
+     }
+    ],
+    "daily": [
+     {
+      "day": "2026-11-10",
+      "from": "2026-11-10 00:00:13.166",
+      "to": "2026-11-10 23:59:30.293",
+      "full": "2026-11-10 15:12:59.255",
+      "peak": {
+       "time": "2026-11-10 15:13:29.260",
+       "soc": 100,
+       "ah": 100.0
+      },
+      "top_cell": {
+       "time": "2026-11-10 15:11:29.282",
+       "cell": 12,
+       "v": 3.543,
+       "delta_mv": 15,
+       "current": 2.67
+      },
+      "last_full": "2026-11-09 14:44:02.206"
+     }
+    ]
+   },
+   "S1": {
+    "samples": 2875,
+    "pack_v_min": [
+     52.83,
+     "2026-11-10 05:49:46.439"
+    ],
+    "pack_v_max": [
+     56.54,
+     "2026-11-10 15:13:33.553"
+    ],
+    "cell_max": {
+     "v": 3.545,
+     "cell": 13,
+     "time": "2026-11-10 15:13:33.553"
+    },
+    "cell_min": {
+     "v": 3.293,
+     "cell": 7,
+     "time": "2026-11-10 05:29:46.372"
+    },
+    "delta_max_mv": {
+     "mv": 28,
+     "time": "2026-11-10 07:29:52.492",
+     "at_max_cell_v": 3.34
+    },
+    "delta_end_mv": 4,
+    "current_max_chg": [
+     14.23,
+     "2026-11-10 10:21:56.491"
+    ],
+    "current_max_dchg": [
+     -7.84,
+     "2026-11-10 17:46:07.475"
+    ],
+    "soc": [
+     64,
+     100
+    ],
+    "temp_range": [
+     31.8,
+     37.9
+    ],
+    "cycles": 298,
+    "avg_dev_above_min_mv": [
+     6.6,
+     5.3,
+     4.8,
+     4.4,
+     5.7,
+     5.3,
+     0.2,
+     9.3,
+     6.6,
+     7.3,
+     8.4,
+     4.2,
+     9.5,
+     3.3,
+     5.6,
+     6.1
+    ],
+    "highest_cells": [
+     13,
+     8,
+     11,
+     10,
+     9,
+     1
+    ],
+    "lowest_cells": [
+     7,
+     14,
+     12,
+     4,
+     3,
+     2
+    ],
+    "peak_cell_voltages": [
+     3.327,
+     3.324,
+     3.324,
+     3.325,
+     3.322,
+     3.328,
+     3.312,
+     3.34,
+     3.325,
+     3.328,
+     3.334,
+     3.319,
+     3.336,
+     3.317,
+     3.323,
+     3.326
+    ],
+    "peak_highest": [
+     [
+      8,
+      3.34
+     ],
+     [
+      13,
+      3.336
+     ],
+     [
+      11,
+      3.334
+     ],
+     [
+      10,
+      3.328
+     ],
+     [
+      6,
+      3.328
+     ],
+     [
+      1,
+      3.327
+     ]
+    ],
+    "peak_lowest": [
+     [
+      7,
+      3.312
+     ],
+     [
+      14,
+      3.317
+     ],
+     [
+      12,
+      3.319
+     ],
+     [
+      5,
+      3.322
+     ],
+     [
+      15,
+      3.323
+     ],
+     [
+      2,
+      3.324
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (bit order unverified)",
+    "balance_first": {
+     "time": "2026-11-10 14:57:33.346",
+     "cells": [
+      1
+     ],
+     "max_cell_v": 3.422
+    },
+    "balance_cells_ever": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "balance_bit_check": {
+     "samples": 37,
+     "normal_mv": 5.3,
+     "mirrored_mv": 8.0
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-10 14:51:33.446",
+       "current": 1.67,
+       "cell": 13,
+       "hi": 3.4,
+       "gap_mv": 2,
+       "delta_mv": 7,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-10 15:01:03.507",
+       "current": 5.05,
+       "cell": 13,
+       "hi": 3.455,
+       "gap_mv": 3,
+       "delta_mv": 9,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-10 15:09:33.575",
+       "current": 4.32,
+       "cell": 13,
+       "hi": 3.502,
+       "gap_mv": 3,
+       "delta_mv": 13,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-10 14:51:33.446",
+      "peak": "2026-11-10 15:13:33.553",
+      "peak_v": 3.545,
+      "minutes": 22.0,
+      "mean_current": 2.6,
+      "max_current": 5.47
+     }
+    },
+    "balancing": {
+     "minutes": {
+      "charge": 18.0,
+      "rest": 0.5,
+      "discharge": 0.0
+     },
+     "total_min": 18.5,
+     "current": {
+      "min": 0.0,
+      "mean": 2.01,
+      "max": 5.47
+     },
+     "temp_max": 37.7,
+     "per_cell_min": {
+      "16": 13.0,
+      "13": 8.5,
+      "15": 7.0,
+      "14": 3.0,
+      "12": 1.0
+     },
+     "cell_map": "bit0 = cell 16 (mirrored)",
+     "events": [
+      {
+       "time": "2026-11-10 14:57:33.346",
+       "event": "start",
+       "pack_v": 54.68,
+       "current": 3.26,
+       "hi_cell": 13,
+       "hi_v": 3.422,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-10 14:58:03.488",
+       "event": "stop",
+       "pack_v": 54.73,
+       "current": 3.47,
+       "hi_cell": 13,
+       "hi_v": 3.425,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-10 14:58:33.455",
+       "event": "start",
+       "pack_v": 54.78,
+       "current": 3.7,
+       "hi_cell": 13,
+       "hi_v": 3.428,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-10 14:59:03.386",
+       "event": "stop",
+       "pack_v": 54.84,
+       "current": 3.74,
+       "hi_cell": 13,
+       "hi_v": 3.432,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-10 15:00:33.404",
+       "event": "start",
+       "pack_v": 55.08,
+       "current": 4.86,
+       "hi_cell": 13,
+       "hi_v": 3.448,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-10 15:01:33.586",
+       "event": "stop",
+       "pack_v": 55.29,
+       "current": 5.28,
+       "hi_cell": 13,
+       "hi_v": 3.462,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-10 15:02:33.409",
+       "event": "start",
+       "pack_v": 55.54,
+       "current": 5.47,
+       "hi_cell": 13,
+       "hi_v": 3.477,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-10 15:03:33.431",
+       "event": "stop",
+       "pack_v": 55.55,
+       "current": 1.23,
+       "hi_cell": 13,
+       "hi_v": 3.479,
+       "delta_mv": 11
+      },
+      {
+       "time": "2026-11-10 15:05:33.450",
+       "event": "start",
+       "pack_v": 55.54,
+       "current": 0.61,
+       "hi_cell": 13,
+       "hi_v": 3.478,
+       "delta_mv": 11
+      },
+      {
+       "time": "2026-11-10 15:08:33.621",
+       "event": "stop",
+       "pack_v": 55.73,
+       "current": 0.58,
+       "hi_cell": 13,
+       "hi_v": 3.49,
+       "delta_mv": 11
+      },
+      {
+       "time": "2026-11-10 15:09:03.419",
+       "event": "start",
+       "pack_v": 55.76,
+       "current": 1.08,
+       "hi_cell": 13,
+       "hi_v": 3.492,
+       "delta_mv": 12
+      },
+      {
+       "time": "2026-11-10 15:12:03.453",
+       "event": "stop",
+       "pack_v": 56.38,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.536,
+       "delta_mv": 18
+      },
+      {
+       "time": "2026-11-10 15:13:33.553",
+       "event": "start",
+       "pack_v": 56.54,
+       "current": 3.16,
+       "hi_cell": 13,
+       "hi_v": 3.545,
+       "delta_mv": 16
+      },
+      {
+       "time": "2026-11-10 15:14:03.396",
+       "event": "stop",
+       "pack_v": 56.44,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.539,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-10 15:43:34.515",
+       "event": "start",
+       "pack_v": 55.4,
+       "current": 1.18,
+       "hi_cell": 13,
+       "hi_v": 3.469,
+       "delta_mv": 11
+      },
+      {
+       "time": "2026-11-10 15:47:34.327",
+       "event": "stop",
+       "pack_v": 55.56,
+       "current": -0.86,
+       "hi_cell": 13,
+       "hi_v": 3.479,
+       "delta_mv": 11
+      },
+      {
+       "time": "2026-11-10 15:49:04.345",
+       "event": "start",
+       "pack_v": 55.51,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.476,
+       "delta_mv": 11
+      },
+      {
+       "time": "2026-11-10 15:49:34.314",
+       "event": "stop",
+       "pack_v": 55.49,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.474,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-10 15:52:34.829",
+       "event": "start",
+       "pack_v": 55.39,
+       "current": 0.81,
+       "hi_cell": 13,
+       "hi_v": 3.468,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-10 15:53:05.464",
+       "event": "stop",
+       "pack_v": 55.38,
+       "current": -0.55,
+       "hi_cell": 13,
+       "hi_v": 3.467,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-10 15:53:35.389",
+       "event": "start",
+       "pack_v": 55.4,
+       "current": 0.91,
+       "hi_cell": 13,
+       "hi_v": 3.468,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-10 15:57:35.420",
+       "event": "stop",
+       "pack_v": 55.51,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.476,
+       "delta_mv": 11
+      }
+     ]
+    },
+    "soc_resets": [
+     {
+      "time": "2026-11-10 15:13:03.480",
+      "pack_v": 56.3,
+      "current": 0.0,
+      "soc_before": 97,
+      "ah_before": 97.5,
+      "ah_after": 100.0,
+      "hi_v": 3.53,
+      "delta_mv": 17,
+      "flips": 8,
+      "release": {
+       "time": "2026-11-10 16:34:06.381",
+       "ah": 99.19,
+       "soc": 99
+      }
+     }
+    ],
+    "daily": [
+     {
+      "day": "2026-11-10",
+      "from": "2026-11-10 00:00:13.483",
+      "to": "2026-11-10 23:59:43.410",
+      "full": "2026-11-10 15:13:03.480",
+      "peak": {
+       "time": "2026-11-10 15:14:33.460",
+       "soc": 100,
+       "ah": 100.0
+      },
+      "top_cell": {
+       "time": "2026-11-10 15:13:33.553",
+       "cell": 13,
+       "v": 3.545,
+       "delta_mv": 16,
+       "current": 3.16
+      },
+      "last_full": "2026-11-09 14:44:08.391"
+     }
+    ]
+   },
+   "S2": {
+    "samples": 2874,
+    "pack_v_min": [
+     52.91,
+     "2026-11-10 05:48:54.378"
+    ],
+    "pack_v_max": [
+     56.59,
+     "2026-11-10 15:11:22.212"
+    ],
+    "cell_max": {
+     "v": 3.567,
+     "cell": 15,
+     "time": "2026-11-10 15:11:22.212"
+    },
+    "cell_min": {
+     "v": 3.298,
+     "cell": 1,
+     "time": "2026-11-10 05:32:58.422"
+    },
+    "delta_max_mv": {
+     "mv": 36,
+     "time": "2026-11-10 15:11:22.212",
+     "at_max_cell_v": 3.567
+    },
+    "delta_end_mv": 5,
+    "current_max_chg": [
+     15.08,
+     "2026-11-10 09:38:54.187"
+    ],
+    "current_max_dchg": [
+     -8.46,
+     "2026-11-10 17:32:22.244"
+    ],
+    "soc": [
+     63,
+     100
+    ],
+    "temp_range": [
+     31.3,
+     39.7
+    ],
+    "cycles": 312,
+    "avg_dev_above_min_mv": [
+     0.9,
+     6.1,
+     1.4,
+     3.6,
+     2.2,
+     7.0,
+     9.0,
+     5.3,
+     5.0,
+     7.4,
+     8.7,
+     3.2,
+     8.5,
+     6.3,
+     9.1,
+     9.2
+    ],
+    "highest_cells": [
+     16,
+     15,
+     7,
+     11,
+     13,
+     10
+    ],
+    "lowest_cells": [
+     1,
+     3,
+     5,
+     12,
+     4,
+     9
+    ],
+    "peak_cell_voltages": [
+     3.531,
+     3.535,
+     3.535,
+     3.536,
+     3.533,
+     3.534,
+     3.535,
+     3.534,
+     3.532,
+     3.537,
+     3.536,
+     3.532,
+     3.543,
+     3.54,
+     3.567,
+     3.534
+    ],
+    "peak_highest": [
+     [
+      15,
+      3.567
+     ],
+     [
+      13,
+      3.543
+     ],
+     [
+      14,
+      3.54
+     ],
+     [
+      10,
+      3.537
+     ],
+     [
+      11,
+      3.536
+     ],
+     [
+      4,
+      3.536
+     ]
+    ],
+    "peak_lowest": [
+     [
+      1,
+      3.531
+     ],
+     [
+      9,
+      3.532
+     ],
+     [
+      12,
+      3.532
+     ],
+     [
+      5,
+      3.533
+     ],
+     [
+      6,
+      3.534
+     ],
+     [
+      8,
+      3.534
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (bit order unverified)",
+    "balance_first": {
+     "time": "2026-11-10 15:10:52.211",
+     "cells": [
+      2,
+      4
+     ],
+     "max_cell_v": 3.548
+    },
+    "balance_cells_ever": [
+     2,
+     3,
+     4
+    ],
+    "balance_bit_check": {
+     "samples": 11,
+     "normal_mv": 5.3,
+     "mirrored_mv": 18.8
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-10 13:59:52.321",
+       "current": 2.86,
+       "cell": 15,
+       "hi": 3.401,
+       "gap_mv": 3,
+       "delta_mv": 7,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-10 14:59:52.209",
+       "current": 4.32,
+       "cell": 15,
+       "hi": 3.451,
+       "gap_mv": 9,
+       "delta_mv": 15,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-10 15:06:22.263",
+       "current": 4.26,
+       "cell": 15,
+       "hi": 3.509,
+       "gap_mv": 13,
+       "delta_mv": 22,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-10 15:11:22.212",
+       "current": 3.89,
+       "cell": 15,
+       "hi": 3.567,
+       "gap_mv": 24,
+       "delta_mv": 36,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-10 13:59:52.321",
+      "peak": "2026-11-10 15:11:22.212",
+      "peak_v": 3.567,
+      "minutes": 71.5,
+      "mean_current": 0.78,
+      "max_current": 5.23
+     }
+    },
+    "balancing": {
+     "minutes": {
+      "charge": 1.5,
+      "rest": 4.0,
+      "discharge": 0.0
+     },
+     "total_min": 5.5,
+     "current": {
+      "min": 0.0,
+      "mean": 0.75,
+      "max": 3.89
+     },
+     "temp_max": 39.7,
+     "per_cell_min": {
+      "13": 5.0,
+      "15": 3.5,
+      "14": 1.5
+     },
+     "cell_map": "bit0 = cell 16 (mirrored)",
+     "events": [
+      {
+       "time": "2026-11-10 15:10:52.211",
+       "event": "start",
+       "pack_v": 56.32,
+       "current": 1.45,
+       "hi_cell": 15,
+       "hi_v": 3.548,
+       "delta_mv": 34
+      },
+      {
+       "time": "2026-11-10 15:13:52.225",
+       "event": "stop",
+       "pack_v": 56.58,
+       "current": -0.53,
+       "hi_cell": 15,
+       "hi_v": 3.565,
+       "delta_mv": 35
+      },
+      {
+       "time": "2026-11-10 15:14:22.200",
+       "event": "start",
+       "pack_v": 56.47,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.556,
+       "delta_mv": 33
+      },
+      {
+       "time": "2026-11-10 15:16:22.262",
+       "event": "stop",
+       "pack_v": 56.32,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.544,
+       "delta_mv": 29
+      },
+      {
+       "time": "2026-11-10 15:21:52.404",
+       "event": "start",
+       "pack_v": 56.15,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.529,
+       "delta_mv": 25
+      },
+      {
+       "time": "2026-11-10 15:22:22.289",
+       "event": "stop",
+       "pack_v": 56.13,
+       "current": -0.56,
+       "hi_cell": 15,
+       "hi_v": 3.528,
+       "delta_mv": 25
+      }
+     ]
+    },
+    "soc_resets": [
+     {
+      "time": "2026-11-10 15:12:52.287",
+      "pack_v": 56.38,
+      "current": 0.0,
+      "soc_before": 96,
+      "ah_before": 96.4,
+      "ah_after": 100.0,
+      "hi_v": 3.551,
+      "delta_mv": 33,
+      "flips": 8,
+      "release": {
+       "time": "2026-11-10 16:30:22.245",
+       "ah": 99.2,
+       "soc": 99
+      }
+     }
+    ],
+    "daily": [
+     {
+      "day": "2026-11-10",
+      "from": "2026-11-10 00:00:25.302",
+      "to": "2026-11-10 23:59:54.300",
+      "full": "2026-11-10 15:12:52.287",
+      "peak": {
+       "time": "2026-11-10 15:13:22.246",
+       "soc": 100,
+       "ah": 100.0
+      },
+      "top_cell": {
+       "time": "2026-11-10 15:11:22.212",
+       "cell": 15,
+       "v": 3.567,
+       "delta_mv": 36,
+       "current": 3.89
+      },
+      "last_full": "2026-11-09 14:42:47.361"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "log": "bms_ble_2026-11-09.log.gz",
+  "start": "2026-11-09 00:00:08.220",
+  "end": "2026-11-09 23:59:55.362",
+  "settings": "Inverter 56.4V, stop chg 2A, recharge 53.6V; Gentai FullAdjust 56.00V/2A; S2 balance static, M1/S1 charge",
+  "note": "Full day. All packs reset 14:40-14:44. S2 #15 peak 3.579 (gap 27 mV), delta at 3.50V 27 mV (11-08: 35). M1 never balanced. CST/S1/S2 balanced 58/17/28 min. 1 M1 BLE error.",
+  "errors": {
+   "M1": 1
+  },
+  "packs": {
+   "CST": {
+    "samples": 2784,
+    "pack_v_min": [
+     52.51,
+     "2026-11-09 05:46:47.173"
+    ],
+    "pack_v_max": [
+     56.55,
+     "2026-11-09 14:43:08.137"
+    ],
+    "cell_max": {
+     "v": 3.546,
+     "cell": 8,
+     "time": "2026-11-09 14:43:08.137"
+    },
+    "cell_min": {
+     "v": 3.276,
+     "cell": 16,
+     "time": "2026-11-09 05:21:25.196"
+    },
+    "delta_max_mv": {
+     "mv": 34,
+     "time": "2026-11-09 14:37:58.181",
+     "at_max_cell_v": 3.544
+    },
+    "delta_end_mv": 3,
+    "current_max_chg": [
+     54.43,
+     "2026-11-09 13:58:38.149"
+    ],
+    "current_max_dchg": [
+     -19.11,
+     "2026-11-09 20:12:11.151"
+    ],
+    "soc": [
+     61,
+     100
+    ],
+    "temp_range": [
+     31.5,
+     33.2
+    ],
+    "cycles": 20,
+    "avg_dev_above_min_mv": [
+     1.4,
+     2.4,
+     2.4,
+     2.1,
+     2.9,
+     2.8,
+     1.8,
+     3.2,
+     2.4,
+     2.4,
+     2.2,
+     2.8,
+     1.6,
+     2.0,
+     1.8,
+     0.3
+    ],
+    "highest_cells": [
+     8,
+     5,
+     12,
+     6,
+     10,
+     9
+    ],
+    "lowest_cells": [
+     16,
+     1,
+     13,
+     7,
+     15,
+     14
+    ],
+    "peak_cell_voltages": [
+     3.533,
+     3.524,
+     3.529,
+     3.518,
+     3.54,
+     3.531,
+     3.516,
+     3.544,
+     3.534,
+     3.524,
+     3.521,
+     3.526,
+     3.521,
+     3.516,
+     3.514,
+     3.51
+    ],
+    "peak_highest": [
+     [
+      8,
+      3.544
+     ],
+     [
+      5,
+      3.54
+     ],
+     [
+      9,
+      3.534
+     ],
+     [
+      1,
+      3.533
+     ],
+     [
+      6,
+      3.531
+     ],
+     [
+      3,
+      3.529
+     ]
+    ],
+    "peak_lowest": [
+     [
+      16,
+      3.51
+     ],
+     [
+      15,
+      3.514
+     ],
+     [
+      7,
+      3.516
+     ],
+     [
+      14,
+      3.516
+     ],
+     [
+      4,
+      3.518
+     ],
+     [
+      11,
+      3.521
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (0x0A03 bytes 6-7 LE)",
+    "balance_first": {
+     "time": "2026-11-09 14:23:28.181",
+     "cells": [
+      9
+     ],
+     "max_cell_v": 3.406
+    },
+    "balance_cells_ever": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13
+    ],
+    "balance_bit_check": {
+     "samples": 113,
+     "normal_mv": 15.8,
+     "mirrored_mv": 11.8
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-09 14:22:26.329",
+       "current": 28.17,
+       "cell": 8,
+       "hi": 3.401,
+       "gap_mv": 0,
+       "delta_mv": 4,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-09 14:29:10.196",
+       "current": 21.57,
+       "cell": 8,
+       "hi": 3.451,
+       "gap_mv": 3,
+       "delta_mv": 13,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-09 14:35:54.166",
+       "current": 9.41,
+       "cell": 8,
+       "hi": 3.504,
+       "gap_mv": 1,
+       "delta_mv": 24,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-09 14:22:26.329",
+      "peak": "2026-11-09 14:43:08.137",
+      "peak_v": 3.546,
+      "minutes": 20.7,
+      "mean_current": 11.31,
+      "max_current": 28.17
+     }
+    },
+    "balancing": {
+     "minutes": {
+      "charge": 23.3,
+      "rest": 35.2,
+      "discharge": 0.0
+     },
+     "total_min": 58.5,
+     "current": {
+      "min": 0.0,
+      "mean": 3.48,
+      "max": 26.36
+     },
+     "temp_max": 33.2,
+     "per_cell_min": {
+      "9": 58.5,
+      "8": 55.4,
+      "5": 54.4,
+      "1": 53.3,
+      "3": 53.3,
+      "6": 53.3,
+      "12": 50.7,
+      "2": 49.7,
+      "10": 48.2,
+      "11": 44.0,
+      "13": 43.0,
+      "4": 2.6
+     },
+     "cell_map": "bit0 = cell 1",
+     "events": [
+      {
+       "time": "2026-11-09 14:23:28.181",
+       "event": "start",
+       "pack_v": 54.53,
+       "current": 26.36,
+       "hi_cell": 8,
+       "hi_v": 3.406,
+       "delta_mv": 5
+      },
+      {
+       "time": "2026-11-09 14:23:59.210",
+       "event": "stop",
+       "pack_v": 54.53,
+       "current": 20.48,
+       "hi_cell": 8,
+       "hi_v": 3.406,
+       "delta_mv": 5
+      },
+      {
+       "time": "2026-11-09 14:24:30.136",
+       "event": "start",
+       "pack_v": 54.56,
+       "current": 22.96,
+       "hi_cell": 9,
+       "hi_v": 3.41,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-09 15:01:16.246",
+       "event": "stop",
+       "pack_v": 56.43,
+       "current": -1.51,
+       "hi_cell": 8,
+       "hi_v": 3.535,
+       "delta_mv": 25
+      },
+      {
+       "time": "2026-11-09 15:01:47.176",
+       "event": "start",
+       "pack_v": 56.42,
+       "current": 0.0,
+       "hi_cell": 8,
+       "hi_v": 3.535,
+       "delta_mv": 26
+      },
+      {
+       "time": "2026-11-09 15:18:53.223",
+       "event": "stop",
+       "pack_v": 56.04,
+       "current": -0.66,
+       "hi_cell": 8,
+       "hi_v": 3.509,
+       "delta_mv": 23
+      },
+      {
+       "time": "2026-11-09 15:19:55.286",
+       "event": "start",
+       "pack_v": 56.01,
+       "current": 0.0,
+       "hi_cell": 5,
+       "hi_v": 3.506,
+       "delta_mv": 20
+      },
+      {
+       "time": "2026-11-09 15:24:03.096",
+       "event": "stop",
+       "pack_v": 55.93,
+       "current": -0.6,
+       "hi_cell": 5,
+       "hi_v": 3.501,
+       "delta_mv": 20
+      }
+     ]
+    },
+    "soc_resets": [
+     {
+      "time": "2026-11-09 14:40:02.185",
+      "pack_v": 56.49,
+      "current": 1.73,
+      "soc_before": 97,
+      "ah_before": 336.17,
+      "ah_after": 345.96,
+      "hi_v": 3.544,
+      "delta_mv": 33,
+      "flips": 0,
+      "release": {
+       "time": "2026-11-09 15:50:28.252",
+       "ah": 344.2,
+       "soc": 99
+      }
+     }
+    ],
+    "daily": [
+     {
+      "day": "2026-11-09",
+      "from": "2026-11-09 00:00:08.220",
+      "to": "2026-11-09 23:59:48.187",
+      "full": "2026-11-09 14:40:02.185",
+      "peak": {
+       "time": "2026-11-09 15:00:45.219",
+       "soc": 100,
+       "ah": 345.96
+      },
+      "top_cell": {
+       "time": "2026-11-09 14:43:08.137",
+       "cell": 8,
+       "v": 3.546,
+       "delta_mv": 31,
+       "current": 1.75
+      },
+      "last_full": "2026-11-08 14:33:27.189"
+     }
+    ]
+   },
+   "M1": {
+    "samples": 2878,
+    "pack_v_min": [
+     52.51,
+     "2026-11-09 05:53:29.218"
+    ],
+    "pack_v_max": [
+     56.58,
+     "2026-11-09 14:43:02.242"
+    ],
+    "cell_max": {
+     "v": 3.548,
+     "cell": 12,
+     "time": "2026-11-09 14:37:32.171"
+    },
+    "cell_min": {
+     "v": 3.281,
+     "cell": 7,
+     "time": "2026-11-09 05:20:59.294"
+    },
+    "delta_max_mv": {
+     "mv": 17,
+     "time": "2026-11-09 01:07:29.262",
+     "at_max_cell_v": 3.32
+    },
+    "delta_end_mv": 2,
+    "current_max_chg": [
+     14.43,
+     "2026-11-09 10:13:30.317"
+    ],
+    "current_max_dchg": [
+     -8.61,
+     "2026-11-09 20:11:40.322"
+    ],
+    "soc": [
+     58,
+     100
+    ],
+    "temp_range": [
+     31.4,
+     36.7
+    ],
+    "cycles": 269,
+    "avg_dev_above_min_mv": [
+     3.5,
+     3.9,
+     1.4,
+     2.1,
+     2.5,
+     3.2,
+     1.0,
+     3.7,
+     1.2,
+     2.4,
+     2.2,
+     3.6,
+     1.9,
+     1.1,
+     2.5,
+     1.8
+    ],
+    "highest_cells": [
+     2,
+     8,
+     12,
+     1,
+     6,
+     15
+    ],
+    "lowest_cells": [
+     7,
+     14,
+     9,
+     3,
+     16,
+     13
+    ],
+    "peak_cell_voltages": [
+     3.31,
+     3.318,
+     3.31,
+     3.312,
+     3.317,
+     3.32,
+     3.303,
+     3.318,
+     3.311,
+     3.314,
+     3.307,
+     3.318,
+     3.31,
+     3.305,
+     3.312,
+     3.315
+    ],
+    "peak_highest": [
+     [
+      6,
+      3.32
+     ],
+     [
+      12,
+      3.318
+     ],
+     [
+      8,
+      3.318
+     ],
+     [
+      2,
+      3.318
+     ],
+     [
+      5,
+      3.317
+     ],
+     [
+      16,
+      3.315
+     ]
+    ],
+    "peak_lowest": [
+     [
+      7,
+      3.303
+     ],
+     [
+      14,
+      3.305
+     ],
+     [
+      11,
+      3.307
+     ],
+     [
+      1,
+      3.31
+     ],
+     [
+      3,
+      3.31
+     ],
+     [
+      13,
+      3.31
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (bit order unverified)",
+    "balance_first": null,
+    "balance_cells_ever": [],
+    "balance_bit_check": {
+     "samples": 0,
+     "normal_mv": null,
+     "mirrored_mv": null
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-09 13:51:30.331",
+       "current": 1.55,
+       "cell": 12,
+       "hi": 3.4,
+       "gap_mv": 1,
+       "delta_mv": 4,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-09 14:29:01.215",
+       "current": 6.42,
+       "cell": 12,
+       "hi": 3.458,
+       "gap_mv": 4,
+       "delta_mv": 8,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-09 14:36:02.185",
+       "current": 3.89,
+       "cell": 12,
+       "hi": 3.509,
+       "gap_mv": 7,
+       "delta_mv": 12,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-09 13:51:30.331",
+      "peak": "2026-11-09 14:37:32.171",
+      "peak_v": 3.548,
+      "minutes": 46.0,
+      "mean_current": 1.16,
+      "max_current": 7.08
+     }
+    },
+    "balancing": null,
+    "soc_resets": [
+     {
+      "time": "2026-11-09 14:44:02.206",
+      "pack_v": 56.53,
+      "current": 0.0,
+      "soc_before": 97,
+      "ah_before": 97.38,
+      "ah_after": 100.0,
+      "hi_v": 3.545,
+      "delta_mv": 16,
+      "flips": 2,
+      "release": {
+       "time": "2026-11-09 15:47:32.324",
+       "ah": 99.2,
+       "soc": 99
+      }
+     }
+    ],
+    "daily": [
+     {
+      "day": "2026-11-09",
+      "from": "2026-11-09 00:00:29.416",
+      "to": "2026-11-09 23:59:43.171",
+      "full": "2026-11-09 14:44:02.206",
+      "peak": {
+       "time": "2026-11-09 14:51:02.252",
+       "soc": 100,
+       "ah": 100.0
+      },
+      "top_cell": {
+       "time": "2026-11-09 14:37:32.171",
+       "cell": 12,
+       "v": 3.548,
+       "delta_mv": 17,
+       "current": 4.94
+      },
+      "last_full": "2026-11-08 14:35:58.180"
+     }
+    ]
+   },
+   "S1": {
+    "samples": 2879,
+    "pack_v_min": [
+     52.53,
+     "2026-11-09 05:27:29.429"
+    ],
+    "pack_v_max": [
+     56.6,
+     "2026-11-09 14:43:08.453"
+    ],
+    "cell_max": {
+     "v": 3.55,
+     "cell": 13,
+     "time": "2026-11-09 14:43:08.453"
+    },
+    "cell_min": {
+     "v": 3.28,
+     "cell": 7,
+     "time": "2026-11-09 05:50:29.417"
+    },
+    "delta_max_mv": {
+     "mv": 27,
+     "time": "2026-11-09 01:35:59.381",
+     "at_max_cell_v": 3.322
+    },
+    "delta_end_mv": 4,
+    "current_max_chg": [
+     13.6,
+     "2026-11-09 10:24:06.517"
+    ],
+    "current_max_dchg": [
+     -8.35,
+     "2026-11-09 20:11:41.551"
+    ],
+    "soc": [
+     58,
+     100
+    ],
+    "temp_range": [
+     31.7,
+     39.5
+    ],
+    "cycles": 298,
+    "avg_dev_above_min_mv": [
+     5.3,
+     4.1,
+     3.5,
+     3.3,
+     4.9,
+     3.8,
+     0.2,
+     7.4,
+     5.4,
+     5.9,
+     6.7,
+     3.7,
+     7.9,
+     2.8,
+     4.6,
+     4.9
+    ],
+    "highest_cells": [
+     13,
+     8,
+     11,
+     10,
+     9,
+     1
+    ],
+    "lowest_cells": [
+     7,
+     14,
+     4,
+     3,
+     12,
+     6
+    ],
+    "peak_cell_voltages": [
+     3.314,
+     3.31,
+     3.311,
+     3.312,
+     3.306,
+     3.313,
+     3.295,
+     3.322,
+     3.311,
+     3.315,
+     3.319,
+     3.302,
+     3.32,
+     3.3,
+     3.309,
+     3.313
+    ],
+    "peak_highest": [
+     [
+      8,
+      3.322
+     ],
+     [
+      13,
+      3.32
+     ],
+     [
+      11,
+      3.319
+     ],
+     [
+      10,
+      3.315
+     ],
+     [
+      1,
+      3.314
+     ],
+     [
+      16,
+      3.313
+     ]
+    ],
+    "peak_lowest": [
+     [
+      7,
+      3.295
+     ],
+     [
+      14,
+      3.3
+     ],
+     [
+      12,
+      3.302
+     ],
+     [
+      5,
+      3.306
+     ],
+     [
+      15,
+      3.309
+     ],
+     [
+      2,
+      3.31
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (bit order unverified)",
+    "balance_first": {
+     "time": "2026-11-09 14:20:38.506",
+     "cells": [
+      1
+     ],
+     "max_cell_v": 3.411
+    },
+    "balance_cells_ever": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "balance_bit_check": {
+     "samples": 33,
+     "normal_mv": 6.0,
+     "mirrored_mv": 9.2
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-09 13:50:08.606",
+       "current": 2.28,
+       "cell": 13,
+       "hi": 3.4,
+       "gap_mv": 2,
+       "delta_mv": 6,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-09 14:28:38.358",
+       "current": 6.0,
+       "cell": 13,
+       "hi": 3.451,
+       "gap_mv": 3,
+       "delta_mv": 11,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-09 14:35:38.400",
+       "current": 4.01,
+       "cell": 13,
+       "hi": 3.502,
+       "gap_mv": 3,
+       "delta_mv": 14,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-09 14:43:08.453",
+       "current": 0.75,
+       "cell": 13,
+       "hi": 3.55,
+       "gap_mv": 4,
+       "delta_mv": 18,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-09 13:50:08.606",
+      "peak": "2026-11-09 14:43:08.453",
+      "peak_v": 3.55,
+      "minutes": 53.0,
+      "mean_current": 1.38,
+      "max_current": 7.13
+     }
+    },
+    "balancing": {
+     "minutes": {
+      "charge": 16.5,
+      "rest": 0.0,
+      "discharge": 0.0
+     },
+     "total_min": 16.5,
+     "current": {
+      "min": 0.52,
+      "mean": 2.49,
+      "max": 7.13
+     },
+     "temp_max": 39.5,
+     "per_cell_min": {
+      "13": 13.5,
+      "15": 10.5,
+      "16": 10.5,
+      "14": 8.0,
+      "12": 3.5
+     },
+     "cell_map": "bit0 = cell 16 (mirrored)",
+     "events": [
+      {
+       "time": "2026-11-09 14:20:38.506",
+       "event": "start",
+       "pack_v": 54.52,
+       "current": 2.59,
+       "hi_cell": 13,
+       "hi_v": 3.411,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-09 14:21:08.444",
+       "event": "stop",
+       "pack_v": 54.54,
+       "current": 1.9,
+       "hi_cell": 13,
+       "hi_v": 3.412,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-09 14:21:38.515",
+       "event": "start",
+       "pack_v": 54.54,
+       "current": 1.47,
+       "hi_cell": 13,
+       "hi_v": 3.413,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-09 14:22:08.419",
+       "event": "stop",
+       "pack_v": 54.57,
+       "current": 2.08,
+       "hi_cell": 13,
+       "hi_v": 3.415,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-09 14:23:08.522",
+       "event": "start",
+       "pack_v": 54.62,
+       "current": 2.25,
+       "hi_cell": 13,
+       "hi_v": 3.418,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-09 14:23:38.432",
+       "event": "stop",
+       "pack_v": 54.64,
+       "current": 1.58,
+       "hi_cell": 13,
+       "hi_v": 3.419,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-09 14:24:38.469",
+       "event": "start",
+       "pack_v": 54.65,
+       "current": 1.51,
+       "hi_cell": 13,
+       "hi_v": 3.42,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-09 14:25:08.553",
+       "event": "stop",
+       "pack_v": 54.7,
+       "current": 2.97,
+       "hi_cell": 13,
+       "hi_v": 3.423,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-09 14:26:08.544",
+       "event": "start",
+       "pack_v": 54.77,
+       "current": 1.4,
+       "hi_cell": 13,
+       "hi_v": 3.428,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-09 14:26:38.487",
+       "event": "stop",
+       "pack_v": 54.8,
+       "current": 2.4,
+       "hi_cell": 13,
+       "hi_v": 3.43,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-09 14:27:38.494",
+       "event": "start",
+       "pack_v": 54.88,
+       "current": 3.62,
+       "hi_cell": 13,
+       "hi_v": 3.435,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-09 14:29:08.465",
+       "event": "stop",
+       "pack_v": 55.23,
+       "current": 5.07,
+       "hi_cell": 13,
+       "hi_v": 3.458,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-09 14:31:08.412",
+       "event": "start",
+       "pack_v": 55.14,
+       "current": 1.54,
+       "hi_cell": 13,
+       "hi_v": 3.453,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-09 14:33:38.484",
+       "event": "stop",
+       "pack_v": 55.46,
+       "current": 0.5,
+       "hi_cell": 13,
+       "hi_v": 3.473,
+       "delta_mv": 11
+      },
+      {
+       "time": "2026-11-09 14:34:08.390",
+       "event": "start",
+       "pack_v": 55.61,
+       "current": 6.85,
+       "hi_cell": 13,
+       "hi_v": 3.483,
+       "delta_mv": 12
+      },
+      {
+       "time": "2026-11-09 14:43:38.361",
+       "event": "stop",
+       "pack_v": 56.56,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.547,
+       "delta_mv": 18
+      },
+      {
+       "time": "2026-11-09 14:52:08.411",
+       "event": "start",
+       "pack_v": 56.58,
+       "current": 0.52,
+       "hi_cell": 13,
+       "hi_v": 3.547,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-09 14:52:38.513",
+       "event": "stop",
+       "pack_v": 56.56,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.546,
+       "delta_mv": 17
+      }
+     ]
+    },
+    "soc_resets": [
+     {
+      "time": "2026-11-09 14:44:08.391",
+      "pack_v": 56.54,
+      "current": 0.0,
+      "soc_before": 97,
+      "ah_before": 97.83,
+      "ah_after": 100.0,
+      "hi_v": 3.545,
+      "delta_mv": 17,
+      "flips": 2,
+      "release": {
+       "time": "2026-11-09 15:48:38.420",
+       "ah": 99.19,
+       "soc": 99
+      }
+     }
+    ],
+    "daily": [
+     {
+      "day": "2026-11-09",
+      "from": "2026-11-09 00:00:29.350",
+      "to": "2026-11-09 23:59:43.471",
+      "full": "2026-11-09 14:44:08.391",
+      "peak": {
+       "time": "2026-11-09 14:51:08.396",
+       "soc": 100,
+       "ah": 100.0
+      },
+      "top_cell": {
+       "time": "2026-11-09 14:43:08.453",
+       "cell": 13,
+       "v": 3.55,
+       "delta_mv": 18,
+       "current": 0.75
+      },
+      "last_full": "2026-11-08 14:35:55.368"
+     }
+    ]
+   },
+   "S2": {
+    "samples": 2880,
+    "pack_v_min": [
+     52.61,
+     "2026-11-09 05:25:47.239"
+    ],
+    "pack_v_max": [
+     56.66,
+     "2026-11-09 14:43:17.282"
+    ],
+    "cell_max": {
+     "v": 3.579,
+     "cell": 15,
+     "time": "2026-11-09 14:43:17.282"
+    },
+    "cell_min": {
+     "v": 3.285,
+     "cell": 3,
+     "time": "2026-11-09 05:30:47.300"
+    },
+    "delta_max_mv": {
+     "mv": 51,
+     "time": "2026-11-09 14:37:47.252",
+     "at_max_cell_v": 3.577
+    },
+    "delta_end_mv": 6,
+    "current_max_chg": [
+     14.36,
+     "2026-11-09 10:23:47.306"
+    ],
+    "current_max_dchg": [
+     -8.8,
+     "2026-11-09 20:11:18.238"
+    ],
+    "soc": [
+     57,
+     100
+    ],
+    "temp_range": [
+     31.2,
+     40.8
+    ],
+    "cycles": 312,
+    "avg_dev_above_min_mv": [
+     1.0,
+     5.0,
+     1.1,
+     2.5,
+     2.1,
+     5.8,
+     7.1,
+     4.5,
+     3.9,
+     6.4,
+     7.0,
+     3.1,
+     7.3,
+     5.3,
+     8.0,
+     7.5
+    ],
+    "highest_cells": [
+     15,
+     16,
+     13,
+     7,
+     11,
+     10
+    ],
+    "lowest_cells": [
+     1,
+     3,
+     5,
+     4,
+     12,
+     9
+    ],
+    "peak_cell_voltages": [
+     3.527,
+     3.533,
+     3.531,
+     3.533,
+     3.53,
+     3.529,
+     3.533,
+     3.53,
+     3.526,
+     3.542,
+     3.531,
+     3.527,
+     3.55,
+     3.544,
+     3.577,
+     3.53
+    ],
+    "peak_highest": [
+     [
+      15,
+      3.577
+     ],
+     [
+      13,
+      3.55
+     ],
+     [
+      14,
+      3.544
+     ],
+     [
+      10,
+      3.542
+     ],
+     [
+      7,
+      3.533
+     ],
+     [
+      4,
+      3.533
+     ]
+    ],
+    "peak_lowest": [
+     [
+      9,
+      3.526
+     ],
+     [
+      1,
+      3.527
+     ],
+     [
+      12,
+      3.527
+     ],
+     [
+      6,
+      3.529
+     ],
+     [
+      5,
+      3.53
+     ],
+     [
+      8,
+      3.53
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (bit order unverified)",
+    "balance_first": {
+     "time": "2026-11-09 14:28:17.264",
+     "cells": [
+      2,
+      4
+     ],
+     "max_cell_v": 3.46
+    },
+    "balance_cells_ever": [
+     2,
+     3,
+     4,
+     5
+    ],
+    "balance_bit_check": {
+     "samples": 55,
+     "normal_mv": 5.4,
+     "mirrored_mv": 29.7
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-09 13:34:47.315",
+       "current": 7.21,
+       "cell": 15,
+       "hi": 3.4,
+       "gap_mv": 1,
+       "delta_mv": 4,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-09 14:27:47.286",
+       "current": 4.02,
+       "cell": 15,
+       "hi": 3.451,
+       "gap_mv": 9,
+       "delta_mv": 18,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-09 14:34:17.332",
+       "current": 7.07,
+       "cell": 15,
+       "hi": 3.509,
+       "gap_mv": 13,
+       "delta_mv": 27,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-09 14:36:47.241",
+       "current": 3.55,
+       "cell": 15,
+       "hi": 3.553,
+       "gap_mv": 21,
+       "delta_mv": 43,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-09 13:34:47.315",
+      "peak": "2026-11-09 14:43:17.282",
+      "peak_v": 3.579,
+      "minutes": 68.5,
+      "mean_current": 1.39,
+      "max_current": 7.21
+     }
+    },
+    "balancing": {
+     "minutes": {
+      "charge": 8.0,
+      "rest": 19.5,
+      "discharge": 0.0
+     },
+     "total_min": 27.5,
+     "current": {
+      "min": 0.0,
+      "mean": 0.8,
+      "max": 7.09
+     },
+     "temp_max": 40.8,
+     "per_cell_min": {
+      "15": 25.5,
+      "13": 17.0,
+      "14": 2.5,
+      "12": 1.0
+     },
+     "cell_map": "bit0 = cell 16 (mirrored)",
+     "events": [
+      {
+       "time": "2026-11-09 14:28:17.264",
+       "event": "start",
+       "pack_v": 55.13,
+       "current": 5.33,
+       "hi_cell": 15,
+       "hi_v": 3.46,
+       "delta_mv": 20
+      },
+      {
+       "time": "2026-11-09 14:28:47.301",
+       "event": "stop",
+       "pack_v": 55.25,
+       "current": 6.48,
+       "hi_cell": 15,
+       "hi_v": 3.468,
+       "delta_mv": 19
+      },
+      {
+       "time": "2026-11-09 14:31:47.293",
+       "event": "start",
+       "pack_v": 55.56,
+       "current": 7.09,
+       "hi_cell": 15,
+       "hi_v": 3.491,
+       "delta_mv": 23
+      },
+      {
+       "time": "2026-11-09 14:32:17.292",
+       "event": "stop",
+       "pack_v": 55.6,
+       "current": 0.74,
+       "hi_cell": 15,
+       "hi_v": 3.494,
+       "delta_mv": 24
+      },
+      {
+       "time": "2026-11-09 14:34:47.297",
+       "event": "start",
+       "pack_v": 55.93,
+       "current": 5.58,
+       "hi_cell": 15,
+       "hi_v": 3.521,
+       "delta_mv": 31
+      },
+      {
+       "time": "2026-11-09 14:46:17.285",
+       "event": "stop",
+       "pack_v": 56.63,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.573,
+       "delta_mv": 41
+      },
+      {
+       "time": "2026-11-09 14:46:47.204",
+       "event": "start",
+       "pack_v": 56.63,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.572,
+       "delta_mv": 40
+      },
+      {
+       "time": "2026-11-09 14:47:47.216",
+       "event": "stop",
+       "pack_v": 56.62,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.572,
+       "delta_mv": 40
+      },
+      {
+       "time": "2026-11-09 14:48:47.295",
+       "event": "start",
+       "pack_v": 56.63,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.571,
+       "delta_mv": 39
+      },
+      {
+       "time": "2026-11-09 14:51:17.254",
+       "event": "stop",
+       "pack_v": 56.63,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.571,
+       "delta_mv": 39
+      },
+      {
+       "time": "2026-11-09 14:52:17.327",
+       "event": "start",
+       "pack_v": 56.65,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.573,
+       "delta_mv": 40
+      },
+      {
+       "time": "2026-11-09 14:53:47.263",
+       "event": "stop",
+       "pack_v": 56.62,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.57,
+       "delta_mv": 38
+      },
+      {
+       "time": "2026-11-09 14:55:17.267",
+       "event": "start",
+       "pack_v": 56.63,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.57,
+       "delta_mv": 38
+      },
+      {
+       "time": "2026-11-09 14:55:47.273",
+       "event": "stop",
+       "pack_v": 56.62,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.569,
+       "delta_mv": 37
+      },
+      {
+       "time": "2026-11-09 14:58:17.357",
+       "event": "start",
+       "pack_v": 56.62,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.569,
+       "delta_mv": 37
+      },
+      {
+       "time": "2026-11-09 14:58:47.263",
+       "event": "stop",
+       "pack_v": 56.62,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.568,
+       "delta_mv": 36
+      },
+      {
+       "time": "2026-11-09 15:00:47.399",
+       "event": "start",
+       "pack_v": 56.62,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.568,
+       "delta_mv": 36
+      },
+      {
+       "time": "2026-11-09 15:01:17.175",
+       "event": "stop",
+       "pack_v": 56.51,
+       "current": -0.7,
+       "hi_cell": 15,
+       "hi_v": 3.56,
+       "delta_mv": 35
+      },
+      {
+       "time": "2026-11-09 15:01:47.285",
+       "event": "start",
+       "pack_v": 56.5,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.559,
+       "delta_mv": 35
+      },
+      {
+       "time": "2026-11-09 15:07:47.249",
+       "event": "stop",
+       "pack_v": 56.34,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.547,
+       "delta_mv": 32
+      },
+      {
+       "time": "2026-11-09 15:08:17.223",
+       "event": "start",
+       "pack_v": 56.33,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.546,
+       "delta_mv": 32
+      },
+      {
+       "time": "2026-11-09 15:08:47.329",
+       "event": "stop",
+       "pack_v": 56.32,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.545,
+       "delta_mv": 31
+      },
+      {
+       "time": "2026-11-09 15:10:47.277",
+       "event": "start",
+       "pack_v": 56.28,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.542,
+       "delta_mv": 31
+      },
+      {
+       "time": "2026-11-09 15:11:17.274",
+       "event": "stop",
+       "pack_v": 56.27,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.541,
+       "delta_mv": 30
+      },
+      {
+       "time": "2026-11-09 15:12:17.279",
+       "event": "start",
+       "pack_v": 56.25,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.54,
+       "delta_mv": 31
+      },
+      {
+       "time": "2026-11-09 15:12:47.298",
+       "event": "stop",
+       "pack_v": 56.24,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.539,
+       "delta_mv": 30
+      },
+      {
+       "time": "2026-11-09 15:15:47.302",
+       "event": "start",
+       "pack_v": 56.18,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.535,
+       "delta_mv": 29
+      },
+      {
+       "time": "2026-11-09 15:16:17.206",
+       "event": "stop",
+       "pack_v": 56.17,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.534,
+       "delta_mv": 29
+      },
+      {
+       "time": "2026-11-09 15:16:47.312",
+       "event": "start",
+       "pack_v": 56.16,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.534,
+       "delta_mv": 30
+      },
+      {
+       "time": "2026-11-09 15:17:17.382",
+       "event": "stop",
+       "pack_v": 56.15,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.533,
+       "delta_mv": 29
+      }
+     ]
+    },
+    "soc_resets": [
+     {
+      "time": "2026-11-09 14:42:47.361",
+      "pack_v": 56.66,
+      "current": 0.62,
+      "soc_before": 96,
+      "ah_before": 96.89,
+      "ah_after": 100.0,
+      "hi_v": 3.578,
+      "delta_mv": 45,
+      "flips": 2,
+      "release": {
+       "time": "2026-11-09 15:46:47.181",
+       "ah": 99.19,
+       "soc": 99
+      }
+     }
+    ],
+    "daily": [
+     {
+      "day": "2026-11-09",
+      "from": "2026-11-09 00:00:13.274",
+      "to": "2026-11-09 23:59:55.362",
+      "full": "2026-11-09 14:42:47.361",
+      "peak": {
+       "time": "2026-11-09 14:51:17.254",
+       "soc": 100,
+       "ah": 100.0
+      },
+      "top_cell": {
+       "time": "2026-11-09 14:43:17.282",
+       "cell": 15,
+       "v": 3.579,
+       "delta_mv": 46,
+       "current": 0.0
+      },
+      "last_full": "2026-11-08 14:35:38.201"
+     }
+    ]
+   }
+  }
+ },
+ {
   "log": "bms_ble_2026-11-08.log.gz",
   "start": "2026-11-08 00:00:07.291",
   "end": "2026-11-08 23:59:59.317",
