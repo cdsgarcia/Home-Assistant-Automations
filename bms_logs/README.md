@@ -51,7 +51,7 @@ Notes:
 - CST (Pace) bleeds cells 1–14 together, leaving only #15/#16; ~3 mV improvement per 1.5 h at rest. Balancer too weak to show as a voltage drop on 324Ah.
 - Gentai balancing was charge-only at baseline (FW 0x0A ignores register 0x2D; balance mode lives in ES-UP `0x1C7C`, see Settings changes); start 3.400V, delta 8mV.
 
-**Better** = smaller Δ at the same top-cell voltage, lower S2 #15 peak, CST #15/#16 closer to mean. **Worse** = rising Δ, new runner cells, or S2 #15 tripping at 56.4V.
+**Better** = smaller Δ at the same top-cell voltage, lower S2 #15 peak, CST #15/#16 closer to mean. **Worse** = rising Δ, new runner cells, or S2 #15 tripping at the current charge voltage (56.8V since 2026-11-14).
 
 ## Settings changes (Gentai ES-UP, via `jbd_config`)
 
@@ -62,5 +62,6 @@ Original values were read from all three packs over BLE before any change. To re
 | 2026-11-07 ~11:00 | M1, S1, S2 | Full charge voltage `FullAdjustV` (`0x1C0C`) | 56.80 V | 56.00 V | First 100% SOC reset on 2026-11-07 16:09 (all packs) |
 | 2026-11-07 ~11:00 | M1, S1, S2 | Full charge current `FullAdjustC` (`0x1C0E`) | 15.00 A | 2.00 A | Same |
 | 2026-11-07 11:07 | S2 only | Balance mode (`0x1C7C`) | 0 = charge | 1 = static | Balances while charging and at rest, stops on discharge (34.7 min on 2026-11-07 vs 17.5 min S1) |
+| 2026-11-14 14:17 | Inverter (HMI) | Max charge voltage | 56.4 V | 56.8 V | Step 1 of 0.4 V increments (ceiling 57.2 V, see 11-06 OVP test). Changed after the 11-14 full charge (S2 max Δ 19 mV, #15 peak 3.553 V). Projected S2 #15 peak ~3.60 V |
 
-Unchanged on all three packs: balance start 3400 mV, balance delta 8 mV, Cell Full 3600 mV, sleep 3000/2880 mV, RS485 protocol 6, CAN 0. Inverter: charge 56.4 V, stop charge 2 A, recharge 53.6 V.
+Unchanged on all three packs: balance start 3400 mV, balance delta 8 mV, Cell Full 3600 mV, sleep 3000/2880 mV, RS485 protocol 6, CAN 0. Inverter: charge 56.8 V (since 2026-11-14), stop charge 2 A, recharge 53.6 V.
