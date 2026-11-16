@@ -4,7 +4,7 @@
   "start": "2026-11-16 00:00:04.193",
   "end": "2026-11-16 23:59:45.283",
   "settings": "Inverter 57.2V; stop 2A; recharge 53.6V; S2 static balance, M1/S1 charge balance",
-  "note": "57.2V",
+  "note": "Low-sun day at 57.2V, no full charge: peak SOC CST 81, M1 86, S1 88, S2 84%",
   "errors": {
    "S2": 2
   },
@@ -748,7 +748,7 @@
   "start": "2026-11-15 00:00:00.392",
   "end": "2026-11-15 23:59:56.308",
   "settings": "Inverter 57.2V; stop 2A; recharge 53.6V; S2 static balance, M1/S1 charge balance",
-  "note": "First full day at 57.2V",
+  "note": "Low-sun day at 57.2V, no full charge: peak SOC CST 88, M1 93, S1 93, S2 92%",
   "errors": {},
   "packs": {
    "CST": {
