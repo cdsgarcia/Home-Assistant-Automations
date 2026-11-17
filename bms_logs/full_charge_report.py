@@ -90,34 +90,23 @@ def build():
     wb = Workbook()
     ws = wb.active
     ws.title = "Summary"
-    cols = [("Date", 12), ("Charge setting", 45)]
-    for p in PACKS:
-        cols += [(f"{p} max SOC %", 9), (f"{p} max Δ mV", 9), (f"{p} bal min", 9),
-                 (f"{p} highest cell", 10), (f"{p} highest V", 9), (f"{p} gap mV", 8)]
-    cols += [("Flags", 24), ("Note", 60)]
+    cols = [("Date", 12), ("Charge setting", 60), ("Flags", 30), ("Note", 80)]
     header(ws, cols)
     for day in days:
-        row, flags = [day, "\n".join(settings[day])], []
+        flags = []
         for p in PACKS:
             t = st.get((day, p))
             if not t:
-                row += [None] * 6
                 continue
-            row += [t["soc"], t["d"], bal_min(day, p), f"#{t['cell']}", t["pk"], t["gap"]]
             if t["pk"] >= OVP_V:
                 flags.append(f"{p} OVP trip #{t['cell']}")
             if t["soc"] < 100:
                 flags.append(f"{p} only {t['soc']}%")
         if day not in tracked:
             flags.append("balancing not tracked")
-        ws.append(row + ["; ".join(flags), "\n".join(notes[day])])
-        r = ws.max_row
+        ws.append([day, "\n".join(settings[day]), "\n".join(flags), "\n".join(notes[day])])
         for i in range(1, len(cols) + 1):
-            ws.cell(row=r, column=i).alignment = WRAP
-        for j, p in enumerate(PACKS):
-            v = ws.cell(row=r, column=3 + j * 6 + 4)
-            if isinstance(v.value, float) and v.value >= OVP_V:
-                v.fill = TRIP_FILL
+            ws.cell(row=ws.max_row, column=i).alignment = WRAP
 
     pcols = [("Date", 12), ("Max SOC %", 9), ("Max Δ mV (≥3.40 V)", 11), ("Bal min", 8),
              ("Chg A at peak", 9), ("Highest cell", 9), ("Highest V", 9), ("2nd highest cell", 10),
