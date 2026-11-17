@@ -8,7 +8,7 @@ Usage: python full_charge_report.py
 """
 import collections, csv, glob, json, os
 
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
@@ -71,12 +71,29 @@ def day_history():
     return bal, tracked, settings, notes
 
 
-def header(ws, cols):
+def saved_widths():
+    """Column widths from the existing workbook, keyed by (sheet, header text), so manual
+    width changes in Excel survive the rebuild. Excel stores equal adjacent widths as one range."""
+    if not os.path.exists(OUT):
+        return {}
+    wb, out = load_workbook(OUT), {}
+    for ws in wb.worksheets:
+        for dim in ws.column_dimensions.values():
+            if dim.width is None or dim.min is None:
+                continue
+            for i in range(dim.min, (dim.max or dim.min) + 1):
+                head = ws.cell(row=1, column=i).value
+                if head:
+                    out[(ws.title, head)] = dim.width
+    return out
+
+
+def header(ws, cols, widths):
     ws.append([c[0] for c in cols])
-    for i, (_, width) in enumerate(cols, 1):
+    for i, (name, width) in enumerate(cols, 1):
         cell = ws.cell(row=1, column=i)
         cell.fill, cell.font, cell.alignment = HEAD_FILL, HEAD_FONT, Alignment(wrap_text=True, vertical="center")
-        ws.column_dimensions[get_column_letter(i)].width = width
+        ws.column_dimensions[get_column_letter(i)].width = widths.get((ws.title, name), width)
     ws.freeze_panes = "B2"
 
 
@@ -84,6 +101,7 @@ def build():
     st = day_stats()
     bal, tracked, settings, notes = day_history()
     days = sorted({d for (d, _), v in st.items() if v["soc"] >= 100}, reverse=True)
+    widths = saved_widths()
 
     def bal_min(day, p):
         return round(bal[(day, p)]) if day in tracked else None
@@ -92,7 +110,7 @@ def build():
     ws = wb.active
     ws.title = "Summary"
     cols = [("Date", 12), ("Charge setting", 60), ("Flags", 30), ("Note", 80)]
-    header(ws, cols)
+    header(ws, cols, widths)
     for day in days:
         flags = []
         for p in PACKS:
@@ -115,7 +133,7 @@ def build():
              ("Peak time", 10), ("Flags", 24)]
     for p in PACKS:
         ws = wb.create_sheet(p)
-        header(ws, pcols)
+        header(ws, pcols, widths)
         for day in days:
             t = st.get((day, p))
             if not t:
