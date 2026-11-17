@@ -1,5 +1,2348 @@
 [
  {
+  "log": "bms_ble_2026-11-17.log.gz",
+  "start": "2026-11-17 00:00:07.510",
+  "end": "2026-11-17 23:59:56.579",
+  "settings": "Inverter 57.2V -> 57.6V 16:02 -> 56.4V ~16:25; stop 2A; recharge 53.6V; balance mode S2 static, S1 charge->static 16:00:57, M1 charge->static 16:19:11",
+  "note": "Full day. All packs 100% 14:50-14:54. At 57.2V: peaks CST #8 3.601, M1 #12 3.597, S1 #13 3.596, S2 #15 3.597; max delta CST 40, M1 17, S1 20, S2 11 mV. At 57.6V (packs full): peaks ~3.63V, no OVP. Gentai temp sensor 2 spikes match balancing.",
+  "errors": {
+   "M1": 3,
+   "S2": 1
+  },
+  "packs": {
+   "CST": {
+    "samples": 2782,
+    "pack_v_min": [
+     52.41,
+     "2026-11-17 05:27:43.183"
+    ],
+    "pack_v_max": [
+     57.78,
+     "2026-11-17 16:07:48.253"
+    ],
+    "cell_max": {
+     "v": 3.629,
+     "cell": 8,
+     "time": "2026-11-17 16:07:48.253"
+    },
+    "cell_min": {
+     "v": 3.269,
+     "cell": 9,
+     "time": "2026-11-17 05:41:09.396"
+    },
+    "delta_max_mv": {
+     "mv": 40,
+     "time": "2026-11-17 14:47:04.222",
+     "at_max_cell_v": 3.6
+    },
+    "delta_end_mv": 2,
+    "current_max_chg": [
+     32.31,
+     "2026-11-17 13:42:56.263"
+    ],
+    "current_max_dchg": [
+     -22.7,
+     "2026-11-17 23:43:52.163"
+    ],
+    "soc": [
+     55,
+     100
+    ],
+    "temp_range": [
+     29.6,
+     32.6
+    ],
+    "cycles": 23,
+    "avg_dev_above_min_mv": [
+     2.2,
+     2.2,
+     2.7,
+     2.3,
+     4.0,
+     3.0,
+     2.1,
+     4.2,
+     3.2,
+     2.4,
+     2.2,
+     2.8,
+     2.1,
+     2.1,
+     1.9,
+     0.3
+    ],
+    "highest_cells": [
+     8,
+     5,
+     9,
+     6,
+     12,
+     3
+    ],
+    "lowest_cells": [
+     16,
+     15,
+     7,
+     13,
+     14,
+     1
+    ],
+    "peak_cell_voltages": [
+     3.585,
+     3.572,
+     3.577,
+     3.567,
+     3.596,
+     3.58,
+     3.567,
+     3.6,
+     3.591,
+     3.573,
+     3.57,
+     3.574,
+     3.573,
+     3.569,
+     3.566,
+     3.56
+    ],
+    "peak_highest": [
+     [
+      8,
+      3.6
+     ],
+     [
+      5,
+      3.596
+     ],
+     [
+      9,
+      3.591
+     ],
+     [
+      1,
+      3.585
+     ],
+     [
+      6,
+      3.58
+     ],
+     [
+      3,
+      3.577
+     ]
+    ],
+    "peak_lowest": [
+     [
+      16,
+      3.56
+     ],
+     [
+      15,
+      3.566
+     ],
+     [
+      4,
+      3.567
+     ],
+     [
+      7,
+      3.567
+     ],
+     [
+      14,
+      3.569
+     ],
+     [
+      11,
+      3.57
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (0x0A03 bytes 6-7 LE)",
+    "balance_first": {
+     "time": "2026-11-17 14:33:07.255",
+     "cells": [
+      9
+     ],
+     "max_cell_v": 3.407
+    },
+    "balance_cells_ever": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14
+    ],
+    "balance_bit_check": {
+     "samples": 195,
+     "normal_mv": 15.0,
+     "mirrored_mv": 12.3
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-17 14:31:34.380",
+       "current": 18.69,
+       "cell": 9,
+       "hi": 3.401,
+       "gap_mv": 1,
+       "delta_mv": 5,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-17 14:39:19.371",
+       "current": 11.68,
+       "cell": 8,
+       "hi": 3.451,
+       "gap_mv": 2,
+       "delta_mv": 11,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-17 14:43:27.235",
+       "current": 9.65,
+       "cell": 8,
+       "hi": 3.507,
+       "gap_mv": 3,
+       "delta_mv": 19,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-17 14:45:31.393",
+       "current": 8.98,
+       "cell": 8,
+       "hi": 3.551,
+       "gap_mv": 4,
+       "delta_mv": 27,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-17 14:46:33.240",
+       "current": 9.03,
+       "cell": 8,
+       "hi": 3.582,
+       "gap_mv": 7,
+       "delta_mv": 35,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-17 14:47:04.222",
+       "current": 8.81,
+       "cell": 8,
+       "hi": 3.6,
+       "gap_mv": 4,
+       "delta_mv": 40,
+       "at_start": false
+      },
+      {
+       "th": 3.62,
+       "time": "2026-11-17 16:06:46.268",
+       "current": 1.64,
+       "cell": 8,
+       "hi": 3.62,
+       "gap_mv": 2,
+       "delta_mv": 34,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-17 14:31:34.380",
+      "peak": "2026-11-17 16:07:48.253",
+      "peak_v": 3.629,
+      "minutes": 96.2,
+      "mean_current": 2.32,
+      "max_current": 18.69
+     }
+    },
+    "balancing": {
+     "minutes": {
+      "charge": 57.9,
+      "rest": 42.0,
+      "discharge": 1.0
+     },
+     "total_min": 100.9,
+     "current": {
+      "min": -0.73,
+      "mean": 2.23,
+      "max": 17.22
+     },
+     "temp_max": 32.6,
+     "per_cell_min": {
+      "9": 100.9,
+      "8": 97.3,
+      "5": 95.7,
+      "1": 93.1,
+      "6": 90.0,
+      "3": 84.4,
+      "12": 80.2,
+      "13": 61.1,
+      "10": 52.8,
+      "2": 50.7,
+      "11": 48.1,
+      "14": 47.1,
+      "4": 30.6,
+      "7": 20.2
+     },
+     "cell_map": "bit0 = cell 1",
+     "events": [
+      {
+       "time": "2026-11-17 14:33:07.255",
+       "event": "start",
+       "pack_v": 54.54,
+       "current": 17.22,
+       "hi_cell": 8,
+       "hi_v": 3.407,
+       "delta_mv": 6
+      },
+      {
+       "time": "2026-11-17 14:34:40.478",
+       "event": "stop",
+       "pack_v": 54.66,
+       "current": 15.76,
+       "hi_cell": 9,
+       "hi_v": 3.417,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 14:35:11.260",
+       "event": "start",
+       "pack_v": 54.71,
+       "current": 15.23,
+       "hi_cell": 9,
+       "hi_v": 3.42,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 15:19:42.269",
+       "event": "stop",
+       "pack_v": 57.27,
+       "current": -8.3,
+       "hi_cell": 8,
+       "hi_v": 3.592,
+       "delta_mv": 29
+      },
+      {
+       "time": "2026-11-17 15:21:15.351",
+       "event": "start",
+       "pack_v": 56.63,
+       "current": 3.0,
+       "hi_cell": 5,
+       "hi_v": 3.545,
+       "delta_mv": 19
+      },
+      {
+       "time": "2026-11-17 15:21:46.276",
+       "event": "stop",
+       "pack_v": 56.52,
+       "current": -5.15,
+       "hi_cell": 5,
+       "hi_v": 3.538,
+       "delta_mv": 18
+      },
+      {
+       "time": "2026-11-17 15:23:50.283",
+       "event": "start",
+       "pack_v": 56.46,
+       "current": 2.7,
+       "hi_cell": 5,
+       "hi_v": 3.533,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-17 15:24:52.131",
+       "event": "stop",
+       "pack_v": 56.53,
+       "current": -5.76,
+       "hi_cell": 5,
+       "hi_v": 3.54,
+       "delta_mv": 20
+      },
+      {
+       "time": "2026-11-17 15:26:56.194",
+       "event": "start",
+       "pack_v": 56.02,
+       "current": 2.81,
+       "hi_cell": 5,
+       "hi_v": 3.504,
+       "delta_mv": 14
+      },
+      {
+       "time": "2026-11-17 15:31:04.358",
+       "event": "stop",
+       "pack_v": 56.25,
+       "current": -0.77,
+       "hi_cell": 8,
+       "hi_v": 3.521,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-17 15:31:35.284",
+       "event": "start",
+       "pack_v": 56.25,
+       "current": 1.16,
+       "hi_cell": 5,
+       "hi_v": 3.521,
+       "delta_mv": 18
+      },
+      {
+       "time": "2026-11-17 16:02:07.129",
+       "event": "stop",
+       "pack_v": 57.29,
+       "current": -0.56,
+       "hi_cell": 8,
+       "hi_v": 3.593,
+       "delta_mv": 28
+      },
+      {
+       "time": "2026-11-17 16:02:38.151",
+       "event": "start",
+       "pack_v": 57.29,
+       "current": 0.74,
+       "hi_cell": 8,
+       "hi_v": 3.591,
+       "delta_mv": 26
+      },
+      {
+       "time": "2026-11-17 16:08:19.251",
+       "event": "stop",
+       "pack_v": 57.67,
+       "current": -0.65,
+       "hi_cell": 8,
+       "hi_v": 3.621,
+       "delta_mv": 35
+      },
+      {
+       "time": "2026-11-17 16:13:29.314",
+       "event": "start",
+       "pack_v": 57.26,
+       "current": 0.0,
+       "hi_cell": 8,
+       "hi_v": 3.589,
+       "delta_mv": 25
+      },
+      {
+       "time": "2026-11-17 16:19:41.237",
+       "event": "stop",
+       "pack_v": 57.03,
+       "current": -0.95,
+       "hi_cell": 5,
+       "hi_v": 3.571,
+       "delta_mv": 20
+      },
+      {
+       "time": "2026-11-17 16:20:12.158",
+       "event": "start",
+       "pack_v": 57.0,
+       "current": 0.0,
+       "hi_cell": 8,
+       "hi_v": 3.57,
+       "delta_mv": 21
+      },
+      {
+       "time": "2026-11-17 16:23:49.350",
+       "event": "stop",
+       "pack_v": 56.85,
+       "current": -1.43,
+       "hi_cell": 5,
+       "hi_v": 3.559,
+       "delta_mv": 18
+      },
+      {
+       "time": "2026-11-17 16:28:28.087",
+       "event": "start",
+       "pack_v": 56.64,
+       "current": 0.0,
+       "hi_cell": 5,
+       "hi_v": 3.545,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-17 16:31:34.380",
+       "event": "stop",
+       "pack_v": 56.58,
+       "current": -0.81,
+       "hi_cell": 8,
+       "hi_v": 3.541,
+       "delta_mv": 17
+      }
+     ]
+    },
+    "soc_resets": [
+     {
+      "time": "2026-11-17 14:50:10.232",
+      "pack_v": 57.31,
+      "current": 1.94,
+      "soc_before": 99,
+      "ah_before": 342.5,
+      "ah_after": 345.96,
+      "hi_v": 3.601,
+      "delta_mv": 39,
+      "flips": 0,
+      "release": {
+       "time": "2026-11-17 17:03:06.143",
+       "ah": 344.21,
+       "soc": 99
+      }
+     }
+    ],
+    "daily": [
+     {
+      "day": "2026-11-17",
+      "from": "2026-11-17 00:00:16.251",
+      "to": "2026-11-17 23:59:55.243",
+      "full": "2026-11-17 14:50:10.232",
+      "peak": {
+       "time": "2026-11-17 16:08:50.180",
+       "soc": 100,
+       "ah": 345.96
+      },
+      "top_cell": {
+       "time": "2026-11-17 16:07:48.253",
+       "cell": 8,
+       "v": 3.629,
+       "delta_mv": 38,
+       "current": 0.0
+      },
+      "last_full": "2026-11-14 14:11:22.123"
+     }
+    ]
+   },
+   "M1": {
+    "samples": 2837,
+    "pack_v_min": [
+     52.4,
+     "2026-11-17 05:29:45.525"
+    ],
+    "pack_v_max": [
+     57.79,
+     "2026-11-17 16:07:43.516"
+    ],
+    "cell_max": {
+     "v": 3.626,
+     "cell": 12,
+     "time": "2026-11-17 16:07:43.516"
+    },
+    "cell_min": {
+     "v": 3.274,
+     "cell": 9,
+     "time": "2026-11-17 05:26:14.472"
+    },
+    "delta_max_mv": {
+     "mv": 21,
+     "time": "2026-11-17 16:08:13.521",
+     "at_max_cell_v": 3.619
+    },
+    "delta_end_mv": 14,
+    "current_max_chg": [
+     10.88,
+     "2026-11-17 10:35:28.617"
+    ],
+    "current_max_dchg": [
+     -7.22,
+     "2026-11-17 20:29:56.518"
+    ],
+    "soc": [
+     44,
+     100
+    ],
+    "temp_range": [
+     30.1,
+     37.3
+    ],
+    "cycles": 273,
+    "avg_dev_above_min_mv": [
+     3.6,
+     2.9,
+     0.8,
+     1.8,
+     1.7,
+     1.6,
+     1.1,
+     2.7,
+     0.8,
+     1.8,
+     2.2,
+     2.5,
+     1.6,
+     1.1,
+     2.0,
+     1.3
+    ],
+    "highest_cells": [
+     1,
+     2,
+     8,
+     12,
+     11,
+     15
+    ],
+    "lowest_cells": [
+     3,
+     9,
+     7,
+     14,
+     16,
+     6
+    ],
+    "peak_cell_voltages": [
+     3.603,
+     3.604,
+     3.598,
+     3.605,
+     3.602,
+     3.605,
+     3.605,
+     3.607,
+     3.605,
+     3.604,
+     3.608,
+     3.619,
+     3.609,
+     3.602,
+     3.599,
+     3.604
+    ],
+    "peak_highest": [
+     [
+      12,
+      3.619
+     ],
+     [
+      13,
+      3.609
+     ],
+     [
+      11,
+      3.608
+     ],
+     [
+      8,
+      3.607
+     ],
+     [
+      9,
+      3.605
+     ],
+     [
+      7,
+      3.605
+     ]
+    ],
+    "peak_lowest": [
+     [
+      3,
+      3.598
+     ],
+     [
+      15,
+      3.599
+     ],
+     [
+      5,
+      3.602
+     ],
+     [
+      14,
+      3.602
+     ],
+     [
+      1,
+      3.603
+     ],
+     [
+      2,
+      3.604
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (bit order unverified)",
+    "balance_first": {
+     "time": "2026-11-17 14:46:44.516",
+     "cells": [
+      5
+     ],
+     "max_cell_v": 3.582
+    },
+    "balance_cells_ever": [
+     1,
+     2,
+     4,
+     5
+    ],
+    "balance_bit_check": {
+     "samples": 19,
+     "normal_mv": 5.1,
+     "mirrored_mv": 8.2
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-17 14:27:26.563",
+       "current": 1.15,
+       "cell": 1,
+       "hi": 3.4,
+       "gap_mv": 0,
+       "delta_mv": 3,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-17 14:39:07.496",
+       "current": 3.55,
+       "cell": 12,
+       "hi": 3.453,
+       "gap_mv": 1,
+       "delta_mv": 4,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-17 14:43:10.500",
+       "current": 3.68,
+       "cell": 12,
+       "hi": 3.501,
+       "gap_mv": 3,
+       "delta_mv": 6,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-17 14:45:43.506",
+       "current": 3.47,
+       "cell": 12,
+       "hi": 3.553,
+       "gap_mv": 6,
+       "delta_mv": 10,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-17 14:46:44.516",
+       "current": 3.38,
+       "cell": 12,
+       "hi": 3.582,
+       "gap_mv": 9,
+       "delta_mv": 14,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-17 16:04:10.419",
+       "current": 0.0,
+       "cell": 12,
+       "hi": 3.602,
+       "gap_mv": 9,
+       "delta_mv": 17,
+       "at_start": false
+      },
+      {
+       "th": 3.62,
+       "time": "2026-11-17 16:07:13.515",
+       "current": 0.62,
+       "cell": 12,
+       "hi": 3.624,
+       "gap_mv": 10,
+       "delta_mv": 19,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-17 14:27:26.563",
+      "peak": "2026-11-17 16:07:43.516",
+      "peak_v": 3.626,
+      "minutes": 100.3,
+      "mean_current": 0.56,
+      "max_current": 3.75
+     }
+    },
+    "balancing": {
+     "minutes": {
+      "charge": 8.6,
+      "rest": 0.5,
+      "discharge": 0.5
+     },
+     "total_min": 9.6,
+     "current": {
+      "min": -0.51,
+      "mean": 0.94,
+      "max": 3.38
+     },
+     "temp_max": 37.3,
+     "per_cell_min": {
+      "13": 7.1,
+      "12": 4.5,
+      "15": 3.5,
+      "16": 3.1
+     },
+     "cell_map": "bit0 = cell 16 (mirrored)",
+     "events": [
+      {
+       "time": "2026-11-17 14:46:44.516",
+       "event": "start",
+       "pack_v": 57.15,
+       "current": 3.38,
+       "hi_cell": 12,
+       "hi_v": 3.582,
+       "delta_mv": 14
+      },
+      {
+       "time": "2026-11-17 14:48:14.429",
+       "event": "stop",
+       "pack_v": 57.3,
+       "current": 1.35,
+       "hi_cell": 12,
+       "hi_v": 3.593,
+       "delta_mv": 16
+      },
+      {
+       "time": "2026-11-17 14:49:15.548",
+       "event": "start",
+       "pack_v": 57.31,
+       "current": 1.03,
+       "hi_cell": 12,
+       "hi_v": 3.594,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-17 14:51:47.522",
+       "event": "stop",
+       "pack_v": 57.31,
+       "current": 0.6,
+       "hi_cell": 12,
+       "hi_v": 3.593,
+       "delta_mv": 15
+      },
+      {
+       "time": "2026-11-17 14:52:17.565",
+       "event": "start",
+       "pack_v": 57.31,
+       "current": 0.6,
+       "hi_cell": 12,
+       "hi_v": 3.594,
+       "delta_mv": 16
+      },
+      {
+       "time": "2026-11-17 14:52:48.447",
+       "event": "stop",
+       "pack_v": 57.32,
+       "current": 0.53,
+       "hi_cell": 12,
+       "hi_v": 3.594,
+       "delta_mv": 16
+      },
+      {
+       "time": "2026-11-17 15:29:15.560",
+       "event": "start",
+       "pack_v": 56.27,
+       "current": 0.59,
+       "hi_cell": 12,
+       "hi_v": 3.523,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-17 15:30:17.506",
+       "event": "stop",
+       "pack_v": 56.27,
+       "current": 0.0,
+       "hi_cell": 12,
+       "hi_v": 3.524,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-17 15:45:28.428",
+       "event": "start",
+       "pack_v": 57.18,
+       "current": 1.83,
+       "hi_cell": 12,
+       "hi_v": 3.583,
+       "delta_mv": 14
+      },
+      {
+       "time": "2026-11-17 15:46:28.462",
+       "event": "stop",
+       "pack_v": 57.28,
+       "current": 0.0,
+       "hi_cell": 12,
+       "hi_v": 3.591,
+       "delta_mv": 16
+      },
+      {
+       "time": "2026-11-17 15:46:58.467",
+       "event": "start",
+       "pack_v": 57.29,
+       "current": 0.66,
+       "hi_cell": 12,
+       "hi_v": 3.592,
+       "delta_mv": 16
+      },
+      {
+       "time": "2026-11-17 15:47:28.535",
+       "event": "stop",
+       "pack_v": 57.3,
+       "current": 0.0,
+       "hi_cell": 12,
+       "hi_v": 3.593,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-17 16:06:12.528",
+       "event": "start",
+       "pack_v": 57.61,
+       "current": 0.56,
+       "hi_cell": 12,
+       "hi_v": 3.614,
+       "delta_mv": 20
+      },
+      {
+       "time": "2026-11-17 16:07:43.516",
+       "event": "stop",
+       "pack_v": 57.79,
+       "current": 0.0,
+       "hi_cell": 12,
+       "hi_v": 3.626,
+       "delta_mv": 20
+      },
+      {
+       "time": "2026-11-17 16:38:30.504",
+       "event": "start",
+       "pack_v": 56.31,
+       "current": -0.51,
+       "hi_cell": 12,
+       "hi_v": 3.525,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 16:39:00.714",
+       "event": "stop",
+       "pack_v": 56.29,
+       "current": -0.53,
+       "hi_cell": 12,
+       "hi_v": 3.524,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 16:39:31.535",
+       "event": "start",
+       "pack_v": 56.28,
+       "current": 0.0,
+       "hi_cell": 12,
+       "hi_v": 3.522,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 16:40:02.579",
+       "event": "stop",
+       "pack_v": 56.25,
+       "current": 0.0,
+       "hi_cell": 12,
+       "hi_v": 3.52,
+       "delta_mv": 7
+      }
+     ]
+    },
+    "soc_resets": [
+     {
+      "time": "2026-11-17 14:54:19.472",
+      "pack_v": 57.32,
+      "current": 0.0,
+      "soc_before": 97,
+      "ah_before": 97.47,
+      "ah_after": 100.0,
+      "hi_v": 3.594,
+      "delta_mv": 16,
+      "flips": 4,
+      "release": {
+       "time": "2026-11-17 17:02:55.547",
+       "ah": 99.17,
+       "soc": 99
+      }
+     }
+    ],
+    "daily": [
+     {
+      "day": "2026-11-17",
+      "from": "2026-11-17 00:00:07.538",
+      "to": "2026-11-17 23:59:56.579",
+      "full": "2026-11-17 14:54:19.472",
+      "peak": {
+       "time": "2026-11-17 16:16:21.461",
+       "soc": 100,
+       "ah": 100.0
+      },
+      "top_cell": {
+       "time": "2026-11-17 16:07:43.516",
+       "cell": 12,
+       "v": 3.626,
+       "delta_mv": 20,
+       "current": 0.0
+      },
+      "last_full": "2026-11-14 14:13:38.517"
+     }
+    ]
+   },
+   "S1": {
+    "samples": 2861,
+    "pack_v_min": [
+     52.41,
+     "2026-11-17 05:43:51.488"
+    ],
+    "pack_v_max": [
+     57.82,
+     "2026-11-17 16:07:37.072"
+    ],
+    "cell_max": {
+     "v": 3.628,
+     "cell": 13,
+     "time": "2026-11-17 16:07:37.072"
+    },
+    "cell_min": {
+     "v": 3.274,
+     "cell": 7,
+     "time": "2026-11-17 05:29:20.339"
+    },
+    "delta_max_mv": {
+     "mv": 25,
+     "time": "2026-11-17 23:57:28.602",
+     "at_max_cell_v": 3.321
+    },
+    "delta_end_mv": 25,
+    "current_max_chg": [
+     10.56,
+     "2026-11-17 10:35:09.360"
+    ],
+    "current_max_dchg": [
+     -7.0,
+     "2026-11-17 20:29:16.371"
+    ],
+    "soc": [
+     46,
+     100
+    ],
+    "temp_range": [
+     30.4,
+     39.3
+    ],
+    "cycles": 302,
+    "avg_dev_above_min_mv": [
+     4.0,
+     2.7,
+     2.3,
+     2.0,
+     3.9,
+     2.2,
+     0.1,
+     4.6,
+     4.0,
+     4.1,
+     4.4,
+     3.0,
+     5.7,
+     2.3,
+     3.3,
+     3.4
+    ],
+    "highest_cells": [
+     13,
+     8,
+     11,
+     10,
+     9,
+     1
+    ],
+    "lowest_cells": [
+     7,
+     4,
+     6,
+     3,
+     14,
+     2
+    ],
+    "peak_cell_voltages": [
+     3.316,
+     3.313,
+     3.314,
+     3.314,
+     3.311,
+     3.315,
+     3.296,
+     3.321,
+     3.315,
+     3.317,
+     3.32,
+     3.306,
+     3.32,
+     3.303,
+     3.313,
+     3.315
+    ],
+    "peak_highest": [
+     [
+      8,
+      3.321
+     ],
+     [
+      13,
+      3.32
+     ],
+     [
+      11,
+      3.32
+     ],
+     [
+      10,
+      3.317
+     ],
+     [
+      1,
+      3.316
+     ],
+     [
+      16,
+      3.315
+     ]
+    ],
+    "peak_lowest": [
+     [
+      7,
+      3.296
+     ],
+     [
+      14,
+      3.303
+     ],
+     [
+      12,
+      3.306
+     ],
+     [
+      5,
+      3.311
+     ],
+     [
+      2,
+      3.313
+     ],
+     [
+      15,
+      3.313
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (bit order unverified)",
+    "balance_first": {
+     "time": "2026-11-17 14:38:18.351",
+     "cells": [
+      1
+     ],
+     "max_cell_v": 3.447
+    },
+    "balance_cells_ever": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "balance_bit_check": {
+     "samples": 85,
+     "normal_mv": 5.8,
+     "mirrored_mv": 8.8
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-17 14:25:46.630",
+       "current": 0.94,
+       "cell": 13,
+       "hi": 3.4,
+       "gap_mv": 1,
+       "delta_mv": 5,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-17 14:38:48.352",
+       "current": 3.73,
+       "cell": 13,
+       "hi": 3.452,
+       "gap_mv": 2,
+       "delta_mv": 7,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-17 14:43:18.277",
+       "current": 3.93,
+       "cell": 13,
+       "hi": 3.505,
+       "gap_mv": 1,
+       "delta_mv": 9,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-17 14:45:48.340",
+       "current": 3.7,
+       "cell": 13,
+       "hi": 3.558,
+       "gap_mv": 3,
+       "delta_mv": 14,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-17 14:46:48.408",
+       "current": 3.63,
+       "cell": 13,
+       "hi": 3.587,
+       "gap_mv": 3,
+       "delta_mv": 18,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-17 16:03:36.211",
+       "current": 0.0,
+       "cell": 13,
+       "hi": 3.6,
+       "gap_mv": 8,
+       "delta_mv": 17,
+       "at_start": false
+      },
+      {
+       "th": 3.62,
+       "time": "2026-11-17 16:07:06.679",
+       "current": 0.69,
+       "cell": 13,
+       "hi": 3.624,
+       "gap_mv": 10,
+       "delta_mv": 20,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-17 14:25:46.630",
+      "peak": "2026-11-17 16:07:37.072",
+      "peak_v": 3.628,
+      "minutes": 101.8,
+      "mean_current": 0.66,
+      "max_current": 4.0
+     }
+    },
+    "balancing": {
+     "minutes": {
+      "charge": 26.5,
+      "rest": 16.0,
+      "discharge": 0.0
+     },
+     "total_min": 42.5,
+     "current": {
+      "min": 0.0,
+      "mean": 0.82,
+      "max": 3.9
+     },
+     "temp_max": 39.2,
+     "per_cell_min": {
+      "16": 36.5,
+      "13": 28.5,
+      "15": 25.5,
+      "14": 23.0,
+      "12": 8.0
+     },
+     "cell_map": "bit0 = cell 16 (mirrored)",
+     "events": [
+      {
+       "time": "2026-11-17 14:38:18.351",
+       "event": "start",
+       "pack_v": 55.08,
+       "current": 3.51,
+       "hi_cell": 13,
+       "hi_v": 3.447,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 14:38:48.352",
+       "event": "stop",
+       "pack_v": 55.17,
+       "current": 3.73,
+       "hi_cell": 13,
+       "hi_v": 3.452,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-17 14:43:48.283",
+       "event": "start",
+       "pack_v": 56.12,
+       "current": 3.9,
+       "hi_cell": 13,
+       "hi_v": 3.514,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-17 14:54:18.364",
+       "event": "stop",
+       "pack_v": 57.34,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.596,
+       "delta_mv": 19
+      },
+      {
+       "time": "2026-11-17 15:21:18.368",
+       "event": "start",
+       "pack_v": 56.7,
+       "current": 0.94,
+       "hi_cell": 13,
+       "hi_v": 3.551,
+       "delta_mv": 12
+      },
+      {
+       "time": "2026-11-17 15:21:48.370",
+       "event": "stop",
+       "pack_v": 56.54,
+       "current": -2.03,
+       "hi_cell": 13,
+       "hi_v": 3.54,
+       "delta_mv": 11
+      },
+      {
+       "time": "2026-11-17 15:23:18.440",
+       "event": "start",
+       "pack_v": 56.35,
+       "current": 0.7,
+       "hi_cell": 13,
+       "hi_v": 3.529,
+       "delta_mv": 12
+      },
+      {
+       "time": "2026-11-17 15:24:48.247",
+       "event": "stop",
+       "pack_v": 56.6,
+       "current": -2.16,
+       "hi_cell": 13,
+       "hi_v": 3.545,
+       "delta_mv": 13
+      },
+      {
+       "time": "2026-11-17 15:27:18.361",
+       "event": "start",
+       "pack_v": 56.1,
+       "current": 0.6,
+       "hi_cell": 13,
+       "hi_v": 3.512,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-17 15:30:18.284",
+       "event": "stop",
+       "pack_v": 56.29,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.526,
+       "delta_mv": 13
+      },
+      {
+       "time": "2026-11-17 15:38:18.445",
+       "event": "start",
+       "pack_v": 56.53,
+       "current": 0.86,
+       "hi_cell": 13,
+       "hi_v": 3.541,
+       "delta_mv": 13
+      },
+      {
+       "time": "2026-11-17 15:41:48.458",
+       "event": "stop",
+       "pack_v": 56.72,
+       "current": 0.52,
+       "hi_cell": 13,
+       "hi_v": 3.554,
+       "delta_mv": 14
+      },
+      {
+       "time": "2026-11-17 15:42:18.365",
+       "event": "start",
+       "pack_v": 56.74,
+       "current": 0.59,
+       "hi_cell": 13,
+       "hi_v": 3.555,
+       "delta_mv": 14
+      },
+      {
+       "time": "2026-11-17 15:43:49.333",
+       "event": "stop",
+       "pack_v": 56.8,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.559,
+       "delta_mv": 14
+      },
+      {
+       "time": "2026-11-17 15:44:19.402",
+       "event": "start",
+       "pack_v": 56.82,
+       "current": 0.52,
+       "hi_cell": 13,
+       "hi_v": 3.56,
+       "delta_mv": 14
+      },
+      {
+       "time": "2026-11-17 15:46:19.449",
+       "event": "stop",
+       "pack_v": 57.33,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.596,
+       "delta_mv": 19
+      },
+      {
+       "time": "2026-11-17 15:46:49.425",
+       "event": "start",
+       "pack_v": 57.29,
+       "current": 0.78,
+       "hi_cell": 13,
+       "hi_v": 3.594,
+       "delta_mv": 19
+      },
+      {
+       "time": "2026-11-17 15:48:19.468",
+       "event": "stop",
+       "pack_v": 57.32,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.596,
+       "delta_mv": 19
+      },
+      {
+       "time": "2026-11-17 16:01:05.785",
+       "event": "start",
+       "pack_v": 57.32,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.594,
+       "delta_mv": 17
+      },
+      {
+       "time": "2026-11-17 16:12:07.127",
+       "event": "stop",
+       "pack_v": 57.32,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.592,
+       "delta_mv": 14
+      },
+      {
+       "time": "2026-11-17 16:12:37.114",
+       "event": "start",
+       "pack_v": 57.29,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.59,
+       "delta_mv": 14
+      },
+      {
+       "time": "2026-11-17 16:13:07.136",
+       "event": "stop",
+       "pack_v": 57.27,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.588,
+       "delta_mv": 13
+      },
+      {
+       "time": "2026-11-17 16:13:37.149",
+       "event": "start",
+       "pack_v": 57.24,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.586,
+       "delta_mv": 13
+      },
+      {
+       "time": "2026-11-17 16:14:07.143",
+       "event": "stop",
+       "pack_v": 57.22,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.585,
+       "delta_mv": 13
+      },
+      {
+       "time": "2026-11-17 16:16:07.218",
+       "event": "start",
+       "pack_v": 57.14,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.579,
+       "delta_mv": 12
+      },
+      {
+       "time": "2026-11-17 16:17:07.173",
+       "event": "stop",
+       "pack_v": 57.09,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.575,
+       "delta_mv": 11
+      },
+      {
+       "time": "2026-11-17 16:17:37.054",
+       "event": "start",
+       "pack_v": 57.08,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.574,
+       "delta_mv": 11
+      },
+      {
+       "time": "2026-11-17 16:18:37.268",
+       "event": "stop",
+       "pack_v": 57.05,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.572,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-17 16:23:07.197",
+       "event": "start",
+       "pack_v": 56.91,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.562,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 16:23:37.171",
+       "event": "stop",
+       "pack_v": 56.88,
+       "current": -0.52,
+       "hi_cell": 13,
+       "hi_v": 3.559,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 16:25:07.102",
+       "event": "start",
+       "pack_v": 56.78,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.553,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 16:26:07.182",
+       "event": "stop",
+       "pack_v": 56.74,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.551,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 16:27:37.132",
+       "event": "start",
+       "pack_v": 56.67,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.546,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 16:28:07.125",
+       "event": "stop",
+       "pack_v": 56.65,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.545,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 16:36:37.288",
+       "event": "start",
+       "pack_v": 56.39,
+       "current": 0.0,
+       "hi_cell": 13,
+       "hi_v": 3.529,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 16:38:37.110",
+       "event": "stop",
+       "pack_v": 56.32,
+       "current": 0.0,
+       "hi_cell": 1,
+       "hi_v": 3.523,
+       "delta_mv": 6
+      }
+     ]
+    },
+    "soc_resets": [
+     {
+      "time": "2026-11-17 14:54:48.448",
+      "pack_v": 57.33,
+      "current": 0.0,
+      "soc_before": 98,
+      "ah_before": 98.9,
+      "ah_after": 100.0,
+      "hi_v": 3.596,
+      "delta_mv": 19,
+      "flips": 6,
+      "release": {
+       "time": "2026-11-17 17:03:37.159",
+       "ah": 99.17,
+       "soc": 99
+      }
+     }
+    ],
+    "daily": [
+     {
+      "day": "2026-11-17",
+      "from": "2026-11-17 00:00:07.510",
+      "to": "2026-11-17 23:59:31.531",
+      "full": "2026-11-17 14:54:48.448",
+      "peak": {
+       "time": "2026-11-17 16:16:37.231",
+       "soc": 100,
+       "ah": 100.0
+      },
+      "top_cell": {
+       "time": "2026-11-17 16:07:37.072",
+       "cell": 13,
+       "v": 3.628,
+       "delta_mv": 20,
+       "current": 0.0
+      },
+      "last_full": "2026-11-14 14:14:11.386"
+     }
+    ]
+   },
+   "S2": {
+    "samples": 2878,
+    "pack_v_min": [
+     52.49,
+     "2026-11-17 05:29:46.040"
+    ],
+    "pack_v_max": [
+     57.91,
+     "2026-11-17 16:07:27.027"
+    ],
+    "cell_max": {
+     "v": 3.625,
+     "cell": 15,
+     "time": "2026-11-17 16:07:27.027"
+    },
+    "cell_min": {
+     "v": 3.278,
+     "cell": 4,
+     "time": "2026-11-17 05:48:16.056"
+    },
+    "delta_max_mv": {
+     "mv": 25,
+     "time": "2026-11-17 23:53:38.129",
+     "at_max_cell_v": 3.327
+    },
+    "delta_end_mv": 24,
+    "current_max_chg": [
+     10.97,
+     "2026-11-17 10:35:26.247"
+    ],
+    "current_max_dchg": [
+     -7.28,
+     "2026-11-17 20:29:01.264"
+    ],
+    "soc": [
+     41,
+     100
+    ],
+    "temp_range": [
+     30.0,
+     40.4
+    ],
+    "cycles": 316,
+    "avg_dev_above_min_mv": [
+     1.2,
+     3.5,
+     1.0,
+     1.4,
+     2.2,
+     4.5,
+     4.4,
+     3.8,
+     2.7,
+     4.1,
+     4.9,
+     3.1,
+     4.1,
+     3.3,
+     3.5,
+     5.4
+    ],
+    "highest_cells": [
+     16,
+     11,
+     6,
+     7,
+     13,
+     10
+    ],
+    "lowest_cells": [
+     3,
+     1,
+     4,
+     5,
+     9,
+     12
+    ],
+    "peak_cell_voltages": [
+     3.302,
+     3.32,
+     3.304,
+     3.318,
+     3.305,
+     3.322,
+     3.327,
+     3.315,
+     3.318,
+     3.323,
+     3.326,
+     3.306,
+     3.325,
+     3.322,
+     3.325,
+     3.326
+    ],
+    "peak_highest": [
+     [
+      7,
+      3.327
+     ],
+     [
+      16,
+      3.326
+     ],
+     [
+      11,
+      3.326
+     ],
+     [
+      15,
+      3.325
+     ],
+     [
+      13,
+      3.325
+     ],
+     [
+      10,
+      3.323
+     ]
+    ],
+    "peak_lowest": [
+     [
+      1,
+      3.302
+     ],
+     [
+      3,
+      3.304
+     ],
+     [
+      5,
+      3.305
+     ],
+     [
+      12,
+      3.306
+     ],
+     [
+      8,
+      3.315
+     ],
+     [
+      4,
+      3.318
+     ]
+    ],
+    "balancer_source": "aiobmsble 'balancer' (bit order unverified)",
+    "balance_first": {
+     "time": "2026-11-17 14:46:27.309",
+     "cells": [
+      3
+     ],
+     "max_cell_v": 3.575
+    },
+    "balance_cells_ever": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "balance_bit_check": {
+     "samples": 54,
+     "normal_mv": 5.1,
+     "mirrored_mv": 5.9
+    },
+    "top_of_charge": {
+     "crossings": [
+      {
+       "th": 3.4,
+       "time": "2026-11-17 14:22:27.147",
+       "current": 0.57,
+       "cell": 6,
+       "hi": 3.4,
+       "gap_mv": 0,
+       "delta_mv": 3,
+       "at_start": false
+      },
+      {
+       "th": 3.45,
+       "time": "2026-11-17 14:38:27.201",
+       "current": 3.57,
+       "cell": 8,
+       "hi": 3.452,
+       "gap_mv": 0,
+       "delta_mv": 3,
+       "at_start": false
+      },
+      {
+       "th": 3.5,
+       "time": "2026-11-17 14:42:57.221",
+       "current": 3.63,
+       "cell": 8,
+       "hi": 3.502,
+       "gap_mv": 0,
+       "delta_mv": 4,
+       "at_start": false
+      },
+      {
+       "th": 3.55,
+       "time": "2026-11-17 14:45:27.300",
+       "current": 3.58,
+       "cell": 15,
+       "hi": 3.55,
+       "gap_mv": 2,
+       "delta_mv": 7,
+       "at_start": false
+      },
+      {
+       "th": 3.58,
+       "time": "2026-11-17 14:46:57.251",
+       "current": 3.53,
+       "cell": 15,
+       "hi": 3.591,
+       "gap_mv": 3,
+       "delta_mv": 11,
+       "at_start": false
+      },
+      {
+       "th": 3.6,
+       "time": "2026-11-17 16:04:27.141",
+       "current": 0.0,
+       "cell": 15,
+       "hi": 3.601,
+       "gap_mv": 3,
+       "delta_mv": 8,
+       "at_start": false
+      },
+      {
+       "th": 3.62,
+       "time": "2026-11-17 16:06:57.165",
+       "current": 0.56,
+       "cell": 15,
+       "hi": 3.62,
+       "gap_mv": 4,
+       "delta_mv": 12,
+       "at_start": false
+      }
+     ],
+     "window": {
+      "start": "2026-11-17 14:22:27.147",
+      "peak": "2026-11-17 16:07:27.027",
+      "peak_v": 3.625,
+      "minutes": 105.0,
+      "mean_current": 0.54,
+      "max_current": 3.79
+     }
+    },
+    "balancing": {
+     "minutes": {
+      "charge": 5.0,
+      "rest": 22.0,
+      "discharge": 0.0
+     },
+     "total_min": 27.0,
+     "current": {
+      "min": 0.0,
+      "mean": 0.32,
+      "max": 3.55
+     },
+     "temp_max": 40.4,
+     "per_cell_min": {
+      "13": 22.0,
+      "15": 19.5,
+      "14": 14.0,
+      "12": 6.0,
+      "16": 1.0
+     },
+     "cell_map": "bit0 = cell 16 (mirrored)",
+     "events": [
+      {
+       "time": "2026-11-17 14:46:27.309",
+       "event": "start",
+       "pack_v": 57.11,
+       "current": 3.55,
+       "hi_cell": 15,
+       "hi_v": 3.575,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 14:47:57.262",
+       "event": "stop",
+       "pack_v": 57.4,
+       "current": 1.55,
+       "hi_cell": 15,
+       "hi_v": 3.595,
+       "delta_mv": 10
+      },
+      {
+       "time": "2026-11-17 14:51:27.138",
+       "event": "start",
+       "pack_v": 57.41,
+       "current": 0.55,
+       "hi_cell": 15,
+       "hi_v": 3.595,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 14:51:57.105",
+       "event": "stop",
+       "pack_v": 57.41,
+       "current": 0.51,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 14:52:27.246",
+       "event": "start",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.595,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 14:52:57.249",
+       "event": "stop",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.595,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 14:54:57.165",
+       "event": "start",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 14:55:27.109",
+       "event": "stop",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 14:55:57.214",
+       "event": "start",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 14:56:57.272",
+       "event": "stop",
+       "pack_v": 57.43,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 14:57:27.280",
+       "event": "start",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 14:57:57.180",
+       "event": "stop",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.593,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-17 15:01:57.209",
+       "event": "start",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 15:02:57.106",
+       "event": "stop",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 15:03:27.256",
+       "event": "start",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 15:03:57.223",
+       "event": "stop",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.593,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-17 15:05:27.152",
+       "event": "start",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 15:05:57.126",
+       "event": "stop",
+       "pack_v": 57.43,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 15:07:27.244",
+       "event": "start",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 15:08:27.151",
+       "event": "stop",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.593,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-17 15:11:27.171",
+       "event": "start",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.593,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 15:12:27.184",
+       "event": "stop",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 15:15:57.203",
+       "event": "start",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.593,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 15:16:57.314",
+       "event": "stop",
+       "pack_v": 57.42,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.593,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-17 15:17:27.203",
+       "event": "start",
+       "pack_v": 57.4,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.592,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 15:18:27.135",
+       "event": "stop",
+       "pack_v": 57.43,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.594,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 15:33:27.171",
+       "event": "start",
+       "pack_v": 56.45,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.531,
+       "delta_mv": 6
+      },
+      {
+       "time": "2026-11-17 15:33:57.211",
+       "event": "stop",
+       "pack_v": 56.47,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.532,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-17 15:34:57.216",
+       "event": "start",
+       "pack_v": 56.49,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.534,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 15:35:27.324",
+       "event": "stop",
+       "pack_v": 56.51,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.535,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-17 15:44:57.229",
+       "event": "start",
+       "pack_v": 57.06,
+       "current": 1.94,
+       "hi_cell": 15,
+       "hi_v": 3.57,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-17 15:51:57.146",
+       "event": "stop",
+       "pack_v": 57.4,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.593,
+       "delta_mv": 9
+      },
+      {
+       "time": "2026-11-17 15:52:57.234",
+       "event": "start",
+       "pack_v": 57.4,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.592,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 15:53:57.252",
+       "event": "stop",
+       "pack_v": 57.41,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.593,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 15:55:57.162",
+       "event": "start",
+       "pack_v": 57.41,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.593,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 15:56:27.198",
+       "event": "stop",
+       "pack_v": 57.41,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.592,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-17 15:57:27.269",
+       "event": "start",
+       "pack_v": 57.41,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.592,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-17 15:57:57.214",
+       "event": "stop",
+       "pack_v": 57.4,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.592,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 15:58:27.226",
+       "event": "start",
+       "pack_v": 57.4,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.592,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 15:59:27.126",
+       "event": "stop",
+       "pack_v": 57.41,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.592,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-17 16:00:27.189",
+       "event": "start",
+       "pack_v": 57.4,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.592,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 16:00:57.136",
+       "event": "stop",
+       "pack_v": 57.4,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.592,
+       "delta_mv": 7
+      },
+      {
+       "time": "2026-11-17 16:04:27.141",
+       "event": "start",
+       "pack_v": 57.55,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.601,
+       "delta_mv": 8
+      },
+      {
+       "time": "2026-11-17 16:09:27.089",
+       "event": "stop",
+       "pack_v": 57.59,
+       "current": 0.0,
+       "hi_cell": 15,
+       "hi_v": 3.604,
+       "delta_mv": 8
+      }
+     ]
+    },
+    "soc_resets": [
+     {
+      "time": "2026-11-17 14:53:27.201",
+      "pack_v": 57.42,
+      "current": 0.0,
+      "soc_before": 95,
+      "ah_before": 95.85,
+      "ah_after": 100.0,
+      "hi_v": 3.594,
+      "delta_mv": 8,
+      "flips": 4,
+      "release": {
+       "time": "2026-11-17 17:01:57.076",
+       "ah": 99.19,
+       "soc": 99
+      }
+     }
+    ],
+    "daily": [
+     {
+      "day": "2026-11-17",
+      "from": "2026-11-17 00:00:11.194",
+      "to": "2026-11-17 23:59:38.146",
+      "full": "2026-11-17 14:53:27.201",
+      "peak": {
+       "time": "2026-11-17 16:16:27.196",
+       "soc": 100,
+       "ah": 100.0
+      },
+      "top_cell": {
+       "time": "2026-11-17 16:07:27.027",
+       "cell": 15,
+       "v": 3.625,
+       "delta_mv": 10,
+       "current": 0.72
+      },
+      "last_full": "2026-11-14 14:11:26.995"
+     }
+    ]
+   }
+  }
+ },
+ {
   "log": "bms_ble_2026-11-16.log.gz",
   "start": "2026-11-16 00:00:04.193",
   "end": "2026-11-16 23:59:45.283",
