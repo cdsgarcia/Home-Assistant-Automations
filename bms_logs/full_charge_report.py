@@ -43,7 +43,8 @@ def day_stats():
             if hi > t["pk"]:
                 i1 = c.index(hi)
                 i2 = max((i for i in range(16) if i != i1), key=lambda i: c[i])
-                t.update(pk=hi, cell=i1 + 1, c2=c[i2], cell2=i2 + 1,
+                lo = min(c)
+                t.update(pk=hi, cell=i1 + 1, c2=c[i2], cell2=i2 + 1, lo=lo, cell_lo=c.index(lo) + 1,
                          gap=round((hi - c[i2]) * 1000), time=r["time"][11:19], cur=cur)
             if hi >= BAL_START_V:
                 d = round((hi - min(c)) * 1000)
@@ -110,7 +111,8 @@ def build():
 
     pcols = [("Date", 12), ("Max SOC %", 9), ("Max Δ mV (≥3.40 V)", 11), ("Bal min", 8),
              ("Chg A at peak", 9), ("Highest cell", 9), ("Highest V", 9), ("2nd highest cell", 10),
-             ("2nd highest V", 9), ("Gap mV", 8), ("Peak time", 10), ("Flags", 24)]
+             ("2nd highest V", 9), ("Gap mV", 8), ("Lowest cell", 9), ("Lowest V", 9),
+             ("Peak time", 10), ("Flags", 24)]
     for p in PACKS:
         ws = wb.create_sheet(p)
         header(ws, pcols)
@@ -126,7 +128,8 @@ def build():
             if day not in tracked:
                 flags.append("balancing not tracked")
             ws.append([day, t["soc"], t["d"], bal_min(day, p), t["cur"], f"#{t['cell']}", t["pk"],
-                       f"#{t['cell2']}", t["c2"], t["gap"], t["time"], "; ".join(flags)])
+                       f"#{t['cell2']}", t["c2"], t["gap"], f"#{t['cell_lo']}", t["lo"], t["time"],
+                       "; ".join(flags)])
             if t["pk"] >= OVP_V:
                 ws.cell(row=ws.max_row, column=7).fill = TRIP_FILL
 
