@@ -1,5 +1,7 @@
 - id: '1787212363311'
   alias: Roof Deck Light
+  description: On at sunset +20 min, off at sunrise -20 min. From sunset +3 h, random
+    off 15-30 min / on 10-20 min cycles until the sunrise trigger restarts the run.
   triggers:
   - id: sunset
     trigger: sun
@@ -9,33 +11,77 @@
     trigger: sun
     event: sunrise
     offset: -00:20:00
+  - id: random
+    trigger: sun
+    event: sunset
+    offset: 03:00:00
   conditions: []
   actions:
-  - if:
-    - condition: trigger
-      id: sunset
-    then:
-    - condition: not
-      conditions:
-      - condition: device
-        type: is_on
-        device_id: 8510f0c0a25dcda57d2560ed305d0c78
-        entity_id: 836c0933efc45c66db79937680ba5329
-        domain: switch
-    - type: turn_on
-      device_id: 8510f0c0a25dcda57d2560ed305d0c78
-      entity_id: 836c0933efc45c66db79937680ba5329
-      domain: switch
-    else:
-    - condition: not
-      conditions:
-      - condition: device
-        type: is_off
-        device_id: 8510f0c0a25dcda57d2560ed305d0c78
-        entity_id: 836c0933efc45c66db79937680ba5329
-        domain: switch
-    - type: turn_off
-      device_id: 8510f0c0a25dcda57d2560ed305d0c78
-      entity_id: 836c0933efc45c66db79937680ba5329
-      domain: switch
-  mode: single
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: sunset
+      sequence:
+      - if:
+        - condition: device
+          type: is_off
+          device_id: 8510f0c0a25dcda57d2560ed305d0c78
+          entity_id: 836c0933efc45c66db79937680ba5329
+          domain: switch
+        then:
+        - type: turn_on
+          device_id: 8510f0c0a25dcda57d2560ed305d0c78
+          entity_id: 836c0933efc45c66db79937680ba5329
+          domain: switch
+    - conditions:
+      - condition: trigger
+        id: random
+      sequence:
+      - repeat:
+          while:
+          - condition: state
+            entity_id: sun.sun
+            state: below_horizon
+          sequence:
+          - if:
+            - condition: device
+              type: is_on
+              device_id: 8510f0c0a25dcda57d2560ed305d0c78
+              entity_id: 836c0933efc45c66db79937680ba5329
+              domain: switch
+            then:
+            - type: turn_off
+              device_id: 8510f0c0a25dcda57d2560ed305d0c78
+              entity_id: 836c0933efc45c66db79937680ba5329
+              domain: switch
+          - delay:
+              minutes: '{{ range(15, 31) | random }}'
+          - if:
+            - condition: device
+              type: is_off
+              device_id: 8510f0c0a25dcda57d2560ed305d0c78
+              entity_id: 836c0933efc45c66db79937680ba5329
+              domain: switch
+            then:
+            - type: turn_on
+              device_id: 8510f0c0a25dcda57d2560ed305d0c78
+              entity_id: 836c0933efc45c66db79937680ba5329
+              domain: switch
+          - delay:
+              minutes: '{{ range(10, 21) | random }}'
+    - conditions:
+      - condition: trigger
+        id: sunrise
+      sequence:
+      - if:
+        - condition: device
+          type: is_on
+          device_id: 8510f0c0a25dcda57d2560ed305d0c78
+          entity_id: 836c0933efc45c66db79937680ba5329
+          domain: switch
+        then:
+        - type: turn_off
+          device_id: 8510f0c0a25dcda57d2560ed305d0c78
+          entity_id: 836c0933efc45c66db79937680ba5329
+          domain: switch
+  mode: restart

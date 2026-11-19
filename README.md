@@ -178,9 +178,10 @@ Sequence: set temp to 30°C → 10 s delay → `fan_only` → 10 min delay → `
 
 #### [`Roof Deck Light`](automations/roof_deck_light.yaml)
 - Turns **on** 20 minutes after sunset
-- Turns **off** 20 minutes before sunrise
+- From **3 hours after sunset**, cycles randomly: **off 15–30 min**, then **on 10–20 min**, repeating (saves ~3.4 kWh/month on the 20 W LED)
+- Turns **off** 20 minutes before sunrise — `mode: restart` makes this trigger cancel the random loop
 
-> Uses idempotent guards — only acts if the light is not already in the desired state.
+> Uses idempotent guards — only acts if the light is not already in the desired state. If HA restarts mid-loop, the light keeps its current state until the next trigger.
 
 #### [`EF-R30241 Light`](automations/ef_r30241_light.yaml)
 Controls the indicator light mode on the portable power station based on charge state.
