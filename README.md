@@ -153,7 +153,7 @@ At **4 hours before sunrise**, if the A/C is not off, increases the current targ
 ---
 
 #### [`A/C Night OFF Sequence - Sunrise`](automations/ac_night_off_sequence_sunrise.yaml)
-At sunrise, if the A/C is still running:
+**1 hour after sunrise on weekdays (Mon–Fri)**, if the A/C is still running (on weekends it keeps running):
 
 Sequence: set temp to 30°C → 10 s delay → `fan_only` → 15 min delay → `off`
 

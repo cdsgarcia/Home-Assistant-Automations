@@ -643,7 +643,15 @@
   triggers:
   - trigger: sun
     event: sunrise
+    offset: 01:00:00
   conditions:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
   - condition: not
     conditions:
     - condition: device
@@ -747,9 +755,9 @@
   mode: single
 - id: '1794021260046'
   alias: BMS Debug Log - Start on Boot
-  description: Writes BMS_BLE/aiobmsble debug logs for all packs to /config/bms_logs (daily files,
-    gzipped at midnight) for weekly analysis. Processed files are deleted manually; files older
-    than 28 days are removed as a safety net.
+  description: Writes BMS_BLE/aiobmsble debug logs for all packs to /config/bms_logs
+    (daily files, gzipped at midnight) for weekly analysis. Processed files are deleted
+    manually; files older than 28 days are removed as a safety net.
   triggers:
   - trigger: homeassistant
     event: start
