@@ -40,6 +40,7 @@ ESUP_BLOCKS: dict[str, tuple[int, int]] = {
     "user_params": (0x1C00, 0x1C88),
     "capacity": (0x2000, 0x2040),
     "factory_mirror": (0x3900, 0x3940),
+    "gain_block": (0x3800, 0x3840),  # read-only: current/voltage calibration gains (unverified on Gentai 0x0A)
 }
 
 
