@@ -73,4 +73,14 @@ Original values were read from all three packs over BLE before any change. To re
 | 2026-11-26 08:30 | S2 only | Charge current gain (`0x3800`+0, written at `0x3800` in DV/DP mode, verified) | 10714 | 10320 | User request to match the other packs, whose charge and discharge gains are nearly equal. Expect S2 to now read ~3.7% low on charge, so watch for the drift to come back in the other direction (SOC under-reads charge and hits 100% late, giving a positive full-charge correction). Revert: write 10714 |
 | 2026-11-26 08:48 | S2 only | Charge gain 10320 → **10714** (restored) and discharge gain 10320 → **10250**, written via pinned address 3 and verified | 10320 / 10320 | 10714 / 10250 | Full analysis of BMS counters 11-09 to 11-25 (about 590 Ah charge and 640 Ah discharge per pack, split by current direction). S2 vs the M1/S1 mean: charge ×1.001 (per-period range 0.988–1.018), discharge ×1.045 (range 1.034–1.051). The discharge excess is about +0.1 A whatever the current (an offset); 10710 ÷ 1.045 ≈ 10250. Live check: after charge 10320, S2 read ×0.984 of M1/S1 on charge (under-read), so it was restored. The inverter current (1 A steps, +1.3 to +1.8 A offset) can't resolve S2 on its own. Check: S2 discharge Ah ≈ M1/S1 and its next full-charge correction ≈ M1/S1's. Original values: 10714 / 10710 |
 
+## Current Gentai Current Gains — 2026-11-26
+
+Read from the live HA gain entities at 09:00 (entity refresh times 08:45–08:50). Original values are the recorded pre-calibration gains.
+
+| Pack | Original charge | Current charge | Original discharge | Current discharge |
+|---|---:|---:|---:|---:|
+| M1 | 10585 | 10585 | 10567 | 10567 |
+| S1 | 10593 | 10593 | 10563 | 10563 |
+| S2 | 10714 | 10714 | 10710 | 10250 |
+
 Unchanged on all three packs: balance start 3400 mV, balance delta 8 mV, Cell Full 3600 mV, sleep 3000/2880 mV, RS485 protocol 6, CAN 0. Inverter: charge 56.4 V (since 2026-11-17 ~16:25), stop charge 2 A, recharge 53.6 V. Balance mode: M1, S1 and S2 static.
