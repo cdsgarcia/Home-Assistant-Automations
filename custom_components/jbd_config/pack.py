@@ -32,6 +32,7 @@ from .protocol import (
 
 _LOGGER = logging.getLogger(__name__)
 BMS_BLE_DOMAIN = "bms_ble"
+GAIN_KEYS = {f"{w}_gain" for w in GAIN_OFFSETS}
 
 
 def norm_mac(mac: str) -> str:
@@ -52,7 +53,9 @@ class JbdPack:
         return lambda: self._listeners.remove(cb)
 
     def _update(self, values: dict) -> None:
-        self.values.update({k: v for k, v in values.items() if k in SETTINGS or k in ESUP_WRITABLE})
+        self.values.update(
+            {k: v for k, v in values.items() if k in SETTINGS or k in ESUP_WRITABLE or k in GAIN_KEYS}
+        )
         for cb in list(self._listeners):
             cb()
 
@@ -218,6 +221,7 @@ class JbdPack:
                             "backup_hex": before["data"].hex()}
             if old[off // 2] == value:
                 result.update(after=value, verified=True, note="already set")
+                self._update({f"{w}_gain": old[o // 2] for w, o in GAIN_OFFSETS.items()})
                 return result
             _LOGGER.warning("%s: gain block backup %s", self.name, before["data"].hex())
             w = await self._gain_session((addr,), {off: value})
@@ -235,9 +239,11 @@ class JbdPack:
                     await asyncio.sleep(2)
                     new2 = gain_words((await self._gain_session((addr,)))["data"])
                     result["restored"] = {k: new2[k // 2] == o for k, o in fix.items()}
+                    new = new2
                 result["stray_changes"] = {f"+{k}": v for k, v in stray.items()}
             result["verified"] = result["after"] == value and not stray
             _LOGGER.warning("%s: ES-UP gain write %s", self.name, result)
+        self._update({f"{w}_gain": new[o // 2] for w, o in GAIN_OFFSETS.items()})
         return result
 
     async def esup_read(self, addrs: tuple[int, ...] | None, blocks: tuple[str, ...]) -> dict:
@@ -248,6 +254,8 @@ class JbdPack:
             self.esup_addr = out["addr"]
         if isinstance(out.get("user_params"), dict):
             self._update(out["user_params"])
+        if isinstance(out.get("gain_block"), dict):
+            self._update(out["gain_block"])
         if out.get("error"):
             raise HomeAssistantError(f"{self.name}: {out['error']}")
         return out

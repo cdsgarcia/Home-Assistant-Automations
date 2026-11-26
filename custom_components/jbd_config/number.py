@@ -11,7 +11,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN
 from .pack import JbdPack, norm_mac
-from .protocol import SETTINGS
+from .protocol import GAIN_OFFSETS, GAIN_RANGE, SETTINGS
 
 NAMES = {
     "cell_full_mv": "Cell full voltage",
@@ -32,7 +32,13 @@ def device_info(pack: JbdPack) -> DeviceInfo:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, add: AddEntitiesCallback) -> None:
     pack: JbdPack = hass.data[DOMAIN][entry.entry_id]
-    add([*(JbdSettingNumber(pack, key) for key in SETTINGS), *(JbdEsupNumber(pack, key) for key in ESUP_NUMBERS)])
+    add(
+        [
+            *(JbdSettingNumber(pack, key) for key in SETTINGS),
+            *(JbdEsupNumber(pack, key) for key in ESUP_NUMBERS),
+            *(JbdGainNumber(pack, which) for which in GAIN_OFFSETS),
+        ]
+    )
 
 
 class JbdSettingNumber(RestoreNumber):
@@ -105,4 +111,26 @@ class JbdEsupNumber(JbdSettingNumber):
             raise HomeAssistantError(
                 f"{self._pack.name}: BMS accepted {value} but kept "
                 f"{None if got is None else got / 100} {self.unit_of_measurement}"
+            )
+
+
+class JbdGainNumber(JbdSettingNumber):
+    """ES-UP current calibration gain (0x3800 block), base 10000 = x1.0000; higher reads higher."""
+
+    _attr_native_unit_of_measurement = None
+    _attr_icon = "mdi:current-dc"
+
+    def __init__(self, pack: JbdPack, which: str) -> None:
+        self._pack, self._which, self._key = pack, which, f"{which}_gain"
+        self._attr_native_min_value, self._attr_native_max_value = GAIN_RANGE
+        self._attr_name = f"{which.capitalize()} current gain (ES-UP)"
+        self._attr_unique_id = f"{norm_mac(pack.address)}_{self._key}"
+        self._attr_device_info = device_info(pack)
+
+    async def async_set_native_value(self, value: float) -> None:
+        result = await self._pack.esup_set_gain(None, self._which, int(value))
+        if not result.get("verified"):
+            raise HomeAssistantError(
+                f"{self._pack.name}: {self._which} gain write not verified "
+                f"(target {int(value)}, now {result.get('after')}, {result.get('stray_changes')})"
             )

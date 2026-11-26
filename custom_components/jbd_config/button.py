@@ -41,4 +41,4 @@ class JbdEsupReadButton(JbdReadButton):
         self._attr_unique_id = f"{norm_mac(pack.address)}_read_esup"
 
     async def async_press(self) -> None:
-        await self._pack.esup_read(None, ("user_params",))
+        await self._pack.esup_read(None, ("user_params", "gain_block"))
