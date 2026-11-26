@@ -16,12 +16,18 @@ from homeassistant.exceptions import HomeAssistantError
 
 from .protocol import (
     ESUP_BLOCKS,
+    ESUP_MODE_DVDP,
+    ESUP_MODE_NORMAL,
+    ESUP_MODE_REG,
     ESUP_WRITABLE,
+    GAIN_OFFSETS,
     SETTINGS,
     UUID_NOTIFY,
     UUID_WRITE,
     JbdSession,
     esup_decode,
+    gain_words,
+    gain_write_addr,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -165,6 +171,74 @@ class JbdPack:
         finally:
             if unloaded:
                 await self.hass.config_entries.async_setup(entry.entry_id)
+
+    async def _gain_session(self, addrs: tuple[int, ...], writes: dict[int, int] | None = None) -> dict:
+        """Read the 0x3800 gain block; optionally write {byte_offset: value} inside DV/DP mode."""
+        client = await self._connect()
+        try:
+            async def write(data: bytes) -> None:
+                await client.write_gatt_char(UUID_WRITE, data, response=False)
+
+            s = JbdSession(write, self.address)
+            await client.start_notify(UUID_NOTIFY, s.on_notify)
+            out: dict = {"auth": await s.authenticate(self.password), "addr": None}
+            start, end = ESUP_BLOCKS["gain_block"]
+            for a in addrs:
+                try:
+                    out["data"] = await s.esup_read(a, start, end)
+                except TimeoutError:
+                    continue
+                out["addr"] = a
+                break
+            if out["addr"] is None or not writes:
+                return out
+            acks: dict = {"enter": await s.esup_write(out["addr"], ESUP_MODE_REG, ESUP_MODE_DVDP)}
+            try:
+                await asyncio.sleep(0.4)
+                for off, value in writes.items():
+                    acks[f"+{off}"] = await s.esup_write(out["addr"], gain_write_addr(off), value)
+                    await asyncio.sleep(0.4)
+            finally:
+                acks["exit"] = await s.esup_write(out["addr"], ESUP_MODE_REG, ESUP_MODE_NORMAL)
+            out["acks"] = acks
+            return out
+        finally:
+            await client.disconnect()
+
+    async def esup_set_gain(self, addrs: tuple[int, ...] | None, which: str, value: int) -> dict:
+        """Write one current gain (charge/discharge), verify in a fresh session, restore anything else."""
+        off = GAIN_OFFSETS[which]
+        async with self.lock, self._bms_ble_paused():
+            before = await self._gain_session(self._esup_addrs(addrs))
+            if before["addr"] is None:
+                raise HomeAssistantError(f"{self.name}: no ES-UP reply on the gain block")
+            addr = self.esup_addr = before["addr"]
+            old = gain_words(before["data"])
+            result: dict = {"addr": addr, "which": which, "before": old[off // 2], "target": value,
+                            "backup_hex": before["data"].hex()}
+            if old[off // 2] == value:
+                result.update(after=value, verified=True, note="already set")
+                return result
+            _LOGGER.warning("%s: gain block backup %s", self.name, before["data"].hex())
+            w = await self._gain_session((addr,), {off: value})
+            result["acks"] = w.get("acks")
+            await asyncio.sleep(2)
+            new = gain_words((await self._gain_session((addr,)))["data"])
+            result["after"] = new[off // 2]
+            stray = {i * 2: (o, n) for i, (o, n) in enumerate(zip(old, new)) if i != off // 2 and o != n}
+            if stray:
+                # Restore only calibration words (current + 16 cell gains); never touch the tail.
+                fix = {k: o for k, (o, _) in stray.items() if k <= 38}
+                _LOGGER.error("%s: unexpected gain-block changes %s, restoring %s", self.name, stray, fix)
+                if fix:
+                    await self._gain_session((addr,), fix)
+                    await asyncio.sleep(2)
+                    new2 = gain_words((await self._gain_session((addr,)))["data"])
+                    result["restored"] = {k: new2[k // 2] == o for k, o in fix.items()}
+                result["stray_changes"] = {f"+{k}": v for k, v in stray.items()}
+            result["verified"] = result["after"] == value and not stray
+            _LOGGER.warning("%s: ES-UP gain write %s", self.name, result)
+        return result
 
     async def esup_read(self, addrs: tuple[int, ...] | None, blocks: tuple[str, ...]) -> dict:
         """Read-only ES-UP query (nothing is written), with BMS_BLE paused meanwhile."""

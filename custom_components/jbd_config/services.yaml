@@ -90,6 +90,44 @@ esup_set:
             - charge
             - static
 
+esup_set_gain:
+  name: Set ES-UP current calibration gain
+  description: >-
+    Write one current-measurement gain (base 10000 = x1.0000, higher = reads higher) in the
+    0x3800 calibration block, inside DV/DP debug mode. Backs up the block, verifies in a fresh
+    session and restores any other gain that changed. One pack at a time.
+  fields:
+    pack:
+      name: Pack
+      required: true
+      example: '["S2"]'
+      selector:
+        text:
+          multiple: true
+    addresses:
+      name: Addresses
+      description: ES-UP device addresses to try in order (default last found, then 1, 2, 3, 4, 0).
+      example: "[3]"
+      selector:
+        object:
+    which:
+      name: Gain
+      required: true
+      selector:
+        select:
+          options:
+            - charge
+            - discharge
+    value:
+      name: Gain value
+      required: true
+      example: 10320
+      selector:
+        number:
+          min: 9000
+          max: 12000
+          mode: box
+
 set_config:
   name: Set JBD BMS config
   description: >-

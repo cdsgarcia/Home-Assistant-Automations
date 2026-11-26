@@ -17,7 +17,7 @@ from homeassistant.helpers.typing import ConfigType
 from .const import CONF_ADDRESS, CONF_PASSWORD, DEFAULT_PASSWORD, DOMAIN
 from .debuglog import BmsDebugLog
 from .pack import JbdPack
-from .protocol import BALANCE_MODES, ESUP_BLOCKS, SETTINGS
+from .protocol import BALANCE_MODES, ESUP_BLOCKS, GAIN_OFFSETS, GAIN_RANGE, SETTINGS
 
 PLATFORMS = [Platform.BUTTON, Platform.NUMBER, Platform.SELECT]
 
@@ -84,6 +84,13 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
     debug_log = BmsDebugLog()
 
+    async def esup_set_gain(call: ServiceCall) -> ServiceResponse:
+        packs = _selected(call)
+        if len(packs) != 1:
+            raise ServiceValidationError("Calibration writes need exactly one pack")
+        addrs = tuple(call.data.get("addresses") or ()) or None
+        return {packs[0].name: await packs[0].esup_set_gain(addrs, call.data["which"], call.data["value"])}
+
     async def debug_log_start(call: ServiceCall) -> ServiceResponse:
         await hass.async_add_executor_job(debug_log.start, call.data["path"], call.data["keep_days"])
         return await hass.async_add_executor_job(debug_log.status)
@@ -134,6 +141,18 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
                 vol.Optional("full_adjust_v"): vol.All(vol.Coerce(float), vol.Range(52.0, 58.4)),
                 vol.Optional("full_adjust_c"): vol.All(vol.Coerce(float), vol.Range(0.5, 30.0)),
                 vol.Optional("balance_mode"): vol.In(list(BALANCE_MODES)),
+            }
+        ),
+        supports_response=SupportsResponse.OPTIONAL,
+    )
+    hass.services.async_register(
+        DOMAIN, "esup_set_gain", esup_set_gain,
+        schema=vol.Schema(
+            {
+                vol.Required("pack"): vol.All(cv.ensure_list, [cv.string]),
+                **addr_field,
+                vol.Required("which"): vol.In(list(GAIN_OFFSETS)),
+                vol.Required("value"): vol.All(vol.Coerce(int), vol.Range(*GAIN_RANGE)),
             }
         ),
         supports_response=SupportsResponse.OPTIONAL,

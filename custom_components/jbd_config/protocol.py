@@ -40,8 +40,24 @@ ESUP_BLOCKS: dict[str, tuple[int, int]] = {
     "user_params": (0x1C00, 0x1C88),
     "capacity": (0x2000, 0x2040),
     "factory_mirror": (0x3900, 0x3940),
-    "gain_block": (0x3800, 0x3840),  # read-only: current/voltage calibration gains (unverified on Gentai 0x0A)
+    "gain_block": (0x3800, 0x3840),  # current/voltage calibration gains, base 10000 = x1.0000
 }
+
+# Calibration block 0x3800: writable only in DV/DP debug mode (0x2900 = 0x5A02), and write
+# addresses are u16 *indexes* (0x3800 + byte_offset // 2), unlike reads and every other block.
+# A byte-offset write to 0x3804 lands on cell 1's voltage gain (alexbadcat/jbd-bms-toolkit).
+ESUP_MODE_REG, ESUP_MODE_DVDP, ESUP_MODE_NORMAL = 0x2900, 0x5A02, 0x0000
+GAIN_BLOCK = 0x3800
+GAIN_OFFSETS = {"charge": 0, "discharge": 4}
+GAIN_RANGE = (9000, 12000)
+
+
+def gain_write_addr(byte_off: int) -> int:
+    return GAIN_BLOCK + byte_off // 2
+
+
+def gain_words(d: bytes) -> list[int]:
+    return [int.from_bytes(d[i : i + 2], "big") for i in range(0, len(d) - 1, 2)]
 
 
 def crc16_modbus(data: bytes) -> bytes:
@@ -92,6 +108,12 @@ def esup_decode(block: str, d: bytes) -> dict:
             "remaining_ah_x100": _u16(d, 4),
             "soc_x100": _u16(d, 6),
             "cycles": _u16(d, 10),
+        }
+    if block == "gain_block":
+        return {
+            "charge_gain": _u16(d, 0),
+            "discharge_gain": _u16(d, 4),
+            "cell_gains": [_u16(d, 8 + 2 * i) for i in range(16)],
         }
     return {}
 

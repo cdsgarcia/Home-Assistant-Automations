@@ -197,3 +197,15 @@ def test_esup_write_persists_with_or_without_ack(ack):
     asyncio.run(go())
     d = p.esup_decode("user_params", esup(bms, 1))
     assert (d["full_adjust_v_x100"], d["full_adjust_c_x100"], d["balance_mode"], d["bms_code"]) == (5600, 200, 1, "UP16S019-XMDZ03")
+
+def test_gain_write_uses_u16_index_addressing():
+    # Discharge gain sits at byte +4 but must be written at 0x3802; 0x3804 is cell 1's voltage gain.
+    assert p.gain_write_addr(p.GAIN_OFFSETS["discharge"]) == 0x3802
+    assert p.gain_write_addr(p.GAIN_OFFSETS["charge"]) == 0x3800
+
+
+def test_gain_block_decode():
+    d = bytes.fromhex("29da000029d60000" + "2725" * 16)
+    out = p.esup_decode("gain_block", d)
+    assert (out["charge_gain"], out["discharge_gain"]) == (10714, 10710)
+    assert out["cell_gains"] == [10021] * 16
