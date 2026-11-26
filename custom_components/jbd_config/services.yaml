@@ -31,7 +31,7 @@ esup_read:
           multiple: true
     addresses:
       name: Addresses
-      description: ES-UP device addresses to try in order (default last found, then 1, 2, 3, 4, 0).
+      description: ES-UP addresses to try (default: the pack's pinned esup_address). Another address reads another pack on the RS485 bus.
       example: "[1]"
       selector:
         object:
@@ -58,7 +58,7 @@ esup_set:
           multiple: true
     addresses:
       name: Addresses
-      description: ES-UP device addresses to try in order (default last found, then 1, 2, 3, 4, 0).
+      description: Must equal the pack's pinned esup_address (default). Writes never fall back to other addresses.
       example: "[1]"
       selector:
         object:
@@ -106,7 +106,7 @@ esup_set_gain:
           multiple: true
     addresses:
       name: Addresses
-      description: ES-UP device addresses to try in order (default last found, then 1, 2, 3, 4, 0).
+      description: Must equal the pack's pinned esup_address (default). Writes never fall back to other addresses.
       example: "[3]"
       selector:
         object:

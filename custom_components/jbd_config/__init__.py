@@ -14,7 +14,7 @@ from homeassistant.exceptions import ServiceValidationError
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.typing import ConfigType
 
-from .const import CONF_ADDRESS, CONF_PASSWORD, DEFAULT_PASSWORD, DOMAIN
+from .const import CONF_ADDRESS, CONF_ESUP_ADDRESS, CONF_PASSWORD, DEFAULT_PASSWORD, DOMAIN
 from .debuglog import BmsDebugLog
 from .pack import JbdPack
 from .protocol import BALANCE_MODES, ESUP_BLOCKS, GAIN_OFFSETS, GAIN_RANGE, SETTINGS
@@ -26,6 +26,7 @@ PACK_SCHEMA = vol.Schema(
         vol.Required("name"): cv.string,
         vol.Required(CONF_ADDRESS): vol.All(cv.string, vol.Upper),
         vol.Optional(CONF_PASSWORD, default=DEFAULT_PASSWORD): vol.All(cv.string, vol.Length(min=6, max=6)),
+        vol.Optional(CONF_ESUP_ADDRESS): vol.All(vol.Coerce(int), vol.Range(0, 0x1F)),
     }
 )
 # Optional legacy YAML; packs listed here are imported as UI config entries.
@@ -179,7 +180,8 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = JbdPack(
-        hass, entry.title, entry.data[CONF_ADDRESS], entry.data.get(CONF_PASSWORD, DEFAULT_PASSWORD)
+        hass, entry.title, entry.data[CONF_ADDRESS], entry.data.get(CONF_PASSWORD, DEFAULT_PASSWORD),
+        entry.data.get(CONF_ESUP_ADDRESS),
     )
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True

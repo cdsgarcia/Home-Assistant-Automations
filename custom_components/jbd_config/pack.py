@@ -40,10 +40,13 @@ def norm_mac(mac: str) -> str:
 
 
 class JbdPack:
-    def __init__(self, hass: HomeAssistant, name: str, address: str, password: str) -> None:
+    def __init__(
+        self, hass: HomeAssistant, name: str, address: str, password: str, esup_address: int | None = None
+    ) -> None:
         self.hass, self.name, self.address, self.password = hass, name, address.upper(), password
         self.values: dict[str, int] = {}
-        self.esup_addr: int | None = None
+        self.esup_address = esup_address  # pinned RS485 address (None = unknown)
+        self.esup_addr: int | None = esup_address
         self.lock = asyncio.Lock()
         self._listeners: list[Callable[[], None]] = []
 
@@ -59,10 +62,25 @@ class JbdPack:
         for cb in list(self._listeners):
             cb()
 
-    def _esup_addrs(self, addrs: tuple[int, ...] | None) -> tuple[int, ...]:
+    def _esup_addrs(self, addrs: tuple[int, ...] | None, write: bool = False) -> tuple[int, ...]:
+        """ES-UP addresses to try. Every pack's BLE reaches the shared RS485 bus, so falling back to
+        another address talks to another pack: writes only ever use the pinned address."""
+        pinned = self.esup_address
+        if write:
+            if pinned is None:
+                if addrs and len(addrs) == 1:
+                    return addrs
+                raise HomeAssistantError(
+                    f"{self.name}: set esup_address for this pack (or give exactly one address) before writing"
+                )
+            if addrs and tuple(addrs) != (pinned,):
+                raise HomeAssistantError(f"{self.name}: pinned to ES-UP address {pinned}, refusing {list(addrs)}")
+            return (pinned,)
         if addrs:
             return addrs
-        # Address = parallel DIP address (M1=1, S1=2, S2=3); the last one found is tried first.
+        if pinned is not None:
+            return (pinned,)
+        # Unpinned (diagnostics only): last one found first, then the parallel DIP addresses.
         default = (1, 2, 3, 4, 0)
         return default if self.esup_addr is None else (self.esup_addr, *(a for a in default if a != self.esup_addr))
 
@@ -212,10 +230,12 @@ class JbdPack:
         """Write one current gain (charge/discharge), verify in a fresh session, restore anything else."""
         off = GAIN_OFFSETS[which]
         async with self.lock, self._bms_ble_paused():
-            before = await self._gain_session(self._esup_addrs(addrs))
+            before = await self._gain_session(self._esup_addrs(addrs, write=True))
             if before["addr"] is None:
                 raise HomeAssistantError(f"{self.name}: no ES-UP reply on the gain block")
-            addr = self.esup_addr = before["addr"]
+            addr = before["addr"]
+            if self.esup_address is None:
+                self.esup_addr = addr
             old = gain_words(before["data"])
             result: dict = {"addr": addr, "which": which, "before": old[off // 2], "target": value,
                             "backup_hex": before["data"].hex()}
@@ -250,11 +270,13 @@ class JbdPack:
         """Read-only ES-UP query (nothing is written), with BMS_BLE paused meanwhile."""
         async with self.lock, self._bms_ble_paused():
             out = await self._esup_session(self._esup_addrs(addrs), blocks)
-        if out.get("addr") is not None:
+        if out.get("addr") is not None and self.esup_address is None:
             self.esup_addr = out["addr"]
-        if isinstance(out.get("user_params"), dict):
+        # A diagnostic read of another address must not show up as this pack's values.
+        own = self.esup_address is None or out.get("addr") == self.esup_address
+        if own and isinstance(out.get("user_params"), dict):
             self._update(out["user_params"])
-        if isinstance(out.get("gain_block"), dict):
+        if own and isinstance(out.get("gain_block"), dict):
             self._update(out["gain_block"])
         if out.get("error"):
             raise HomeAssistantError(f"{self.name}: {out['error']}")
@@ -263,10 +285,11 @@ class JbdPack:
     async def esup_set(self, addrs: tuple[int, ...] | None, writes: dict[str, int]) -> dict:
         """Write ES-UP user params that differ, then verify in a fresh session."""
         async with self.lock, self._bms_ble_paused():
-            before = await self._esup_session(self._esup_addrs(addrs), ("user_params",), writes)
+            before = await self._esup_session(self._esup_addrs(addrs, write=True), ("user_params",), writes)
             if before.get("error"):
                 raise HomeAssistantError(f"{self.name}: {before['error']}")
-            self.esup_addr = before["addr"]
+            if self.esup_address is None:
+                self.esup_addr = before["addr"]
             result: dict = {"addr": before["addr"], "auth": before.get("auth")}
             result["before"] = {k: before["user_params"].get(k) for k in writes}
             result["writes"] = before.get("writes", {})

@@ -154,7 +154,10 @@ jbd_config:
   packs:
     - name: M1
       address: AA:C2:37:01:B9:02
+      esup_address: 1   # parallel DIP address; writes go only to this RS485 address
     - name: S1
       address: AA:C2:37:01:DB:D7
+      esup_address: 2
     - name: S2
       address: AA:C2:37:01:E0:7F
+      esup_address: 3

@@ -6,7 +6,8 @@
         "description": "Pick a BMS_BLE pack with a JBD BMS (not the Pace/CST).",
         "data": {
           "address": "Pack",
-          "password": "BLE password (6 characters)"
+          "password": "BLE password (6 characters)",
+          "esup_address": "ES-UP address (parallel DIP address, e.g. M1=1)"
         }
       }
     },
